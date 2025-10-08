@@ -1,0 +1,6 @@
+metrics:
+  processors:
+    metrics_filter:
+      type: exclude_metrics
+      metrics_pattern:
+      - agent.googleapis.com/*

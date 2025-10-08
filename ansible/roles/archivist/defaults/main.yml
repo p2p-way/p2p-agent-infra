@@ -1,0 +1,23 @@
+# Archivist - Variables
+---
+archivist_name:               archivist
+archivist_folder:             '{{ base_folder }}/{{ archivist_name }}'
+archivist_user:               '{{ archivist_name }}'
+archivist_install_folder:     /usr/local/bin
+archivist_bin:                '{{ archivist_name }}'
+archivist_version:            v0.0.2 # https://github.com/durability-labs/archivist-node/releases
+archivist_archive:            "{{ archivist_name }}-{{ archivist_version }}-linux-{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}.tar.gz"
+archivist_archive_folder:     '{{ temp_folder }}/{{ archivist_archive | splitext | first | splitext | first }}'
+archivist_url:                 'https://github.com/durability-labs/archivist-node/releases/download/{{ archivist_version }}/{{ archivist_archive }}'
+archivist_checksum_url:       '{{ archivist_url }}.sha256'
+archivist_config_file:        config.toml
+archivist_service_name:       '{{ archivist_name }}'
+archivist_api_port:           8082
+archivist_tcp_port:           8090
+archivist_udp_port:           '{{ archivist_tcp_port }}'
+archivist_api_endpoint:       'http://localhost:{{ archivist_api_port }}/api/archivist/v1'
+archivist_api_endpoint_check: '{{ archivist_api_endpoint }}/peerid'
+archivist_pin_timeout:        600
+archivist_cid:                ''
+archivist_enabled:            true
+archivist_update:             false

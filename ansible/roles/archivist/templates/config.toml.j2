@@ -1,0 +1,13 @@
+log-level      = "info"
+data-dir       = "{{ archivist_folder }}/data"
+listen-addrs   = ["/ip4/0.0.0.0/tcp/{{ archivist_tcp_port }}"]
+nat            = "extip:{{ common_public_ipv4 }}"
+disc-port      = {{ archivist_udp_port }}
+api-port       = {{ archivist_api_port }}
+bootstrap-node = [
+  "spr:CiUIAhIhA5mg11LZgFQ4XzIRb1T5xw9muFW1ALNKTijyKhQmvKYXEgIDARpJCicAJQgCEiEDmaDXUtmAVDhfMhFvVPnHD2a4VbUAs0pOKPIqFCa8phcQl-XFxQYaCwoJBE4vqKqRAnU6GgsKCQROL6iqkQJ1OipHMEUCIQDfzVYbN6A_O4i29e_FtDDUo7GJS3bkXRQtoteYbPSFtgIgcc8Kgj2ggVJyK16EY9xi4bY2lpTTeNIRjvslXSRdN5w",
+  "spr:CiUIAhIhAhmlZ1XaN44zPDuORyNJV8I79x2eSXt5-9AirVagKCAIEgIDARpJCicAJQgCEiECGaVnVdo3jjM8O45HI0lXwjv3HZ5Je3n70CKtVqAoIAgQ_OfFxQYaCwoJBAWhGBORAnVEGgsKCQQFoRgTkQJ1RCpHMEUCIQCgqSYPxyic9XmOcQYtJDKNprK_Uokz2UzjVZRnPYpOgQIgQ8m96ukov4XZG-j-XH53_vuoy3GkHuneUZ1Xe0luCxk",
+  "spr:CiUIAhIhAnCcHA-aqMx--nwf8cJyZKJavc-PuYNKKROoW_5Q1JcREgIDARpJCicAJQgCEiECcJwcD5qozH76fB_xwnJkolq9z4-5g0opE6hb_lDUlxEQje7FxQYaCwoJBAXfFdCRAnVOGgsKCQQF3xXQkQJ1TipGMEQCIA22oUekTsDAtsIOyrgtkG702FJPn8Xd-ifEVTUSuu7fAiBv9YyAg9iKuYBhgZKsZBHYfX8l0sXvm80s6U__EGGY-g"
+]
+storage-quota  = "8gb"
+block-ttl      = "365d"

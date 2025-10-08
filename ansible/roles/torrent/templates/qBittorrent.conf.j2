@@ -1,0 +1,31 @@
+[BitTorrent]
+Session\DHTEnabled=true
+Session\GlobalMaxRatio=9998
+Session\GlobalUPSpeedLimit=2000
+Session\IncludeOverheadInLimits=true
+Session\LSDEnabled=true
+Session\MaxConnections=600
+Session\MaxConnectionsPerTorrent=200
+Session\MaxRatioAction=0
+Session\MaxUploads=30
+Session\MaxUploadsPerTorrent=5
+Session\PeXEnabled=true
+Session\Port={{ torrent_tcp_udp_port }}
+Session\QueueingSystemEnabled=false
+
+[LegalNotice]
+Accepted=true
+
+[Meta]
+MigrationVersion=6
+
+[Network]
+Cookies=@Invalid()
+
+[Preferences]
+Connection\ResolvePeerCountries=false
+WebUI\Port={{ torrent_api_port }}
+WebUI\UseUPnP=false
+WebUI\LocalHostAuth=false
+WebUI\Username={{ torrent_admin_username }}
+WebUI\Password_PBKDF2="@ByteArray(pG6JoWYKHiBETLM+Q+4ZfQ==:AhN7S3oQZYBuJPd2huGTphkHEXq2TjJIw8BSW2Ua1BGZ87flIbdsov4el21FOCSiM7P+kTmCu9ZIcvv4JzMN0w==)"

@@ -1,0 +1,15 @@
+# TON - Configure
+- name: Check for systemd service changes
+  ansible.builtin.template:
+    src: '{{ item }}.j2'
+    dest: '/lib/systemd/system/{{ item }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '644'
+  loop:
+    - '{{ ton_service_name }}.service'
+  notify:
+    - 'Restart service {{ ton_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

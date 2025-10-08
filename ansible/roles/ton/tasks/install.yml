@@ -1,0 +1,84 @@
+# TON - Install
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: libgslcblas0
+    state: present
+
+- name: Create user
+  ansible.builtin.user:
+    name: '{{ ton_user }}'
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: '{{ ton_folder }}'
+    system: true
+    password_lock: true
+
+- name: Create app folder
+  ansible.builtin.file:
+    path: '{{ ton_folder }}'
+    state: directory
+    mode: '755'
+    owner: '{{ ton_user }}'
+    group: '{{ ton_user }}'
+
+- name: Download app
+  ansible.builtin.get_url:
+    url: '{{ item.url }}'
+    dest: '{{ temp_folder }}/{{ item.bin }}'
+    force: true
+    mode: '644'
+  loop:
+    - { url: '{{ ton_url }}',     bin: '{{ ton_bin }}' }    # noqa: yaml[commas]
+    - { url: '{{ ton_cli_url }}', bin: '{{ ton_cli_bin }}' }
+
+- name: Download config
+  ansible.builtin.get_url:
+    url: '{{ ton_config_file_url }}'
+    dest: '{{ ton_folder }}/{{ ton_config_file }}'
+    mode: '644'
+    owner: '{{ ton_user }}'
+    group: '{{ ton_user }}'
+  notify:
+    - 'Restart service {{ ton_service_name }}'
+
+- name: Create install folder
+  ansible.builtin.file:
+    path: '{{ ton_install_folder }}'
+    state: directory
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '755'
+
+- name: Install
+  ansible.builtin.copy:
+    src: '{{ temp_folder }}/{{ item }}'
+    dest: '{{ ton_install_folder }}/{{ item }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '755'
+  loop:
+    - '{{ ton_bin }}'
+    - '{{ ton_cli_bin }}'
+  notify:
+    - 'Restart service {{ ton_service_name }}'
+
+- name: Create systemd service
+  ansible.builtin.template:
+    src: '{{ item }}.j2'
+    dest: '/lib/systemd/system/{{ item }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '644'
+  loop:
+    - '{{ ton_service_name }}.service'
+  notify:
+    - 'Restart service {{ ton_service_name }}'
+
+- name: Enable and start service
+  ansible.builtin.systemd_service:
+    enabled: true
+    state: started
+    name: '{{ ton_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

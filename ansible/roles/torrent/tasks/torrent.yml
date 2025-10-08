@@ -1,0 +1,48 @@
+# Torrent - Management
+- name: Wait app
+  ansible.builtin.include_tasks:
+    file: wait.yml
+
+- name: Get existing magnet
+  ansible.builtin.uri:
+    url: '{{ torrent_api_endpoint }}/torrents/info'
+  register: torrent_existing_magnet
+
+- name: Add magnet
+  ansible.builtin.uri:
+    url: '{{ torrent_api_endpoint }}/torrents/add'
+    method: POST
+    body_format: form-multipart
+    body:
+      urls: '{{ item }}'
+  loop: '{{ torrent_magnet | split }}'
+  changed_when: false
+  when: not torrent_existing_magnet.json | json_query('[?contains(magnet_uri, `' + item + '`)]')
+
+- name: Get existing magnet after
+  ansible.builtin.uri:
+    url: '{{ torrent_api_endpoint }}/torrents/info'
+  register: torrent_existing_magnet_after
+
+- name: Add tracker
+  ansible.builtin.uri:
+    url: '{{ torrent_api_endpoint }}/torrents/addTrackers'
+    method: POST
+    body: 'hash={{ torrent_hash }}&urls={{ torrent_tracker }}'
+  vars:
+    torrent_hash: "{{ torrent_existing_magnet_after.json | json_query('[?contains(magnet_uri, `' + item + '`)].hash') | join }}"
+  loop: '{{ torrent_magnet | split }}'
+  changed_when: false
+  when: torrent_tracker != '' and torrent_hash != ''
+
+- name: Get existing magnet latest
+  ansible.builtin.uri:
+    url: '{{ torrent_api_endpoint }}/torrents/info'
+  register: torrent_existing_magnet_latest
+
+- name: Show magnet
+  ansible.builtin.debug:
+    msg: |
+      {% for item in torrent_existing_magnet_latest.json | json_query('[*].[state, magnet_uri]') %}
+      {{ item | join(' - ') }}
+      {% endfor %}

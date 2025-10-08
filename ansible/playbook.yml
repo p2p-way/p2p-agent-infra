@@ -1,0 +1,42 @@
+---
+- name: P2P agent
+  hosts: 127.0.0.1
+  connection: local
+  pre_tasks:
+    - name: Set global variables
+      ansible.builtin.set_fact:
+        # Common
+        base_folder:       /opt/p2p
+        temp_folder:       /tmp
+        base_user:         root
+        base_group:        root
+        # Agent
+        agent_cron:        '*/15'
+        update_agent:      false
+        update_cron:       false
+        # Watcher
+        enable_watcher:    true
+        desired_capacity:  ''
+        # Components
+        apps_update:       false
+        enable_archivist:  true
+        enable_ipfs:       true
+        enable_radicle:    true
+        enable_ton:        true
+        enable_torrent:    true
+        # P2P
+        archivist_cid:     zDvZRwzkwcFgCVMjd6VJKNSzGbNMU1HfZEcrebfmJ5NzW5C8paB3
+        ipfs_cid:          bafybeicjxk7fb3btcabn36rpyooao36ixbfdw6iwy6fvksvpvuo3iyscxm
+        radicle_rid:       rad:z3gqcJUoA1n9HaHKufZs5FCSGazv5
+        ton_bagid:         12432C1BEE1BF12FE294CB63694EFFED189B1041F4E88D51E3E65CCB2A64D8B4
+        torrent_magnet:    'magnet:?xt=urn:btih:c7245061816ebf134d2a9be87be600acc9b1f7c6&xt=urn:btmh:1220f759b072884c48e1c9d9e6f99aa507f982ab22e75b36aab097d198140490ed14&dn=site' # noqa: yaml[line-length]
+        torrent_tracker:   udp://tracker.opentrackr.org:1337/announce
+  roles:
+    - {role: common,                                       ignore_errors: true} # noqa: yaml[commas]
+    - {role: agent,     when: update_agent or update_cron, ignore_errors: true} # noqa: yaml[commas]
+    - {role: watcher,   when: enable_watcher,              ignore_errors: true} # noqa: yaml[commas]
+    - {role: radicle,   when: enable_radicle,              ignore_errors: true} # noqa: yaml[commas]
+    - {role: ipfs,      when: enable_ipfs,                 ignore_errors: true} # noqa: yaml[commas]
+    - {role: ton,       when: enable_ton,                  ignore_errors: true} # noqa: yaml[commas]
+    - {role: torrent,   when: enable_torrent,              ignore_errors: true} # noqa: yaml[commas]
+    - {role: archivist, when: enable_archivist,            ignore_errors: true} # noqa: yaml[commas]

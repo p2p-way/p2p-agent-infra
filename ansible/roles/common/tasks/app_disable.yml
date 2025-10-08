@@ -1,0 +1,7 @@
+# Common - Stop and disable service
+- name: Stop service
+  ansible.builtin.systemd_service:
+    state: stopped
+    enabled: false
+    daemon_reload: true
+    name: '{{ common_service_name }}'

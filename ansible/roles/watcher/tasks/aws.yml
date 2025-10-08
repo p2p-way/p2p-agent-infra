@@ -1,0 +1,77 @@
+# AWS - Management
+- name: Check for AWS CLI
+  ansible.builtin.command: which aws
+  register: watcher_aws_cli
+  changed_when: false
+  failed_when: false
+
+- name: Install zip
+  ansible.builtin.apt:
+    name: zip
+    state: present
+  when: watcher_aws_cli.stdout == ''
+
+- name: Download AWS CLI
+  ansible.builtin.get_url:
+    url: '{{ watcher_aws_cli_url }}'
+    dest: '{{ temp_folder }}/{{ watcher_aws_cli_archive }}'
+    mode: '644'
+  when: watcher_aws_cli.stdout == ''
+
+- name: Unarchive AWS CLI
+  ansible.builtin.unarchive:
+    src: '{{ temp_folder }}/{{ watcher_aws_cli_archive }}'
+    dest: '{{ temp_folder }}'
+  when: watcher_aws_cli.stdout == ''
+
+- name: Install AWS CLI
+  ansible.builtin.shell: '{{ temp_folder }}/aws/install'
+  args:
+    executable: bash
+  changed_when: false
+  when: watcher_aws_cli.stdout == ''
+
+- name: Update Autoscaler
+  ansible.builtin.shell: |
+    set -o pipefail
+
+    # Variables
+    desired_capacity={{ watcher_desired_capacity }}
+    stop_scheduler="initial-stop"
+    diff_time_admissible=60
+
+    # Get metadata
+    token=$(curl -X PUT -s http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 180")
+    role=$(curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/iam/security-credentials)
+    credentials=$(curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/iam/security-credentials/$role)
+    region=$(curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/placement/region)
+    asg_name=$(curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/tags/instance/aws:autoscaling:groupName)
+
+    # Authenticate
+    export AWS_ACCESS_KEY_ID=$(jq -r '.AccessKeyId' <<< "${credentials}")
+    export AWS_SECRET_ACCESS_KEY=$(jq -r '.SecretAccessKey' <<< "${credentials}")
+    export AWS_SESSION_TOKEN=$(jq -r '.Token' <<< "${credentials}")
+
+    # Get stop scheduler and current time diff
+    scheduler_time_asg=$(aws autoscaling describe-scheduled-actions \
+      --region "${region}" \
+      --auto-scaling-group-name "${asg_name}" \
+      --query 'ScheduledUpdateGroupActions[?ScheduledActionName==`'${stop_scheduler}'`].StartTime' \
+      --output=text)
+    [[ -n "${scheduler_time_asg}" ]] && scheduler_time=$(date -d "${scheduler_time_asg}" "+%s") || scheduler_time=$(date "+%s")
+    current_time=$(date "+%s")
+    diff_time=$((scheduler_time - current_time))
+
+    # Skip update when near the stop
+    [[ "${diff_time}" -lt "${diff_time_admissible}" ]] && exit 0
+
+    # Update Autoscaler
+    aws autoscaling update-auto-scaling-group \
+      --region "${region}" \
+      --auto-scaling-group-name "${asg_name}" \
+      --min-size "${desired_capacity}" \
+      --max-size "${desired_capacity}" \
+      --desired-capacity "${desired_capacity}"
+  args:
+    executable: bash
+  changed_when: false

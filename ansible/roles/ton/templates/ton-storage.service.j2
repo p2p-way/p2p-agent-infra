@@ -1,0 +1,17 @@
+[Unit]
+Description=TON Storage service
+Documentation=https://docs.ton.org
+After=local-fs.target network.target network-online.target nss-lookup.target
+
+[Service]
+Type=simple
+User={{ ton_user }}
+Group={{ ton_user }}
+StateDirectory={{ ton_service_name }}
+ExecStart={{ ton_install_folder }}/{{ ton_bin }} -d -v 3 -C {{ ton_folder }}/{{ ton_config_file }} -D {{ ton_db_folder }} -I {{ common_public_ipv4 }}:{{ ton_udp_port }} -p {{ ton_api_port }}
+Restart=always
+RestartSec=3
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

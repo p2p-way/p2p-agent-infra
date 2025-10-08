@@ -1,0 +1,69 @@
+# Unreachable routes to https://en.wikipedia.org/wiki/Reserved_IP_addresses
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    interface-name: # eth0, ens10, enp8s0
+      routes:
+        - to: 0.0.0.0/8          # "This" network               | RFC 5736
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 10.0.0.0/8         # Private-use networks         | RFC 1918
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 100.64.0.0/10      # Shared Address Space for CGN | RFC 6598
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 169.254.0.0/16     # Link-local                   | RFC 3927
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 172.16.0.0/12      # Private-use networks         | RFC 1918
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 192.0.0.0/24       # IETF protocol assignment     | RFC 5736
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 192.0.2.0/24       # TEST-NET-1                   | RFC 5737
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 192.88.99.0/24     # IPv6 to IPv4 relay           | RFC 7526
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 192.168.0.0/16     # Private-use networks         | RFC 1918
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 198.18.0.0/15      # Benchmark testing            | RFC 2544
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 198.51.100.0/24    # TEST-NET-2                   | RFC 5737
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 203.0.113.0/24     # TEST-NET-3                   | RFC 5737
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 224.0.0.0/4        # Multicast                    | RFC 5771
+          via: 0.0.0.0
+          metric: 240
+        - to: 233.252.0.0/24     # MCAST-TEST-NET               | RFC 5771
+          via: 0.0.0.0
+          metric: 240
+        - to: 240.0.0.0/4        # Reserved for future use      | RFC 3232
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable
+        - to: 255.255.255.255/32 # Limited broadcast            | RFC 919, RFC 922
+          via: 0.0.0.0
+          metric: 240
+          type: unreachable

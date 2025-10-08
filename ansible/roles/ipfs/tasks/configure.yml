@@ -1,0 +1,91 @@
+# IPFS - Configure
+- name: Wait app
+  ansible.builtin.include_tasks:
+    file: wait.yml
+
+- name: Restart service to apply previous config changes
+  ansible.builtin.systemd_service:
+    enabled: true
+    state: restarted
+    name: '{{ ipfs_service_name }}'
+  when: not app_is_listening
+  vars:
+    app_is_listening: "{{ lookup('ansible.builtin.vars', ipfs_name + '_is_listening') }}"
+
+- name: Wait app
+  ansible.builtin.include_tasks:
+    file: wait.yml
+  when: not app_is_listening
+  vars:
+    app_is_listening: "{{ lookup('ansible.builtin.vars', ipfs_name + '_is_listening') }}"
+
+- name: Get existing Swarm addresses
+  ansible.builtin.command: ipfs config Addresses.Swarm
+  become: true
+  become_user: '{{ ipfs_user }}'
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  register: ipfs_current_swarm_addresses
+  changed_when: false
+
+- name: Compute transports
+  ansible.builtin.set_fact:
+    ipfs_tcp_transports: >-
+      {{ ipfs_current_swarm_addresses.stdout | from_json | select('search', 'tcp')
+      | map('regex_replace', '(?P<protocol>.*/[a-z]+/)(?P<port>\d+)(/?)(?P<transport>.*)$', '\g<transport>') | list | unique | join(' ') }}
+    ipfs_udp_transports: >-
+      {{ ipfs_current_swarm_addresses.stdout | from_json | select('search', 'udp')
+      | map('regex_replace', '(?P<protocol>.*/[a-z]+/)(?P<port>\d+)(/?)(?P<transport>.*)$', '\g<transport>') | list | unique | join(' ') }}
+
+- name: Compute addresses
+  ansible.builtin.set_fact:
+    ipfs_appendannounce_addresses: '{{ (ipfs_announce_tcp_addresses + ipfs_announce_udp_addresses) | to_json }}'
+    ipfs_swarm_addresses: '{{ (ipfs_swarm_addresses_tcp + ipfs_swarm_addresses_udp) | to_json }}'
+  vars:
+    ipfs_announce_tcp_addresses: >-
+      {% if ipfs_tcp_transports == '' %}{{ ('/ip4/' + common_public_ipv4 + '/tcp/' + ipfs_tcp_port | string) | split }}
+      {% else -%}
+      {{ ipfs_tcp_transports | split | map('regex_replace', '^(.*)$', '/ip4/' + common_public_ipv4 + '/tcp/' + ipfs_tcp_port | string + '/' + '\1') | list -}}
+      {% endif %}
+    ipfs_announce_udp_addresses: >-
+      {% if ipfs_udp_transports == '' %}{{ ('/ip4/' + common_public_ipv4 + '/udp/' + ipfs_udp_port | string) | split }}
+      {% else -%}
+      {{ ipfs_udp_transports | split | map('regex_replace', '^(.*)$', '/ip4/' + common_public_ipv4 + '/udp/' + ipfs_udp_port | string + '/' + '\1') | list -}}
+      {% endif %}
+    ipfs_swarm_addresses_tcp: >-
+      {{ ipfs_current_swarm_addresses.stdout | from_json | select('search', 'tcp')
+      | map('regex_replace', '(?P<protocol>.*/[a-z]+/)(?P<port>\d+)(?P<transport>.*)$', '\g<protocol>' + ipfs_tcp_port | string + '\g<transport>') | list }}
+    ipfs_swarm_addresses_udp: >-
+      {{ ipfs_current_swarm_addresses.stdout | from_json | select('search', 'udp')
+      | map('regex_replace', '(?P<protocol>.*/[a-z]+/)(?P<port>\d+)(?P<transport>.*)$', '\g<protocol>' + ipfs_udp_port | string + '\g<transport>') | list }}
+  when: common_public_ipv4 != ''
+
+- name: Get existing AppendAnnounce addresses
+  ansible.builtin.command: ipfs config Addresses.AppendAnnounce
+  become: true
+  become_user: '{{ ipfs_user }}'
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  register: ipfs_current_appendannounce_addresses
+  changed_when: false
+
+- name: Confgure AppendAnnounce addresses
+  ansible.builtin.command: ipfs config Addresses.AppendAnnounce --json '{{ ipfs_appendannounce_addresses }}'
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  when: (ipfs_appendannounce_addresses | from_json | join ) not in (ipfs_current_appendannounce_addresses.stdout | from_json | join)
+  changed_when: false
+  notify:
+    - 'Restart service {{ ipfs_service_name }}'
+
+- name: Confgure Swarm addresses
+  ansible.builtin.command: ipfs config Addresses.Swarm --json '{{ ipfs_swarm_addresses }}'
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  when: (ipfs_swarm_addresses | from_json | join ) not in (ipfs_current_swarm_addresses.stdout | from_json | join)
+  changed_when: false
+  notify:
+    - 'Restart service {{ ipfs_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

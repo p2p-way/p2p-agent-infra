@@ -1,0 +1,11 @@
+logging:
+  service:
+    pipelines:
+      default_pipeline:
+        receivers: []
+
+global:
+  default_self_log_file_rotation:
+    enabled: true
+    max_file_size_megabytes: 400
+    backup_count: 1

@@ -1,0 +1,92 @@
+# Archivist - Install
+- name: Create user
+  ansible.builtin.user:
+    name: '{{ archivist_user }}'
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: '{{ archivist_folder }}'
+    system: true
+    password_lock: true
+
+- name: Create app folder
+  ansible.builtin.file:
+    path: '{{ archivist_folder }}'
+    state: directory
+    mode: '755'
+    owner: '{{ archivist_user }}'
+    group: '{{ archivist_user }}'
+
+- name: Download app
+  ansible.builtin.get_url:
+    url: '{{ archivist_url }}'
+    dest: '{{ temp_folder }}/{{ archivist_archive }}'
+    checksum: sha256:{{ archivist_checksum_url }}
+    mode: '664'
+
+- name: Create archive folder
+  ansible.builtin.file:
+    path: '{{ archivist_archive_folder }}'
+    state: directory
+    mode: '755'
+
+- name: Unarchive
+  ansible.builtin.unarchive:
+    src: '{{ temp_folder }}/{{ archivist_archive }}'
+    dest: '{{ archivist_archive_folder }}'
+    remote_src: true
+
+- name: Create install folder
+  ansible.builtin.file:
+    path: '{{ archivist_install_folder }}'
+    state: directory
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '755'
+
+- name: Find unarchived app bin
+  ansible.builtin.find:
+    paths: '{{ archivist_archive_folder }}'
+    patterns: '{{ archivist_archive | splitext | first | splitext | first }}'
+    recurse: true
+  register: archivist_find_bin
+
+- name: Install
+  ansible.builtin.copy:
+    src: '{{ item.path }}'
+    dest: '{{ archivist_install_folder }}/{{ archivist_bin }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '755'
+  loop: '{{ archivist_find_bin.files }}'
+  notify:
+    - 'Restart service {{ archivist_service_name }}'
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: libgomp1
+    state: present
+
+- name: Create systemd service
+  ansible.builtin.template:
+    src: '{{ item }}.j2'
+    dest: '/lib/systemd/system/{{ item }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '644'
+  loop:
+    - '{{ archivist_service_name }}.service'
+  notify:
+    - 'Restart service {{ archivist_service_name }}'
+
+- name: Configure app
+  ansible.builtin.include_tasks:
+    file: configure.yml
+
+- name: Enable and start service
+  ansible.builtin.systemd_service:
+    enabled: true
+    state: started
+    name: '{{ archivist_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

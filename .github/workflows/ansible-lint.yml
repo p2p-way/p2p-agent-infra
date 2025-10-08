@@ -1,0 +1,39 @@
+name: Ansible lint
+
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ansible/**
+      - '!**.md'
+      - .github/workflows/ansible-lint.yml
+  pull_request:
+    paths:
+      - ansible/**
+      - '!**.md'
+      - .github/workflows/ansible-lint.yml
+  workflow_dispatch:
+
+
+env:
+  ansible-directory: ansible
+
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  ansible-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@main
+        with:
+          working_directory: ${{ env.ansible-directory }}

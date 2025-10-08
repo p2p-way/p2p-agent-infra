@@ -1,0 +1,26 @@
+# Common
+- name: Create base folder
+  ansible.builtin.file:
+    path: '{{ base_folder }}'
+    state: directory
+    mode: '755'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+
+- name: Create temp folder
+  ansible.builtin.file:
+    path: '{{ temp_folder }}'
+    state: directory
+    mode: '777'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+  when: temp_folder is not exists
+
+- name: Update cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 86400
+
+- name: Get Public IP
+  ansible.builtin.include_tasks:
+    file: public_ip.yml

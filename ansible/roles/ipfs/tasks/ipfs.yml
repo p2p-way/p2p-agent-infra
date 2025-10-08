@@ -1,0 +1,30 @@
+# IPFS - Management
+- name: Wait app
+  ansible.builtin.include_tasks:
+    file: wait.yml
+
+- name: Get existing cid
+  ansible.builtin.command: ipfs pin ls
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  register: ipfs_existing_cid
+  changed_when: false
+
+- name: Pin cid
+  ansible.builtin.shell: timeout {{ ipfs_pin_timeout }} ipfs pin add {{ item }} &
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  loop: '{{ ipfs_cid | split }}'
+  changed_when: false
+  when: item not in ipfs_existing_cid.stdout
+
+- name: Get pin cid
+  ansible.builtin.command: ipfs pin ls
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  register: ipfs_existing_cid_latest
+  changed_when: false
+
+- name: Show pin
+  ansible.builtin.debug:
+    msg: '{{ ipfs_existing_cid_latest.stdout }}'

@@ -1,0 +1,7 @@
+playbook.yml                     yaml[colons]
+roles/common/tasks/app_check.yml yaml[colons]
+roles/ipfs/defaults/main.yml     yaml[colons]
+roles/radicle/defaults/main.yml  yaml[colons]
+roles/ton/defaults/main.yml      yaml[colons]
+roles/torrent/defaults/main.yml  yaml[colons]
+roles/watcher/defaults/main.yml  yaml[colons]

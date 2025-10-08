@@ -1,0 +1,27 @@
+# TON Storage - Management
+- name: Wait app
+  ansible.builtin.include_tasks:
+    file: wait.yml
+
+- name: Get existing bagid
+  ansible.builtin.command: >-
+    {{ ton_cli_bin }} -I {{ ton_api_endpoint }} -k {{ ton_db_folder }}/cli-keys/client -p {{ ton_db_folder }}/cli-keys/server.pub -c 'list --hashes'
+  register: ton_existing_bagid
+  changed_when: false
+
+- name: Add bagid
+  ansible.builtin.command: >-
+    {{ ton_cli_bin }} -I {{ ton_api_endpoint }} -k {{ ton_db_folder }}/cli-keys/client -p {{ ton_db_folder }}/cli-keys/server.pub -c 'add-by-hash {{ item }}'
+  loop: '{{ ton_bagid | split }}'
+  when: item not in ton_existing_bagid.stdout
+  changed_when: false
+
+- name: Get bagid
+  ansible.builtin.command: >-
+    {{ ton_cli_bin }} -I {{ ton_api_endpoint }} -k {{ ton_db_folder }}/cli-keys/client -p {{ ton_db_folder }}/cli-keys/server.pub -c 'list --hashes'
+  register: ton_existing_bagid_latest
+  changed_when: false
+
+- name: Show bagid
+  ansible.builtin.debug:
+    msg: '{{ ton_existing_bagid_latest.stdout }}'

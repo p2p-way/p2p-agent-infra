@@ -1,0 +1,47 @@
+# Azure - Management
+- name: Check for Azure CLI
+  ansible.builtin.command: which az
+  register: watcher_az_cli
+  changed_when: false
+  failed_when: false
+
+- name: Install Azure CLI
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+  args:
+    executable: bash
+  changed_when: false
+  when: watcher_az_cli.stdout == ''
+
+- name: Update Autoscaler
+  ansible.builtin.shell: |
+    set -o pipefail
+
+    # Variables
+    desired_capacity={{ watcher_desired_capacity }}
+
+    # Get metadata
+    resource_group=$(curl -s -H "Metadata: true" --noproxy "*" "http://169.254.169.254/metadata/instance?api-version=2021-12-13" \
+      | jq -r .compute.resourceGroupName)
+
+    # Authenticate
+    az login --identity
+
+    # Update Autoscaler
+    autoscale_name=$(az monitor autoscale list --resource-group "${resource_group}" --query "[].name" --output tsv)
+    start_profile=$(az monitor autoscale profile list \
+      --autoscale-name "${autoscale_name}" \
+      --resource-group "${resource_group}" \
+      --query "[?contains(name,'start')].name" \
+      --output tsv)
+
+    az monitor autoscale update \
+      --name "${autoscale_name}" \
+      --resource-group "${resource_group}" \
+      --set 'profiles[name="'${start_profile}'"].capacity.default="'${desired_capacity}'"' \
+      --set 'profiles[name="'${start_profile}'"].capacity.maximum="'${desired_capacity}'"' \
+      --set 'profiles[name="'${start_profile}'"].capacity.minimum="'${desired_capacity}'"'
+  args:
+    executable: bash
+  changed_when: false

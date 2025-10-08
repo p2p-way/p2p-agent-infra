@@ -1,0 +1,36 @@
+# Torrent - Configure
+- name: Compute variables
+  ansible.builtin.set_fact:
+    torrent_admin_username: "{{ lookup('ansible.builtin.password', 'ansible_all_ipv4_addresses chars=ascii_lowercase,digits length=20') }}"
+
+- name: Check for app config changes
+  ansible.builtin.template:
+    src: '{{ torrent_config_file }}.j2'
+    dest: '{{ torrent_config_file_folder }}/{{ torrent_config_file }}'
+    owner: '{{ torrent_user }}'
+    group: '{{ torrent_user }}'
+    mode: '660'
+  register: torrent_config_diff
+  check_mode: true
+  diff: true
+
+- name: Stop service # noqa: no-handler
+  ansible.builtin.systemd_service:
+    enabled: true
+    state: stopped
+    name: '{{ torrent_service_name }}'
+  when: torrent_config_diff.changed
+
+- name: Create app config # noqa: no-handler
+  ansible.builtin.template:
+    src: '{{ torrent_config_file }}.j2'
+    dest: '{{ torrent_config_file_folder }}/{{ torrent_config_file }}'
+    owner: '{{ torrent_user }}'
+    group: '{{ torrent_user }}'
+    mode: '660'
+  when: torrent_config_diff.changed
+  notify:
+    - 'Restart service {{ torrent_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

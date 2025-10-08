@@ -1,0 +1,7 @@
+terraform {
+  backend "oss" {
+    bucket = "p2p-agent-infra-terraform"
+    key    = "terraform.tfstate"
+    region = "eu-central-1"
+  }
+}

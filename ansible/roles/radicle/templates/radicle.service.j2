@@ -1,0 +1,19 @@
+[Unit]
+Description=Radicle Node service
+Documentation=https://radicle.xyz
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+User={{ radicle_user }}
+Group={{ radicle_user }}
+StateDirectory={{ radicle_service_name }}
+ExecStart={{ radicle_install_folder }}/{{ radicle_bin }} --listen 0.0.0.0:{{ radicle_tcp_port }} --force
+Environment=RAD_HOME="{{ radicle_folder }}" RUST_BACKTRACE=1 RUST_LOG=info
+KillMode=process
+Restart=always
+RestartSec=3
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

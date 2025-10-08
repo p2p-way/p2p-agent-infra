@@ -1,0 +1,77 @@
+# Common - App check
+- name: '{{ common_app_name }}: Check if app bin is installed' # noqa: name[template]
+  ansible.builtin.find:
+    paths: '{{ common_app_install_folder }}'
+    patterns: '{{ common_app_bin }}'
+  register: common_check_app_installed
+  when: common_app_check == 'binary'
+
+- name: '{{ common_app_name }}: Check app package' # noqa: name[template]
+  ansible.builtin.package_facts:
+  when: ansible_facts.packages | default([]) | length == 0 and common_app_check == 'package'
+
+- name: '{{ common_app_name }}: Check app service' # noqa: name[template]
+  ansible.builtin.service_facts:
+  when: ansible_facts.services | default([]) | length == 0
+
+- name: '{{ common_app_name }}: Check app port' # noqa: name[template]
+  ansible.builtin.wait_for:
+    port: '{{ common_app_port }}'
+    connect_timeout: 5
+    timeout: 10
+  register: common_check_app_port
+  when: common_listening_check == 'port'
+  ignore_errors: true
+
+- name: '{{ common_app_name }}: Check app endpoint' # noqa: name[template]
+  ansible.builtin.uri:
+    url: '{{ common_app_endpoint }}'
+    method: "{{ method | default('GET') }}"
+    status_code: '{{ common_status_code }}'
+  until: common_check_app_endpoint == '{{ common_status_code }}'
+  register: common_check_app_endpoint
+  retries: 2
+  delay: 5
+  timeout: 5
+  when: common_listening_check == 'endpoint'
+  ignore_errors: true
+
+- name: '{{ common_app_name }}: Compute check variables' # noqa: name[template]
+  ansible.builtin.set_fact:
+    '{{ common_app_name }}_is_installed': >-
+       {% if (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length)
+       or
+       (common_app_check == 'package' and ansible_facts.packages[package] | default([]) | length) %}true{% else %}false{% endif %}
+    '{{ common_app_name }}_service_is_ready': >-
+       {% if ansible_facts['services'][common_service_name + '.service']['status'] | default('disabled') == 'enabled'
+       and
+       ansible_facts['services'][common_service_name + '.service']['state'] | default('stopped') == 'running' %}true{% else %}false{% endif %}
+    '{{ common_app_name }}_is_listening': >-
+       {% if (common_listening_check == 'port' and common_check_app_port.state | default('stopped') == 'started')
+       or
+       (common_listening_check == 'endpoint' and common_check_app_endpoint.status | default(0) == status_code) %}true{% else %}false{% endif %}
+  vars:
+    app_is_installed:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_installed') }}"
+    app_service_is_ready: "{{ lookup('ansible.builtin.vars', common_app_name + '_service_is_ready') }}"
+    app_is_listening:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_listening') }}"
+
+- name: '{{ common_app_name }}: Compute check status' # noqa: name[template]
+  ansible.builtin.set_fact:
+    '{{ common_app_name }}_is_ready': "{% if app_is_installed and app_service_is_ready and app_is_listening %}true{% else %}false{% endif %}"
+  vars:
+    app_is_installed:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_installed') }}"
+    app_service_is_ready: "{{ lookup('ansible.builtin.vars', common_app_name + '_service_is_ready') }}"
+    app_is_listening:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_listening') }}"
+
+- name: '{{ common_app_name }}: Show check status' # noqa: name[template]
+  ansible.builtin.debug:
+    msg: |
+      {{ common_app_name }}_is_installed:     {{ app_is_installed }}
+      {{ common_app_name }}_service_is_ready: {{ app_service_is_ready }}
+      {{ common_app_name }}_is_listening:     {{ app_is_listening }}
+      {{ common_app_name }}_is_ready:         {{ app_is_ready }}
+  vars:
+    app_is_installed:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_installed') }}"
+    app_service_is_ready: "{{ lookup('ansible.builtin.vars', common_app_name + '_service_is_ready') }}"
+    app_is_listening:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_listening') }}"
+    app_is_ready:         "{{ lookup('ansible.builtin.vars', common_app_name + '_is_ready') }}"

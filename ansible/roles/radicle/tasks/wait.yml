@@ -1,0 +1,6 @@
+# Radicle - Wait
+- name: Wait app port
+  ansible.builtin.wait_for:
+    port: '{{ radicle_tcp_port }}'
+    connect_timeout: 5
+    timeout: 10

@@ -1,0 +1,22 @@
+{
+  "agent": {
+    "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          %{~ for file in log_files ~}
+          {
+            "file_path": "${file}",
+            "log_group_name": "${log_group}",
+            "log_stream_name": "{instance_id} - ${basename(file)}",
+            "timezone": "UTC"
+          }%{ if index(log_files, file) == length(log_files) - 1 }%{ else },%{ endif }
+          %{~ endfor ~}
+        ]
+      }
+    },
+    "force_flush_interval" : 5
+  }
+}

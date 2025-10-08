@@ -1,0 +1,64 @@
+# GCP - Management
+- name: Check for Google Cloud CLI
+  ansible.builtin.command: which gcloud
+  register: watcher_gcloud_cli
+  changed_when: false
+  failed_when: false
+
+- name: Install Google Cloud CLI prerequisites
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+  when: watcher_gcloud_cli.stdout == ''
+
+- name: Add Google Cloud CLI repository key
+  ansible.builtin.get_url:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    dest: /usr/share/keyrings/cloud.google.gpg
+    mode: '644'
+  when: watcher_gcloud_cli.stdout == ''
+
+- name: Add Google Cloud CLI repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
+    state: present
+    filename: google-cloud-sdk.list
+  when: watcher_gcloud_cli.stdout == ''
+
+- name: Install Google Cloud CLI
+  ansible.builtin.apt:
+    name: google-cloud-cli
+    update_cache: true
+  when: watcher_gcloud_cli.stdout == ''
+
+- name: Update Autoscaler
+  ansible.builtin.shell: |
+    set -o pipefail
+
+    # Variables
+    desired_capacity={{ watcher_desired_capacity }}
+
+    # Get metadata
+    project_id=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/project/project-id)
+    region=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone | xargs basename | sed 's/-[a-z]$//')
+    instance_group=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/created-by | xargs basename)
+
+    # Update Autoscaler
+    gcloud compute instance-groups managed \
+      update-autoscaling "${instance_group}" \
+      --region="${region}" \
+      --max-num-replicas="${desired_capacity}"
+
+    # Update Schedule
+    schedule=$(gcloud compute instance-groups managed list --filter="name=${instance_group}" --format="get(autoscaler.name)")
+
+    gcloud compute instance-groups managed \
+      update-autoscaling "${instance_group}" \
+      --region="${region}" \
+      --update-schedule="${schedule}" \
+      --schedule-min-required-replicas="${desired_capacity}"
+  args:
+    executable: bash
+  changed_when: false

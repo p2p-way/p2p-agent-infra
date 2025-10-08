@@ -1,0 +1,48 @@
+# ESS scaling group configuration
+resource "alicloud_ess_scaling_configuration" "agent" {
+  count = local.create ? 1 : 0
+
+  # Main
+  enable       = true
+  active       = true
+  force_delete = true
+
+  scaling_configuration_name = local.resource_name
+  scaling_group_id           = alicloud_ess_scaling_group.agent[count.index].id
+
+  # Instance Type
+  instance_type        = var.instance_type
+  credit_specification = "Unlimited"
+
+  # Image
+  image_id = data.alicloud_images.agent[count.index].images.0.id
+
+  # Storage
+  system_disk_name              = local.resource_name
+  system_disk_description       = local.resource_description
+  system_disk_size              = var.system_disk_size
+  system_disk_category          = var.system_disk_category
+  system_disk_performance_level = var.system_disk_performance_level
+
+  # Public IP Address
+  internet_charge_type       = var.internet_charge_type
+  internet_max_bandwidth_in  = var.internet_max_bandwidth_in
+  internet_max_bandwidth_out = var.internet_max_bandwidth_out
+
+  # Security Group
+  security_group_id = alicloud_security_group.agent[count.index].id
+
+  # Advanced Configurations
+  instance_name = local.resource_name
+  host_name     = local.resource_name
+
+  # Advanced Options (Instance RAM Role and User Data)
+  role_name = local.agent_ram_create ? alicloud_ram_role.agent[count.index].name : null
+  user_data = data.cloudinit_config.agent[count.index].rendered
+
+  # Tag
+  tags = merge(var.default_tags, { agent-watcher = "${local.agent_watcher}" })
+
+  # Resource Group
+  resource_group_id = alicloud_resource_manager_resource_group.agent[count.index].id
+}

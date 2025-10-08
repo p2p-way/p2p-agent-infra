@@ -1,0 +1,49 @@
+# IPFS - Check
+- name: Check if app is ready
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_check
+  vars:
+    common_app_name: '{{ ipfs_name }}'
+    common_app_check: binary
+    common_app_install_folder: '{{ ipfs_install_folder }}'
+    common_app_bin: '{{ ipfs_bin }}'
+    common_listening_check: port
+    common_app_port: '{{ ipfs_tcp_port }}'
+    common_service_name: '{{ ipfs_service_name }}'
+  when: ipfs_enabled and not (apps_update | ternary(apps_update, ipfs_update))
+
+# IPFS - Install
+- name: Install app
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: ipfs_enabled and (not app_is_ready or (apps_update | ternary(apps_update, ipfs_update)))
+  vars:
+    app_is_ready: "{{ lookup('ansible.builtin.vars', ipfs_name + '_is_ready', default=true) }}"
+
+# IPFS - Configure
+- name: Config app
+  ansible.builtin.include_tasks:
+    file: configure.yml
+  when: ipfs_enabled
+
+# IPFS - Compute CID
+- name: Compute ipfs cid variable
+  ansible.builtin.set_fact:
+    ipfs_cid: "{{ lookup('ansible.builtin.env', 'ipfs_cid', default=ipfs_cid) }}"
+  when: ipfs_enabled
+
+# IPFS - Add CID
+- name: Add ipfs site to the downloads
+  ansible.builtin.include_tasks:
+    file: ipfs.yml
+  when: ipfs_enabled and ipfs_cid != ''
+
+# IPFS - Disable
+- name: Disable app
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_disable
+  vars:
+    common_service_name: '{{ ipfs_service_name }}'
+  when: not ipfs_enabled

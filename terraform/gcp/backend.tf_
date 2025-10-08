@@ -1,0 +1,6 @@
+terraform {
+  backend "gcs" {
+    bucket  = "p2p-agent-infra-terraform"
+    prefix  = "terraform.tfstate"
+  }
+}

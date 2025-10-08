@@ -1,0 +1,103 @@
+name: Terraform check
+
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - terraform/**
+      - '!**.md'
+      - .github/workflows/terraform-check.yml
+  pull_request:
+    paths:
+      - terraform/**
+      - '!**.md'
+      - .github/workflows/terraform-check.yml
+  workflow_dispatch:
+
+
+env:
+  terraform-version: "~> 1"
+  terraform-directory: terraform
+  cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "gcp", "hetzner"]'
+
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  terraform-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform - Install
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.terraform-version }}
+
+      - name: Terraform - Version
+        run: terraform version
+
+      - name: Terraform - Format check
+        run: terraform fmt -check -diff -recursive
+
+  compute-cloud:
+    runs-on: ubuntu-latest
+    outputs:
+      cloud: ${{ env.cloud }}
+    steps:
+      - name: Echo
+        if: false
+        run: echo
+
+  terraform-plan:
+    runs-on: ubuntu-latest
+    needs: compute-cloud
+    strategy:
+      fail-fast: false
+      matrix:
+        cloud: ${{ fromJson(needs.compute-cloud.outputs.cloud) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform - Variables
+        run: |
+          echo "AWS_ACCESS_KEY_ID=$(openssl rand -hex 10)" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=$(openssl rand -hex 20)" >> $GITHUB_ENV
+          echo "TF_VAR_skip_credentials_validation=true" >> $GITHUB_ENV
+          echo "TF_VAR_skip_requesting_account_id=true" >> $GITHUB_ENV
+          echo "HCLOUD_TOKEN=$(openssl rand -hex 32)" >> $GITHUB_ENV
+          echo "GCLOUD_PROJECT=$(openssl rand -hex 5)" >> $GITHUB_ENV
+          echo "GOOGLE_OAUTH_ACCESS_TOKEN=$(openssl rand -hex 5)" >> $GITHUB_ENV
+
+      - name: Terraform - Install
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.terraform-version }}
+
+      - name: Terraform - Version
+        run: terraform version
+
+      - name: Terraform - Init
+        run: terraform init
+        working-directory: ${{ env.terraform-directory }}/${{ matrix.cloud }}
+
+      - name: Terraform - Validate
+        run: terraform validate
+        working-directory: ${{ env.terraform-directory }}/${{ matrix.cloud }}
+
+      - name: Terraform Plan
+        run: |
+          if [[ ${{ matrix.cloud }} == "cloudflare" ]]; then
+            terraform plan -var="cc_create=false"
+          else
+            terraform plan -var="agent_create=false"
+          fi
+        working-directory: ${{ env.terraform-directory }}/${{ matrix.cloud }}

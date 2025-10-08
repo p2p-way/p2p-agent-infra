@@ -1,0 +1,19 @@
+[Unit]
+Description={{ torrent_package }} service
+Documentation=https://wiki.qbittorrent.org
+After=local-fs.target network.target network-online.target nss-lookup.target
+
+[Service]
+Type=forking
+User={{ torrent_user }}
+Group={{ torrent_user }}
+UMask=007
+StateDirectory={{ torrent_service_name }}
+ExecStart={{ torrent_install_folder }}/{{ torrent_bin }} -d
+Restart=always
+RestartSec=3
+TimeoutStopSec=5
+SyslogIdentifier={{ torrent_service_name }}
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+# Stop Radicle node
+- name: Stop Radicle node
+  ansible.builtin.shell: |
+    set -o pipefail
+
+    # Check binary and node status
+    if [[ -n $(which {{ radicle_bin }}) && "$(rad node status)" == *"Node is running"* ]]; then
+
+      # Stop
+      rad node stop
+
+      # Re-check
+      radicle_node_pid=$(pgrep {{ radicle_bin }})
+
+       # Force stop
+       if [[ -n "${radicle_node_pid}" ]]; then killall -s 9 {{ radicle_bin }}; fi
+    fi
+  args:
+    executable: bash
+  changed_when: false

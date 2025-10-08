@@ -1,0 +1,41 @@
+# Radicle - Config
+- name: Wait app
+  ansible.builtin.include_tasks:
+    file: wait.yml
+  when: common_public_ipv4 != ''
+
+- name: Get configured external address
+  ansible.builtin.command: rad config get node.externalAddresses
+  environment:
+    RAD_HOME: '{{ radicle_folder }}'
+  register: radicle_configured_external_address
+  changed_when: false
+  when: common_public_ipv4 != ''
+
+- name: Compute address variables
+  ansible.builtin.set_fact:
+    radicle_current_external_address: '{{ common_public_ipv4 }}:{{ radicle_tcp_port }}'
+    radicle_configured_external_address: '{{ radicle_configured_external_address.stdout }}'
+  when: common_public_ipv4 != ''
+
+- name: Set external address
+  ansible.builtin.command: rad config push node.externalAddresses '{{ common_public_ipv4 }}:{{ radicle_tcp_port }}'
+  environment:
+    RAD_HOME: '{{ radicle_folder }}'
+  changed_when: false
+  when: common_public_ipv4 != '' and radicle_current_external_address not in radicle_configured_external_address
+  notify:
+    - 'Restart service {{ radicle_service_name }}'
+
+- name: Remove old external addresses
+  ansible.builtin.command: rad config remove node.externalAddresses '{{ item }}'
+  loop: "{{ radicle_configured_external_address | string | split('\n') | unique | reject('equalto', common_public_ipv4 + ':' + radicle_tcp_port | string) }}"
+  environment:
+    RAD_HOME: '{{ radicle_folder }}'
+  changed_when: false
+  when: common_public_ipv4 != ''
+  notify:
+    - 'Restart service {{ radicle_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

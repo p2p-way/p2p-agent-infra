@@ -1,0 +1,7 @@
+#cloud-config
+
+# Agent SSH public keys
+ssh_authorized_keys:
+%{ for key in public_keys ~}
+  - ${key}
+%{ endfor ~}

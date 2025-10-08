@@ -1,0 +1,62 @@
+# Alibaba - Management
+- name: Check for Alibaba Cloud CLI
+  ansible.builtin.command: which aliyun
+  register: watcher_aliyun_cli
+  changed_when: false
+  failed_when: false
+
+- name: Alibaba Cloud CLI
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -fsSL https://aliyuncli.alicdn.com/install.sh | bash
+  args:
+    executable: bash
+  changed_when: false
+  when: watcher_aliyun_cli.stdout == ''
+
+- name: Update Autoscaler
+  ansible.builtin.shell: |
+    set -o pipefail
+
+    # Variables
+    desired_capacity={{ watcher_desired_capacity }}
+    stop_scheduler="initial-stop"
+    diff_time_admissible=60
+
+    # Get metadata
+    token=$(curl -X PUT -s http://100.100.100.200/latest/api/token -H "X-aliyun-ecs-metadata-token-ttl-seconds: 180")
+    role=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/ram/security-credentials/)
+    credentials=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/ram/security-credentials/$role)
+    region=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/region-id)
+    instance_id=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/instance-id)
+
+    # Authenticate
+    export ALIBABA_CLOUD_ACCESS_KEY_ID=$(jq -r '.AccessKeyId' <<< "${credentials}")
+    export ALIBABA_CLOUD_ACCESS_KEY_SECRET=$(jq -r '.AccessKeySecret' <<< "${credentials}")
+    export ALIBABA_CLOUD_SECURITY_TOKEN=$(jq -r '.SecurityToken' <<< "${credentials}")
+    export ALIBABA_CLOUD_REGION_ID="${region}"
+
+    # Get instance scaling groups
+    sg_id=$(aliyun ecs DescribeInstances --InstanceIds "['${instance_id}']" \
+      | jq -r '.Instances.Instance[].Tags.Tag[] | select(.TagKey == "acs:autoscaling:scalingGroupId" ) | .TagValue')
+
+    # Get stop scheduler and current time diff
+    scheduler_time_sg=$(aliyun ess DescribeScheduledTasks \
+      --RegionId "${region}" \
+      --ScalingGroupId "${sg_id}" \
+      | jq -r '.ScheduledTasks.ScheduledTask[] | select(.ScheduledTaskName | contains("'${stop_scheduler}'")) | .LaunchTime')
+    [[ -n "${scheduler_time_sg}" ]] && scheduler_time=$(date -d "${scheduler_time_sg}" "+%s") || scheduler_time=$(date "+%s")
+    current_time=$(date "+%s")
+    diff_time=$((scheduler_time - current_time))
+
+    # Skip update when near the stop
+    [[ "${diff_time}" -lt "${diff_time_admissible}" ]] && exit 0
+
+    # Update Instance Scaling
+    aliyun ess ModifyScalingGroup \
+      --ScalingGroupId "${sg_id}" \
+      --MinSize "${desired_capacity}" \
+      --MaxSize "${desired_capacity}"
+  args:
+    executable: bash
+  changed_when: false

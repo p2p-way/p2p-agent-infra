@@ -1,0 +1,20 @@
+# IPFS - Variables
+---
+ipfs_name:           ipfs
+ipfs_folder:         '{{ base_folder }}/{{ ipfs_name }}'
+ipfs_user:           '{{ ipfs_name }}'
+ipfs_install_folder: /usr/local/bin
+ipfs_bin:            '{{ ipfs_name }}'
+ipfs_version:        v0.38.0 # https://github.com/ipfs/kubo/releases
+ipfs_archive:        "kubo_{{ ipfs_version }}_linux-{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}.tar.gz"
+ipfs_archive_folder: '{{ temp_folder }}/{{ ipfs_archive | splitext | first | splitext | first }}'
+ipfs_url:            'https://github.com/ipfs/kubo/releases/download/{{ ipfs_version }}/{{ ipfs_archive }}'
+ipfs_checksum_url:   '{{ ipfs_url }}.sha512'
+ipfs_config_file:    config
+ipfs_service_name:   '{{ ipfs_name }}'
+ipfs_tcp_port:       4001
+ipfs_udp_port:       '{{ ipfs_tcp_port }}'
+ipfs_pin_timeout:    3600
+ipfs_cid:            ''
+ipfs_enabled:        true
+ipfs_update:         false

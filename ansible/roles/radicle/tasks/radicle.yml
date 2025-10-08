@@ -1,0 +1,30 @@
+# Radicle - Management
+- name: Wait app
+  ansible.builtin.include_tasks:
+    file: wait.yml
+
+- name: Get existing rid
+  ansible.builtin.command: rad seed
+  environment:
+    RAD_HOME: '{{ radicle_folder }}'
+  register: radicle_existing_rid
+  changed_when: false
+
+- name: Seed rid
+  ansible.builtin.shell: rad seed {{ item }} --timeout {{ radicle_seed_timeout }} &
+  environment:
+    RAD_HOME: '{{ radicle_folder }}'
+  loop: '{{ radicle_rid | split }}'
+  changed_when: false
+  when: item not in radicle_existing_rid.stdout
+
+- name: Get seed rid
+  ansible.builtin.command: rad seed
+  environment:
+    RAD_HOME: '{{ radicle_folder }}'
+  register: radicle_existing_rid_latest
+  changed_when: false
+
+- name: Show seed
+  ansible.builtin.debug:
+    msg: '{{ radicle_existing_rid_latest.stdout }}'

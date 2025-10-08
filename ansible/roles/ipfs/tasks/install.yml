@@ -1,0 +1,95 @@
+# IPFS - Install
+- name: Create user
+  ansible.builtin.user:
+    name: '{{ ipfs_user }}'
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: '{{ ipfs_folder }}'
+    system: true
+    password_lock: true
+
+- name: Create app folder
+  ansible.builtin.file:
+    path: '{{ ipfs_folder }}'
+    state: directory
+    mode: '755'
+    owner: '{{ ipfs_user }}'
+    group: '{{ ipfs_user }}'
+
+- name: Download app
+  ansible.builtin.get_url:
+    url: '{{ ipfs_url }}'
+    dest: '{{ temp_folder }}/{{ ipfs_archive }}'
+    checksum: sha512:{{ ipfs_checksum_url }}
+    mode: '644'
+
+- name: Create archive folder
+  ansible.builtin.file:
+    path: '{{ ipfs_archive_folder }}'
+    state: directory
+    mode: '755'
+
+- name: Unarchive
+  ansible.builtin.unarchive:
+    src: '{{ temp_folder }}/{{ ipfs_archive }}'
+    dest: '{{ ipfs_archive_folder }}'
+    remote_src: true
+
+- name: Create install folder
+  ansible.builtin.file:
+    path: '{{ ipfs_install_folder }}'
+    state: directory
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '755'
+
+- name: Find unarchived app bin
+  ansible.builtin.find:
+    paths: '{{ ipfs_archive_folder }}'
+    patterns: '{{ ipfs_bin }}'
+    recurse: true
+  register: ipfs_find_bin
+
+- name: Install
+  ansible.builtin.copy:
+    src: '{{ item.path }}'
+    dest: '{{ ipfs_install_folder }}/{{ item.path | basename }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '755'
+  loop: '{{ ipfs_find_bin.files }}'
+  notify:
+    - 'Restart service {{ ipfs_service_name }}'
+
+- name: Init
+  ansible.builtin.command: ipfs init --profile server
+  args:
+    chdir: '{{ ipfs_folder }}'
+    creates: '{{ ipfs_folder }}/{{ ipfs_config_file }}'
+  become: true
+  become_user: '{{ ipfs_user }}'
+  environment:
+    IPFS_PATH: '{{ ipfs_folder }}'
+  notify:
+    - 'Restart service {{ ipfs_service_name }}'
+
+- name: Create systemd service
+  ansible.builtin.template:
+    src: '{{ item }}.j2'
+    dest: '/lib/systemd/system/{{ item }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '644'
+  loop:
+    - '{{ ipfs_service_name }}.service'
+  notify:
+    - 'Restart service {{ ipfs_service_name }}'
+
+- name: Enable and start service
+  ansible.builtin.systemd_service:
+    enabled: true
+    state: started
+    name: '{{ ipfs_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

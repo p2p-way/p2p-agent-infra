@@ -1,0 +1,54 @@
+# Torrent - Install
+- name: Add PPA repository
+  ansible.builtin.apt_repository:
+    repo: ppa:qbittorrent-team/qbittorrent-stable
+
+- name: Install qBittorrent # noqa: package-latest
+  ansible.builtin.apt:
+    name: qbittorrent-nox
+    state: latest
+
+- name: Create user
+  ansible.builtin.user:
+    name: '{{ torrent_user }}'
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: '{{ torrent_folder }}'
+    system: true
+    password_lock: true
+
+- name: Create folders
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    mode: '755'
+    owner: '{{ torrent_user }}'
+    group: '{{ torrent_user }}'
+  loop:
+    - '{{ torrent_folder }}'
+    - '{{ torrent_config_file_folder }}'
+
+- name: Create systemd service
+  ansible.builtin.template:
+    src: '{{ item }}.j2'
+    dest: '/lib/systemd/system/{{ item }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '644'
+  loop:
+    - '{{ torrent_service_name }}.service'
+  notify:
+    - 'Restart service {{ torrent_service_name }}'
+
+- name: Configure app
+  ansible.builtin.include_tasks:
+    file: configure.yml
+
+- name: Enable and start service
+  ansible.builtin.systemd_service:
+    enabled: true
+    state: started
+    name: '{{ torrent_service_name }}'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

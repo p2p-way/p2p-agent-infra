@@ -1,0 +1,49 @@
+# TON - Check
+- name: Check if app is ready
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_check
+  vars:
+    common_app_name: '{{ ton_name }}'
+    common_app_check: binary
+    common_app_install_folder: '{{ ton_install_folder }}'
+    common_app_bin: '{{ ton_bin }}'
+    common_listening_check: port
+    common_app_port: '{{ ton_api_port }}'
+    common_service_name: '{{ ton_service_name }}'
+  when: ton_enabled and not (apps_update | ternary(apps_update, ton_update))
+
+# TON - Install
+- name: Install app
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: ton_enabled and (not app_is_ready or (apps_update | ternary(apps_update, ton_update)))
+  vars:
+    app_is_ready: "{{ lookup('ansible.builtin.vars', ton_name + '_is_ready', default=true) }}"
+
+# TON - Configure
+- name: Configure app
+  ansible.builtin.include_tasks:
+    file: configure.yml
+  when: ton_enabled
+
+# TON - Compute BagID
+- name: Compute ton bagid variable
+  ansible.builtin.set_fact:
+    ton_bagid: "{{ lookup('ansible.builtin.env', 'ton_bagid', default=ton_bagid) }}"
+  when: ton_enabled
+
+# TON - Add BagID
+- name: Add ton site to the downloads
+  ansible.builtin.include_tasks:
+    file: ton.yml
+  when: ton_enabled and ton_bagid != ''
+
+# TON - Disable
+- name: Disable app
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_disable
+  vars:
+    common_service_name: '{{ ton_service_name }}'
+  when: not ton_enabled

@@ -1,0 +1,101 @@
+# Watcher
+- name: Identify Cloud region
+  ansible.builtin.shell: |
+    case {{ common_cloud }} in
+      aliyun)      cloud-init query ds.meta-data.region-id                           ;;
+      hetzner)     curl http://169.254.169.254/hetzner/v1/metadata/availability-zone ;;
+      configdrive) curl http://169.254.169.254/metadata/v1/region                    ;;
+      *)           cloud-init query region                                           ;;
+    esac
+  args:
+    executable: bash
+  register: watcher_region
+  changed_when: false
+
+- name: Check watcher
+  ansible.builtin.shell: |
+    set -o pipefail
+    case {{ common_cloud }} in
+      aliyun) token=$(curl -X PUT -s http://100.100.100.200/latest/api/token -H "X-aliyun-ecs-metadata-token-ttl-seconds: 180")
+              agent_watcher=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data | grep "ram")
+              ;;
+      aws)    token=$(curl -X PUT -s http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 180")
+              agent_watcher=$(curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/tags/instance/agent-watcher)
+              ;;
+      azure)  agent_watcher=$(curl -s -H "Metadata: true" --noproxy "*" \
+                "http://169.254.169.254/metadata/instance/compute/tagsList?api-version=2021-02-01&format=json" \
+                | jq -r '.[] | select(.name == "agent-watcher") | .value')
+              ;;
+      gce)    agent_watcher=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/agent-watcher)
+              ;;
+      *)      agent_watcher=false
+              ;;
+    esac
+    if [[ "${agent_watcher}" == "true" || "${agent_watcher}" == "ram/" ]]; then
+      echo true
+    else
+      echo false
+    fi
+  args:
+    executable: bash
+  register: watcher_enabled
+  changed_when: false
+
+- name: Set watcher variables
+  ansible.builtin.set_fact:
+    watcher_region: '{{ watcher_region.stdout }}'
+    watcher_enabled: '{{ watcher_enabled.stdout }}'
+
+- name: Set desired capacity variable
+  ansible.builtin.set_fact:
+    watcher_desired_capacity: >-
+      {{ lookup('ansible.builtin.env', 'desired_capacity') | regex_search('^.*$')
+      | ternary(lookup('ansible.builtin.env', 'desired_capacity'), watcher_desired_capacity | default()) }}
+
+- name: Show desired capacity variable
+  ansible.builtin.debug:
+    msg: "desired_capacity: {{ watcher_desired_capacity }}"
+
+- name: Check if desired capacity is a JSON
+  ansible.builtin.set_fact:
+    watcher_desired_capacity_is_json: "{{ watcher_desired_capacity | regex_search('^{.*}$') | ternary(true, false) }}"
+
+- name: Compute desired capacity from JSON
+  ansible.builtin.set_fact:
+    watcher_desired_capacity_all: >-
+      {{ (watcher_desired_capacity | to_json | from_json).all | default('-1') | regex_search('^[0-9]+$')
+      | default('-1', true) }}
+    watcher_desired_capacity_{{ common_cloud }}_all: >-
+      {{ (watcher_desired_capacity | to_json | from_json)[common_cloud].all | default('-1') | regex_search('^[0-9]+$')
+      | default('-1', true) }}
+    watcher_desired_capacity_{{ common_cloud }}_region: >-
+      {{ (watcher_desired_capacity | to_json | from_json)[common_cloud][watcher_region] | default('-1') | regex_search('^[0-9]+$')
+      | default('-1', true) }}
+  when: watcher_desired_capacity_is_json
+
+- name: Set desired capacity when JSON
+  ansible.builtin.set_fact:
+    watcher_desired_capacity: "{{ (cloud_region | int >= 0) | ternary(cloud_region, ((cloud_all | int >= 0) | ternary(cloud_all, all))) }}"
+  vars:
+    all: "{{ watcher_desired_capacity_all }}"
+    cloud_all: "{{ lookup('ansible.builtin.vars', 'watcher_desired_capacity_' ~ common_cloud ~ '_all') }}"
+    cloud_region: "{{ lookup('ansible.builtin.vars', 'watcher_desired_capacity_' ~ common_cloud ~ '_region') }}"
+  when: watcher_desired_capacity_is_json
+
+- name: Set desired capacity when not a JSON
+  ansible.builtin.set_fact:
+    watcher_desired_capacity: "{{ watcher_desired_capacity | regex_search('^[0-9]+$') | default('-1', true) }}"
+  when: not watcher_desired_capacity_is_json
+
+- name: Show watcher variables
+  ansible.builtin.debug:
+    msg: |
+      Cloud:            {{ common_cloud }}
+      Region:           {{ watcher_region }}
+      Agent watcher:    {{ watcher_enabled }}
+      Desired capacity: {{ watcher_desired_capacity }}
+
+- name: Cloud Autoscaler
+  ansible.builtin.include_tasks:
+    file: '{{ common_cloud }}.yml'
+  when: watcher_enabled and common_cloud != '' and watcher_desired_capacity | int >= 0

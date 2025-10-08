@@ -1,0 +1,20 @@
+# Torrent - Variables
+---
+torrent_name:               qbittorrent
+torrent_package:            '{{ torrent_name }}-nox'
+torrent_folder:             '{{ base_folder }}/torrent'
+torrent_user:               '{{ torrent_name }}'
+torrent_install_folder:     /usr/bin
+torrent_bin:                '{{ torrent_package }}'
+torrent_api_port:           8081
+torrent_tcp_udp_port:       2345
+torrent_config_folder:      '{{ torrent_folder }}/.config'
+torrent_config_file_folder: '{{ torrent_config_folder }}/qBittorrent'
+torrent_config_file:        qBittorrent.conf
+torrent_service_name:       '{{ torrent_name }}'
+torrent_api_endpoint:       'http://localhost:{{ torrent_api_port }}/api/v2'
+torrent_api_endpoint_check: '{{ torrent_api_endpoint }}/app/version'
+torrent_magnet:             ''
+torrent_tracker:            ''
+torrent_enabled:            true
+torrent_update:             false

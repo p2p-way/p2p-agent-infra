@@ -1,0 +1,20 @@
+logging:
+  receivers:
+    %{~ for file in log_files ~}
+    ${replace(basename(file), ".", "-")}:
+      type: files
+      include_paths:
+      - ${file}
+      %{~ endfor ~}
+  service:
+    pipelines:
+      p2p_agent:
+        receivers: [%{ for file in log_files }${replace(basename(file), ".", "-")}%{ if index(log_files, file) == length(log_files) - 1 }%{ else }, %{ endif }%{ endfor }]
+      default_pipeline:
+        receivers: []
+
+global:
+  default_self_log_file_rotation:
+    enabled: true
+    max_file_size_megabytes: 400
+    backup_count: 1

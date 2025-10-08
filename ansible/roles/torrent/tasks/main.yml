@@ -1,0 +1,49 @@
+# Torrent - Check
+- name: Check if app is ready
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_check
+  vars:
+    common_app_name: '{{ torrent_name }}'
+    common_app_check: binary
+    common_app_install_folder: '{{ torrent_install_folder }}'
+    common_app_bin: '{{ torrent_bin }}'
+    common_listening_check: port
+    common_app_port: '{{ torrent_tcp_udp_port }}'
+    common_service_name: '{{ torrent_service_name }}'
+  when: torrent_enabled and not (apps_update | ternary(apps_update, torrent_update))
+
+# Torrent - Install
+- name: Install app
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: torrent_enabled and (not app_is_ready or (apps_update | ternary(apps_update, torrent_update)))
+  vars:
+    app_is_ready: "{{ lookup('ansible.builtin.vars', torrent_name + '_is_ready', default=true) }}"
+
+# Torrent - Configure
+- name: Configure app
+  ansible.builtin.include_tasks:
+    file: configure.yml
+  when: torrent_enabled
+
+# Torrent - Compute magnet
+- name: Compute torrent magnet variable
+  ansible.builtin.set_fact:
+    torrent_magnet: "{{ lookup('ansible.builtin.env', 'torrent_magnet', default=torrent_magnet) }}"
+  when: torrent_enabled
+
+# Torrent - Add magnet
+- name: Add torrent to the downloads
+  ansible.builtin.include_tasks:
+    file: torrent.yml
+  when: torrent_enabled and torrent_magnet != ''
+
+# Torrent - Disable
+- name: Disable app
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_disable
+  vars:
+    common_service_name: '{{ torrent_service_name }}'
+  when: not torrent_enabled

@@ -1,0 +1,6 @@
+# TON - Wait
+- name: Wait app port
+  ansible.builtin.wait_for:
+    port: '{{ ton_api_port }}'
+    connect_timeout: 5
+    timeout: 10

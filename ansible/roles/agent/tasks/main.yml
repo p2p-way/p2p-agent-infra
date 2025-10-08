@@ -1,0 +1,22 @@
+# Agent - Update
+- name: Update agent
+  ansible.builtin.copy:
+    src: '{{ agent_file }}'
+    dest: '{{ base_folder | dirname }}/{{ agent_file }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '755'
+  when: update_agent
+
+# Cron - Update
+- name: Update cron
+  ansible.builtin.cron:
+    name: P2P agent
+    minute: "{{ (agent_cron | split)[0] | default('*') }}"
+    hour: "{{ (agent_cron | split)[1] | default('*') }}"
+    day: "{{ (agent_cron | split)[2] | default('*') }}"
+    month: "{{ (agent_cron | split)[3] | default('*') }}"
+    weekday: "{{ (agent_cron | split)[4] | default('*') }}"
+    job: 'bash {{ base_folder | dirname }}/{{ agent_file }}'
+    backup: true
+  when: update_cron

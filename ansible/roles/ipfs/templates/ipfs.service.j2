@@ -1,0 +1,21 @@
+[Unit]
+Description=InterPlanetary File System (IPFS) service
+Documentation=https://docs.ipfs.tech
+After=network.target
+
+[Service]
+MemorySwapMax=0
+TimeoutStartSec=infinity
+Type=notify
+User={{ ipfs_user }}
+Group={{ ipfs_user }}
+StateDirectory={{ ipfs_service_name }}
+ExecStart={{ ipfs_install_folder }}/{{ ipfs_bin }} daemon
+Environment=IPFS_PATH="{{ ipfs_folder }}"
+Restart=always
+RestartSec=3
+TimeoutStopSec=30
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,49 @@
+# Radicle - Check
+- name: Check if app is ready
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_check
+  vars:
+    common_app_name: '{{ radicle_name }}'
+    common_app_check: binary
+    common_app_install_folder: '{{ radicle_install_folder }}'
+    common_app_bin: '{{ radicle_bin }}'
+    common_listening_check: port
+    common_app_port: '{{ radicle_tcp_port }}'
+    common_service_name: '{{ radicle_service_name }}'
+  when: radicle_enabled and not (apps_update | ternary(apps_update, radicle_update))
+
+# Radicle - Install
+- name: Install app
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: radicle_enabled and (not app_is_ready or (apps_update | ternary(apps_update, radicle_update)))
+  vars:
+    app_is_ready: "{{ lookup('ansible.builtin.vars', radicle_name + '_is_ready', default=true) }}"
+
+# Radicle - Configure
+- name: Configure app
+  ansible.builtin.include_tasks:
+    file: configure.yml
+  when: radicle_enabled
+
+# Radicle - Compute RID
+- name: Compute radicle rid variable
+  ansible.builtin.set_fact:
+    radicle_rid: "{{ lookup('ansible.builtin.env', 'radicle_rid', default=radicle_rid) }}"
+  when: radicle_enabled
+
+# Radicle - Add RID
+- name: Add radicle repository to the seed list
+  ansible.builtin.include_tasks:
+    file: radicle.yml
+  when: radicle_enabled and radicle_rid != ''
+
+# Radicle - Disable
+- name: Disable app
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_disable
+  vars:
+    common_service_name: '{{ radicle_service_name }}'
+  when: not radicle_enabled

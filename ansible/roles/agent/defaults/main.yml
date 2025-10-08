@@ -1,0 +1,4 @@
+# Agent - Varibales
+---
+agent_file: p2p-agent.sh
+agent_cron: '*/15 * * * *'

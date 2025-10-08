@@ -1,0 +1,9 @@
+# Torrent - Wait
+- name: Wait app endpoint
+  ansible.builtin.uri:
+    url: '{{ torrent_api_endpoint_check }}'
+  until: torrent_api_endpoint_check_probe.status == 200
+  register: torrent_api_endpoint_check_probe
+  retries: 2
+  delay: 5
+  timeout: 5

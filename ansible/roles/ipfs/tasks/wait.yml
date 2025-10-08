@@ -1,0 +1,11 @@
+# IPFS - Wait
+- name: Check app port
+  ansible.builtin.wait_for:
+    port: '{{ ipfs_tcp_port }}'
+    connect_timeout: 5
+    timeout: 10
+  register: ipfs_check_port
+
+- name: Compute check variables
+  ansible.builtin.set_fact:
+    '{{ ipfs_name }}_is_listening': "{% if ipfs_check_port.state | default('stopped') == 'started' %}true{% else %}false{% endif %}"

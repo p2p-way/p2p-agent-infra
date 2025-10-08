@@ -1,0 +1,49 @@
+# Archivist - Check
+- name: Check if app is ready
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_check
+  vars:
+    common_app_name: '{{ archivist_name }}'
+    common_app_check: binary
+    common_app_install_folder: '{{ archivist_install_folder }}'
+    common_app_bin: '{{ archivist_bin }}'
+    common_listening_check: port
+    common_app_port: '{{ archivist_tcp_port }}'
+    common_service_name: '{{ archivist_service_name }}'
+  when: archivist_enabled and not (apps_update | ternary(apps_update, archivist_update))
+
+# Archivist - Install
+- name: Install app
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when: archivist_enabled and (not app_is_ready or (apps_update | ternary(apps_update, archivist_update)))
+  vars:
+    app_is_ready: "{{ lookup('ansible.builtin.vars', archivist_name + '_is_ready', default=true) }}"
+
+# Archivist - Configure
+- name: Config app
+  ansible.builtin.include_tasks:
+    file: configure.yml
+  when: archivist_enabled
+
+# Archivist - Compute CID
+- name: Compute archivist cid variable
+  ansible.builtin.set_fact:
+    archivist_cid: "{{ lookup('ansible.builtin.env', 'archivist_cid', default=archivist_cid) }}"
+  when: archivist_enabled
+
+# Archivist - Add CID
+- name: Add archivist site to the downloads
+  ansible.builtin.include_tasks:
+    file: archivist.yml
+  when: archivist_enabled and archivist_cid != ''
+
+# Archivist - Disable
+- name: Disable app
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_disable
+  vars:
+    common_service_name: '{{ archivist_service_name }}'
+  when: not archivist_enabled
