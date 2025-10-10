@@ -6,7 +6,7 @@
 
 ## Description
 
- In some cases it maybe required to deploy P2P agent in a generic way in the Cloud, VM or using bare metall. This is a brief guide how it can be done.
+ In some cases it may be required to deploy P2P agent in a generic way in the Cloud, VM or using bare metall. This is a brief guide how it can be done.
 
 
 ## Deployment

@@ -31,12 +31,12 @@
 
 ### Common role
 
- During agent configuration it maybe required to perform some common tasks, like package installation, files and folders creation.
+ During agent configuration it may be required to perform some common tasks, like package installation, files and folders creation.
 
 
 ### Agent role
 
- Initially, agent is deployed using Terraform and at some point it maybe required to add some changes to it or change its scheduler which is managed by cron.
+ Initially, agent is deployed using Terraform and at some point it may be required to add some changes to it or change its scheduler which is managed by cron.
 
 
 ### Watcher role

@@ -198,7 +198,7 @@
 
 ### [Update configuration](#p2p-agents-on-azure)
 
- After we deployed initial configuration, it maybe required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
+ After we deployed initial configuration, it may be required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
 
  **Nodes not started yet**
 

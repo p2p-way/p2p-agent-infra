@@ -34,7 +34,7 @@
 
 ## [Considerations](#peer-to-peer-agent-terraform)
 
- 1. We use `x86_64` instead of `arm64` instances architecture, by default, because not all the software maybe accessible on `arm64` and not all Cloud Providers may have such instances support in general or across all the regions.
+ 1. We use `x86_64` instead of `arm64` instances architecture, by default, because not all the software may be accessible on `arm64` and not all Cloud Providers may have such instances support in general or across all the regions.
  2. We generate SSH key pairs, by default, for the instances, but we can pass a custom public key or disable it (excluding Azure) and then access the nodes using
     - Alibaba - [Connect to an instance through Workbench](https://www.alibabacloud.com/help/en/ecs/user-guide/workbench-overview)
     - AWS - [EC2 Instance Connect](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-methods.html)

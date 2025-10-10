@@ -141,7 +141,7 @@
 
 ### [Update configuration](#p2p-agents-on-hetzner)
 
- After we deployed initial configuration, it maybe required to update nodes capacity or add more regions.
+ After we deployed initial configuration, it may be required to update nodes capacity or add more regions.
 
  Update is very transparent and we need just to set `desired_capacity` with the required number and run Terraform.
 
