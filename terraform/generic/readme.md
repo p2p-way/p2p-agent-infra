@@ -35,13 +35,24 @@
     # Public key
     cat "${HOME}/.ssh/id_ed25519.pub"
     ```
+    * GitHub: Repository --> Settings --> Security --> Deploy keys
 
- 5. Copy agent script
+ 5. Copy and adjust agent script
     ```shell
     cp p2p-agent-infra/ansible/roles/agent/files/p2p-agent.sh /opt
     ```
 
     [Agent side watcher](../../architecture.md#agent-side-watcher) will not work, but we still can adjust some configuration by editing script variables. Please see [Configuration](../readme.md#configuration) and [Deployment scenarios](../readme.md#deployment-scenarios) for more information.
+
+    We at least should pay attention to the `DEFAULT_REPOSITORY` and if we [Use a private centralised repository](../readme.md#use-a-private-centralised-repository) and [Agent use hardcoded commands and centralised repository](../readme.md#agent-use-hardcoded-commands-and-centralised-repository), we have to set
+    ```shell
+    # Commands
+    ENABLE_CC="false"
+
+    # Commands defaults
+    DEFAULT_REPOSITORY="git@github.com:<username>/<repository>"
+    DEFAULT_REPOSITORY_MODE="client-server"
+    ```
 
  6. Install required software and add agent to the cron
     ```shell
