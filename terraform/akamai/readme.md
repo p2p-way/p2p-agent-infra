@@ -179,15 +179,15 @@
 
  1. Default account limit for active services is low and it might be required to request limit increase.
 
- 2. Some regions are restricted to the exsting customers only, due to the limited capacity
+ 2. Some regions are restricted to the existing customers only, due to the limited capacity
     <details>
     <summary>More details</summary>
 
     ```
     Error: Error creating a Linode Instance: [400] [region] Resource creation in this region is currently restricted due to limited deployment. Please refer to the Region Availability documentation for more details.
     ```
-    - `Melbourne, AU / 1-region-au-mel.tf`
-    - `London, UK / 1-region-eu-west`
-    - `Jakarta, ID / 1-region-id-cgk.tf`
-    - `Washington, D.C. / 1-region-us-iad.tf`
+    - `1-region-au-mel.tf`
+    - `1-region-eu-west`
+    - `1-region-id-cgk.tf`
+    - `1-region-us-iad.tf`
     </details>
