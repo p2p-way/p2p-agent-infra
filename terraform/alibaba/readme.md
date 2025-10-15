@@ -59,7 +59,7 @@
 
    # List availability zones
    for region in $(aliyun ecs DescribeRegions --AcceptLanguage en-US | jq -r '.Regions.Region | sort_by(.RegionId) | .[].RegionId'); do
-     zones=$(aliyun ecs DescribeZones --RegionId "${region}" | jq -r '[.Zones.Zone[].ZoneId]')
+     zones=$(aliyun ecs DescribeZones --RegionId "${region}" | jq -r '[.Zones.Zone[].ZoneId] | sort')
      zones_count=$(jq -r 'length' <<< "${zones}")
      zones_list=$(jq -r 'join("\n\t\t\t\t")' <<< "${zones}")
      echo -e "${region}\t\t${zones_count}\t${zones_list}\n"
