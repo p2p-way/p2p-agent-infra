@@ -134,7 +134,7 @@
 
  2. Encode private key
     ```shell
-    echo $(base64 -w 0 -i id_ed25519)
+    base64 -w 0 -i id_ed25519
     ```
 
  3. Update *variables.auto.tfvars*
