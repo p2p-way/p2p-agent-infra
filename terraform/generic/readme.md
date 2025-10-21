@@ -44,7 +44,7 @@
 
     [Agent side watcher](../../architecture.md#agent-side-watcher) will not work, but we still can adjust some configuration by editing script variables. Please see [Configuration](../readme.md#configuration) and [Deployment scenarios](../readme.md#deployment-scenarios) for more information.
 
-    We at least should pay attention to the `DEFAULT_REPOSITORY` and if we [Use a private centralised repository](../readme.md#use-a-private-centralised-repository) and [Agent use hardcoded commands and centralised repository](../readme.md#agent-use-hardcoded-commands-and-centralised-repository), we have to set
+    We at least should pay attention to the `DEFAULT_REPOSITORY` and if we [Use a private centralised repository](../readme.md#use-a-private-centralised-repository) and [Agent uses hardcoded commands and centralised repository](../readme.md#agent-uses-hardcoded-commands-and-centralised-repository), we have to set
     ```shell
     # Commands
     ENABLE_CC="false"

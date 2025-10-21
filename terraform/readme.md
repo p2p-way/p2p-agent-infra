@@ -119,7 +119,7 @@
     }
     ```
 
- 2. When control center is used, update `cc-a-repository` header - [Agent use control center](#agent-use-control-center).
+ 2. When control center is used, update `cc-a-repository` header - [Agent uses control center](#agent-uses-control-center).
 
  3. After deployment, add a public key from Terraform *repository_public_key* output on repository side
     - GitHub: Repository --> Settings --> Security --> Deploy keys
@@ -154,16 +154,16 @@
 ## [Deployment scenarios](#peer-to-peer-agent-terraform)
 
  We can deploy agent using diferent scenarios, and later, its configuration can be updated using [Ansible Agent role](../ansible/readme.md#agent-role)
- - [Agent use hardcoded commands and Radicle repository](#agent-use-hardcoded-commands-and-radicle-repository)
- - [Agent use hardcoded commands and centralised repository](#agent-use-hardcoded-commands-and-centralised-repository)
- - [Agent use control center](#agent-use-control-center)
+ - [Agent uses hardcoded commands and Radicle repository](#agent-uses-hardcoded-commands-and-radicle-repository)
+ - [Agent uses hardcoded commands and centralised repository](#agent-uses-hardcoded-commands-and-centralised-repository)
+ - [Agent uses control center](#agent-uses-control-center)
  - [Agent Autoscaling is enabled (via Agent side watcher)](#agent-autoscaling-is-enabled-via-agent-side-watcher)
    - [Handled by control center and code in repository](#handled-by-control-center-and-code-in-repository)
    - [Handled by code in repository](#handled-by-code-in-repository)
  - [Agent Autoscaling is disabled (via Agent side watcher)](#agent-autoscaling-is-disabled-via-agent-side-watcher)
 
 
-### Agent use hardcoded commands and Radicle repository
+### Agent uses hardcoded commands and Radicle repository
 
  Agent will install Radicle, clone Radicle repository and use it's configuration and by thouse can be managed only by code in repository.
 
@@ -176,9 +176,9 @@
     ```
 
 
-### Agent use hardcoded commands and centralised repository
+### Agent uses hardcoded commands and centralised repository
 
- Agent will use only variables hardcoded in the script and by thouse can be managed only by code in repository. It is similar to [Agent use hardcoded commands and Radicle repository](#agent-use-hardcoded-commands-and-radicle-repository) but uses centralised Git services, like GitHub.
+ Agent will use only variables hardcoded in the script and by thouse can be managed only by code in repository. It is similar to [Agent uses hardcoded commands and Radicle repository](#agent-uses-hardcoded-commands-and-radicle-repository) but uses centralised Git services, like GitHub.
 
  - *variables.auto.tfvars*
    ```terraform
@@ -198,7 +198,7 @@
  - And optional [Use a private centralised repository](#use-a-private-centralised-repository)
 
 
-### Agent use control center
+### Agent uses control center
 
  Agent will contact control center and will use returned data to get repository address, runner type and file to run. Also, we can manage, which values from control center should be taken into account to override default values in the script.
 
@@ -253,7 +253,7 @@
 
  Agent will use only `desired_capacity` value from Ansible to manage nodes count.
 
- Besides the variables in [Agent use control center](#agent-use-control-center), we should adjust the following
+ Besides the variables in [Agent uses control center](#agent-uses-control-center), we should adjust the following
 
  - *variables.auto.tfvars*
    ```diff
