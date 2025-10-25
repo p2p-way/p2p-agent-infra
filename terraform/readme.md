@@ -54,15 +54,15 @@
 
     <details><summary><b>Ansible roles execution duration</b></summary>
 
-    | Cloud        | First run      | Second run       | Instance           | Resources       |
-    | ------------ | -------------- | ---------------- | ------------------ | --------------- |
-    | Alibaba      | `~ 3 minutes`  | `~ 40 seconds`   | `ecs.e-c1m1.large` | `2 vCPU / 2 GB` |
-    | AWS          | `~ 3 minutes`  | `~ 30 seconds`   | `t3.micro`         | `2 vCPU / 1 GB` |
-    | Azure        | `~ 3 minutes`  | `~ 30 seconds`   | `Standard_B1s`     | `1 vCPU / 1 GB` |
-    | GCP          | `~ 17 minutes` | `~ 6, 3 minutes` | `e2-micro`         | `2 vCPU / 1 GB` |
-    | Akamai       | `~ 3 minutes`  | `~ 25 seconds`   | `g6-nanode-1`      | `1 vCPU / 1 GB` |
-    | Hetzner      | `~ 2 minutes`  | `~ 20 seconds`   | `cpx11`            | `2 vCPU / 2 GB` |
-    | DigitalOcean | `~ 3 minutes`  | `~ 50 seconds`   | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` |
+    | Cloud        | First run      | Second run       | Instance           | Resources       | Watcher | Logs/Metrics |
+    | ------------ | -------------- | ---------------- | ------------------ | --------------- | ------- | ------------ |
+    | Alibaba      | `~ 3 minutes`  | `~ 40 seconds`   | `ecs.e-c1m1.large` | `2 vCPU / 2 GB` | `true`  | `false`      |
+    | AWS          | `~ 3 minutes`  | `~ 30 seconds`   | `t3.micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Azure        | `~ 3 minutes`  | `~ 30 seconds`   | `Standard_B1s`     | `1 vCPU / 1 GB` | `true`  | `false`      |
+    | GCP          | `~ 17 minutes` | `~ 6, 3 minutes` | `e2-micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Akamai       | `~ 3 minutes`  | `~ 25 seconds`   | `g6-nanode-1`      | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Hetzner      | `~ 2 minutes`  | `~ 20 seconds`   | `cpx11`            | `2 vCPU / 2 GB` | `-`     | `-`          |
+    | DigitalOcean | `~ 3 minutes`  | `~ 50 seconds`   | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
     </details>
 
   - Variable `agent_name` sets the name of the created resources, in the default configuration with the value `P2P agent`, all resource will be prefixed with the `p2p-agent-<region>`.
