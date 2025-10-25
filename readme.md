@@ -12,7 +12,6 @@
  3. [TON](ansible/readme.md)
  4. [Torrent](ansible/readme.md)
 
-
  Please check [Architecture](architecture.md) for more details.
 
 

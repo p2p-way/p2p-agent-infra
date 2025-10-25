@@ -259,6 +259,12 @@
     ```
 
 
+### Update Archivist CID
+
+ We can update Archivist CID via [Archivist role](#archivist-role) and to peform this task we should
+ 1. Update `archivist_cid` in [*playbook.yml*](playbook.yml).
+
+
 ### Update IPFS CID
 
  We can update IPFS CID via [IPFS role](#ipfs-role) and to peform this task we should
@@ -283,4 +289,4 @@
  1. Update `torrent_magnet` in [*playbook.yml*](playbook.yml).
 
 > [!NOTE]
-> Variables `ipfs_cid`, `radicle_rid`, `ton_bagid` and `torrent_magnet` accept multiple, space delimited values.
+> Variables `archivist_cid`, `ipfs_cid`, `radicle_rid`, `ton_bagid` and `torrent_magnet` accept multiple, space delimited values.
