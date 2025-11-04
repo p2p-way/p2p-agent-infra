@@ -6,7 +6,7 @@ ton_user:            '{{ ton_name }}'
 ton_install_folder:  /usr/local/bin
 ton_bin:             storage-daemon
 ton_cli_bin:         '{{ ton_bin }}-cli'
-ton_version:         v2025.10 # https://github.com/ton-blockchain/ton/releases
+ton_version:         v2025.11 # https://github.com/ton-blockchain/ton/releases
 ton_bin_remote:      "{{ ton_bin }}-linux-{{ ansible_architecture if ansible_architecture == 'x86_64' else 'arm64' }}"
 ton_cli_bin_remote:  '{{ ton_bin_remote | regex_replace(ton_bin, ton_cli_bin) }}'
 ton_url:             'https://github.com/ton-blockchain/ton/releases/download/{{ ton_version }}/{{ ton_bin_remote }}'
