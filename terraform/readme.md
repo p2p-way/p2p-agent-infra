@@ -25,7 +25,7 @@
 | - | -------------------------------------- | --------------------------------------------------- | -------------------------------------- | ------------------ | -------------------------------------- |
 | 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12`  | [`1.08`](alibaba/readme.md#costs)      |
 | 2 | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2/3/4/6`          | [`0.97`](aws/readme.md#costs)          |
-| 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`47`](azure/readme.md#regions)        | `1/3`              | [`1.11`](azure/readme.md#costs)        |
+| 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`48`](azure/readme.md#regions)        | `1/3`              | [`1.11`](azure/readme.md#costs)        |
 | 4 | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`42`](gcp/readme.md#regions)          | `3/4`              | [`0.85`](gcp/readme.md#costs)          |
 | 5 | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       |
 | 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`13`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) |

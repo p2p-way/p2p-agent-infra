@@ -119,10 +119,10 @@
 
 ```
 34.54 $/m/i / 31 d =  1.11 $/d/i   # 1 day / 1 instance / 1 region
- 1.11 $/d/i x 47 r = 52.17 $/d/i/r # 1 day / 1 instance / all regions
+ 1.11 $/d/i x 48 r = 53.28 $/d/i/r # 1 day / 1 instance / all regions
 ```
 
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **52.17 $**
+ Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **53.28 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free grants may not cover multiple instances running for a long period of time.
