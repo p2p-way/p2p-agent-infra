@@ -291,6 +291,9 @@
     <details>
     <summary>More details</summary>
 
+    Some regions unavailability is explained in the documentation - [Azure regions list](https://learn.microsoft.com/en-us/azure/reliability/regions-list)
+    > This region is access restricted to support specific customer scenarios, such as in-country/region disaster recovery. To request access to a restricted region, see [Azure region access request process](https://learn.microsoft.com/en-us/troubleshoot/azure/general/region-access-request-process#reserved-access-regions).
+
     **LocationNotAvailableForResourceGroup**
     ```
     Error: creating Resource Group "p2p-agent-brazil-southeast": resources.GroupsClient#CreateOrUpdate: Failure responding to request: StatusCode=400 -- Original Error: autorest/azure: Service returned an error. Status=400 Code="LocationNotAvailableForResourceGroup" Message="The provided location 'brazilsoutheast' is not available for resource group. List of available regions is 'eastasia,southeastasia,australiaeast,australiasoutheast,brazilsouth,canadacentral,canadaeast,switzerlandnorth,germanywestcentral,eastus2,eastus,centralus,northcentralus,francecentral,uksouth,ukwest,centralindia,southindia,jioindiawest,italynorth,japaneast,japanwest,koreacentral,koreasouth,mexicocentral,northeurope,norwayeast,polandcentral,qatarcentral,swedencentral,uaenorth,westcentralus,westeurope,westus2,westus,southcentralus,westus3,southafricanorth,australiacentral,australiacentral2,israelcentral,westindia'."
