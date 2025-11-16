@@ -24,8 +24,17 @@
   ansible.builtin.get_url:
     url: '{{ radicle_url }}'
     dest: '{{ temp_folder }}/{{ radicle_archive }}'
-    checksum: sha256:{{ radicle_checksum_url }}
+    checksum: 'sha256:{{ radicle_url }}.sha256'
     mode: '644'
+  register: radicle_download_app
+
+- name: Download app from mirror
+  ansible.builtin.get_url:
+    url: '{{ radicle_mirror_url }}'
+    dest: '{{ temp_folder }}/{{ radicle_archive }}'
+    checksum: 'sha256:{{ radicle_mirror_url }}.sha256'
+    mode: '664'
+  when: radicle_download_app.failed
 
 - name: Create archive folder
   ansible.builtin.file:

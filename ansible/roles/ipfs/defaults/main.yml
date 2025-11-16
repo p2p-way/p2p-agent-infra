@@ -9,7 +9,7 @@ ipfs_version:        v0.38.2 # https://github.com/ipfs/kubo/releases
 ipfs_archive:        "kubo_{{ ipfs_version }}_linux-{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}.tar.gz"
 ipfs_archive_folder: '{{ temp_folder }}/{{ ipfs_archive | splitext | first | splitext | first }}'
 ipfs_url:            'https://github.com/ipfs/kubo/releases/download/{{ ipfs_version }}/{{ ipfs_archive }}'
-ipfs_checksum_url:   '{{ ipfs_url }}.sha512'
+ipfs_mirror_url:     'https://pub-4fb74cdbbfce4d17aa026bb61edc2457.r2.dev/kubo/{{ ipfs_version }}/{{ ipfs_archive }}'
 ipfs_config_file:    config
 ipfs_service_name:   '{{ ipfs_name }}'
 ipfs_tcp_port:       4001

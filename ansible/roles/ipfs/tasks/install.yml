@@ -20,8 +20,17 @@
   ansible.builtin.get_url:
     url: '{{ ipfs_url }}'
     dest: '{{ temp_folder }}/{{ ipfs_archive }}'
-    checksum: sha512:{{ ipfs_checksum_url }}
+    checksum: 'sha512:{{ ipfs_url }}.sha512'
     mode: '644'
+  register: ipfs_download_app
+
+- name: Download app from mirror
+  ansible.builtin.get_url:
+    url: '{{ ipfs_mirror_url }}'
+    dest: '{{ temp_folder }}/{{ ipfs_archive }}'
+    checksum: 'sha512:{{ ipfs_mirror_url }}.sha512'
+    mode: '664'
+  when: ipfs_download_app.failed
 
 - name: Create archive folder
   ansible.builtin.file:

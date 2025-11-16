@@ -20,8 +20,17 @@
   ansible.builtin.get_url:
     url: '{{ archivist_url }}'
     dest: '{{ temp_folder }}/{{ archivist_archive }}'
-    checksum: sha256:{{ archivist_checksum_url }}
+    checksum: 'sha256:{{ archivist_url }}.sha256'
     mode: '664'
+  register: archivist_download_app
+
+- name: Download app from mirror
+  ansible.builtin.get_url:
+    url: '{{ archivist_mirror_url }}'
+    dest: '{{ temp_folder }}/{{ archivist_archive }}'
+    checksum: 'sha256:{{ archivist_mirror_url }}.sha256'
+    mode: '664'
+  when: archivist_download_app.failed
 
 - name: Create archive folder
   ansible.builtin.file:

@@ -284,7 +284,7 @@
 
  2. Check [Cloud Providers](#cloud-providers) for new regions.
 
- 3. Check [Ansible roles](../ansible/readme.md) for the latest software versions.
+ 3. Check [Ansible roles](../ansible/readme.md) for the latest software versions and update the mirror.
 
  4. Update variables in the [*ansible/readme.md*](../ansible/readme.md) and [*ansible/playbook.yml*](../ansible/playbook.yml) files
     ```yaml

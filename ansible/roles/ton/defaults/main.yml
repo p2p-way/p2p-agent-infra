@@ -1,23 +1,26 @@
 # TON - Variables
 ---
-ton_name:            ton
-ton_folder:          '{{ base_folder }}/{{ ton_name }}'
-ton_user:            '{{ ton_name }}'
-ton_install_folder:  /usr/local/bin
-ton_bin:             storage-daemon
-ton_cli_bin:         '{{ ton_bin }}-cli'
-ton_version:         v2025.11 # https://github.com/ton-blockchain/ton/releases
-ton_bin_remote:      "{{ ton_bin }}-linux-{{ ansible_architecture if ansible_architecture == 'x86_64' else 'arm64' }}"
-ton_cli_bin_remote:  '{{ ton_bin_remote | regex_replace(ton_bin, ton_cli_bin) }}'
-ton_url:             'https://github.com/ton-blockchain/ton/releases/download/{{ ton_version }}/{{ ton_bin_remote }}'
-ton_cli_url:         '{{ ton_url | regex_replace(ton_bin_remote, ton_cli_bin_remote) }}'
-ton_db_folder:      '{{ ton_folder }}/storage-db'
-ton_config_file:     global.config.json
-ton_config_file_url: https://ton-blockchain.github.io/global.config.json
-ton_service_name:    '{{ ton_name }}-storage'
-ton_udp_port:        3333
-ton_api_port:        5555
-ton_api_endpoint:    '127.0.0.1:{{ ton_api_port }}'
-ton_bagid:           ''
-ton_enabled:         true
-ton_update:          false
+ton_name:                   ton
+ton_folder:                 '{{ base_folder }}/{{ ton_name }}'
+ton_user:                   '{{ ton_name }}'
+ton_install_folder:         /usr/local/bin
+ton_bin:                    storage-daemon
+ton_cli_bin:                '{{ ton_bin }}-cli'
+ton_version:                v2025.11 # https://github.com/ton-blockchain/ton/releases
+ton_bin_remote:             "{{ ton_bin }}-linux-{{ ansible_architecture if ansible_architecture == 'x86_64' else 'arm64' }}"
+ton_cli_bin_remote:         '{{ ton_bin_remote | regex_replace(ton_bin, ton_cli_bin) }}'
+ton_url:                    'https://github.com/ton-blockchain/ton/releases/download/{{ ton_version }}/{{ ton_bin_remote }}'
+ton_cli_url:                '{{ ton_url | regex_replace(ton_bin_remote, ton_cli_bin_remote) }}'
+ton_mirror_url:             'https://pub-4fb74cdbbfce4d17aa026bb61edc2457.r2.dev/ton/{{ ton_version }}/{{ ton_bin_remote }}'
+ton_cli_mirror_url:         '{{ ton_mirror_url | regex_replace(ton_bin_remote, ton_cli_bin_remote) }}'
+ton_db_folder:              '{{ ton_folder }}/storage-db'
+ton_config_file:            global.config.json
+ton_config_file_url:        'https://ton-blockchain.github.io/{{ ton_config_file }}'
+ton_config_file_mirror_url: 'https://pub-4fb74cdbbfce4d17aa026bb61edc2457.r2.dev/ton/{{ ton_config_file }}'
+ton_service_name:           '{{ ton_name }}-storage'
+ton_udp_port:               3333
+ton_api_port:               5555
+ton_api_endpoint:           '127.0.0.1:{{ ton_api_port }}'
+ton_bagid:                  ''
+ton_enabled:                true
+ton_update:                 false
