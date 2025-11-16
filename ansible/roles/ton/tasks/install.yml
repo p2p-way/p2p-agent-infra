@@ -41,7 +41,7 @@
   loop:
     - { url: '{{ ton_mirror_url }}',     bin: '{{ ton_bin }}' }    # noqa: yaml[commas]
     - { url: '{{ ton_cli_mirror_url }}', bin: '{{ ton_cli_bin }}' }
-  when: true in (ton_download_app.results | json_query('[*].failed')) or (ton_download_app.failed | default(false))
+  when: true in (ton_download_app.results | json_query('[*].failed'))
 
 - name: Download config
   ansible.builtin.get_url:
