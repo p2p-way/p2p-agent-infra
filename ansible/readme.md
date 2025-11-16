@@ -137,10 +137,10 @@
 
     # Lists local CIDs
     curl -s -w '\n' http://localhost:8082/api/archivist/v1/data \
-      | jq -r '.content[] | .cid + " - " + (.manifest.uploadedAt| strftime("%Y-%m-%d %H:%M:%S UTC"))'
+      | jq -r '.content[] | .cid + " - " + (.manifest.datasetSize | tostring) + " - " + (.manifest.mimetype | tostring) + " - " + (.manifest.filename // "null")'
     ```
 
- 1. **IPFS**
+ 2. **IPFS**
     ```shell
     # Service status
     systemctl status ipfs
@@ -161,7 +161,7 @@
     ipfs cat QmUsrhmu4wXnVHejbfp9kdtb1ZrWoZ6FTCUuFczDPzP1FG
     ```
 
- 2. **Radicle**
+ 3. **Radicle**
     ```shell
     # Service status
     systemctl status radicle
@@ -182,7 +182,7 @@
     find "${RAD_HOME}/storage" -maxdepth 2
     ```
 
- 3. **TON**
+ 4. **TON**
     ```shell
     # Service status
     systemctl status ton-storage
@@ -200,7 +200,7 @@
     find "${TON_PATH}/storage-db/torrent/torrent-files"
     ```
 
- 4. **Torrent**
+ 5. **Torrent**
     ```shell
     # Service status
     systemctl status qbittorrent
