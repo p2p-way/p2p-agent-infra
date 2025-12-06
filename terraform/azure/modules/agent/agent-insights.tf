@@ -18,7 +18,7 @@ resource "azurerm_virtual_machine_scale_set_extension" "azure_monitor_linux_agen
   virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.agent[count.index].id
   publisher                    = "Microsoft.Azure.Monitor"
   type                         = "AzureMonitorLinuxAgent"
-  type_handler_version         = "1.31" # https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions
+  type_handler_version         = "1.38" # https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions
   automatic_upgrade_enabled    = false
   auto_upgrade_minor_version   = true
   settings = jsonencode({
