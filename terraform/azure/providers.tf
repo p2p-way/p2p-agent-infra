@@ -12,9 +12,6 @@ provider "azurerm" {
   }
 }
 
-provider "azapi" {
-}
-
 provider "cloudinit" {
 }
 

@@ -38,10 +38,6 @@ resource "azurerm_monitor_data_collection_endpoint" "agent" {
   tags                = var.default_tags
 }
 
-# Workaround
-# https://github.com/hashicorp/terraform-provider-azurerm/issues/21880
-# https://github.com/hashicorp/terraform-provider-azurerm/issues/21897
-
 # Wait for Workspace
 resource "time_sleep" "wait_for_workspace" {
   count = local.agent_logs ? 1 : 0
@@ -51,121 +47,118 @@ resource "time_sleep" "wait_for_workspace" {
   depends_on = [azurerm_log_analytics_workspace.agent]
 }
 
-# Schema - cloud-init.log
-resource "azapi_resource" "cloud_init" {
+# Custom Log Table - cloud-init.log
+resource "azurerm_log_analytics_workspace_table_custom_log" "cloud_init" {
   count = local.agent_logs ? 1 : 0
 
-  name      = "cloud_init_CL"
-  parent_id = azurerm_log_analytics_workspace.agent[count.index].id
-  type      = "Microsoft.OperationalInsights/workspaces/tables@2022-10-01"
-  body = {
-    properties = {
-      schema = {
-        "name" : "cloud_init_CL",
-        "columns" : [
-          {
-            "name" : "TimeGenerated",
-            "type" : "datetime",
-            "description" : "The time at which the data was generated"
-          },
-          {
-            "name" : "Computer",
-            "type" : "string",
-            "description" : "Computer which send the logs"
-          },
-          {
-            "name" : "FilePath",
-            "type" : "string",
-            "description" : "Log file path"
-          },
-          {
-            "name" : "RawData",
-            "type" : "string",
-            "description" : "Log raw data"
-          }
-        ]
-      }
-    }
+  name         = "cloud_init_CL"
+  display_name = "cloud-init.log"
+  description  = "cloud-init.log log file"
+  workspace_id = azurerm_log_analytics_workspace.agent[count.index].id
+
+  retention_in_days       = 7
+  total_retention_in_days = 7
+
+  column {
+    name        = "TimeGenerated"
+    type        = "dateTime"
+    description = "The time at which the data was generated"
+  }
+
+  column {
+    name        = "Computer"
+    type        = "string"
+    description = "Computer which send the logs"
+  }
+
+  column {
+    name        = "FilePath"
+    type        = "string"
+    description = "Log file path"
+  }
+
+  column {
+    name        = "RawData"
+    type        = "string"
+    description = "Log raw data"
   }
 
   depends_on = [time_sleep.wait_for_workspace]
 }
 
-# Schema - cloud-init-output.log
-resource "azapi_resource" "cloud_init_output" {
+# Custom Log Table - cloud-init-output.log
+resource "azurerm_log_analytics_workspace_table_custom_log" "cloud_init_output" {
   count = local.agent_logs ? 1 : 0
 
-  name      = "cloud_init_output_CL"
-  parent_id = azurerm_log_analytics_workspace.agent[count.index].id
-  type      = "Microsoft.OperationalInsights/workspaces/tables@2022-10-01"
-  body = {
-    properties = {
-      schema = {
-        "name" : "cloud_init_output_CL",
-        "columns" : [
-          {
-            "name" : "TimeGenerated",
-            "type" : "datetime",
-            "description" : "The time at which the data was generated"
-          },
-          {
-            "name" : "Computer",
-            "type" : "string",
-            "description" : "Computer which send the logs"
-          },
-          {
-            "name" : "FilePath",
-            "type" : "string",
-            "description" : "Log file path"
-          },
-          {
-            "name" : "RawData",
-            "type" : "string",
-            "description" : "Log raw data"
-          }
-        ]
-      }
-    }
+  name         = "cloud_init_output_CL"
+  display_name = "cloud-init-output.log"
+  description  = "cloud-init-output.log log file"
+  workspace_id = azurerm_log_analytics_workspace.agent[count.index].id
+
+  retention_in_days       = 7
+  total_retention_in_days = 7
+
+  column {
+    name        = "TimeGenerated"
+    type        = "dateTime"
+    description = "The time at which the data was generated"
+  }
+
+  column {
+    name        = "Computer"
+    type        = "string"
+    description = "Computer which send the logs"
+  }
+
+  column {
+    name        = "FilePath"
+    type        = "string"
+    description = "Log file path"
+  }
+
+  column {
+    name        = "RawData"
+    type        = "string"
+    description = "Log raw data"
   }
 
   depends_on = [time_sleep.wait_for_workspace]
 }
 
-# Schema - p2p-agent.log
-resource "azapi_resource" "p2p_agent" {
+# Custom Log Table - p2p-agent.log
+resource "azurerm_log_analytics_workspace_table_custom_log" "p2p_agent" {
   count = local.agent_logs ? 1 : 0
 
-  name      = "${replace(element(split(".", var.agent_log_file), 0), "-", "_")}_CL"
-  parent_id = azurerm_log_analytics_workspace.agent[count.index].id
-  type      = "Microsoft.OperationalInsights/workspaces/tables@2022-10-01"
-  body = {
-    properties = {
-      schema = {
-        "name" : "${replace(element(split(".", var.agent_log_file), 0), "-", "_")}_CL",
-        "columns" : [
-          {
-            "name" : "TimeGenerated",
-            "type" : "datetime",
-            "description" : "The time at which the data was generated"
-          },
-          {
-            "name" : "Computer",
-            "type" : "string",
-            "description" : "Computer which send the logs"
-          },
-          {
-            "name" : "FilePath",
-            "type" : "string",
-            "description" : "Log file path"
-          },
-          {
-            "name" : "RawData",
-            "type" : "string",
-            "description" : "Log raw data"
-          }
-        ]
-      }
-    }
+  name         = "${replace(element(split(".", var.agent_log_file), 0), "-", "_")}_CL"
+  display_name = basename(var.agent_log_file)
+  description  = "${basename(var.agent_log_file)} log file"
+  workspace_id = azurerm_log_analytics_workspace.agent[count.index].id
+
+  retention_in_days       = 7
+  total_retention_in_days = 7
+
+  column {
+    name        = "TimeGenerated"
+    type        = "dateTime"
+    description = "The time at which the data was generated"
+  }
+
+  column {
+    name        = "Computer"
+    type        = "string"
+    description = "Computer which send the logs"
+  }
+
+  column {
+    name        = "FilePath"
+    type        = "string"
+    description = "Log file path"
+  }
+
+  column {
+    name        = "RawData"
+    type        = "string"
+    description = "Log raw data"
   }
 
   depends_on = [time_sleep.wait_for_workspace]
@@ -231,9 +224,9 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   dynamic "data_flow" {
     for_each = local.agent_logs ? [1] : []
     content {
-      streams       = ["Custom-${azapi_resource.cloud_init[count.index].name}"]
+      streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init[count.index].name}"]
       destinations  = [azurerm_log_analytics_workspace.agent[count.index].name]
-      output_stream = "Custom-${azapi_resource.cloud_init[count.index].name}"
+      output_stream = "Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init[count.index].name}"
     }
   }
 
@@ -241,9 +234,9 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   dynamic "data_flow" {
     for_each = local.agent_logs ? [1] : []
     content {
-      streams       = ["Custom-${azapi_resource.cloud_init_output[count.index].name}"]
+      streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init_output[count.index].name}"]
       destinations  = [azurerm_log_analytics_workspace.agent[count.index].name]
-      output_stream = "Custom-${azapi_resource.cloud_init_output[count.index].name}"
+      output_stream = "Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init_output[count.index].name}"
     }
   }
 
@@ -251,9 +244,9 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   dynamic "data_flow" {
     for_each = local.agent_logs ? [1] : []
     content {
-      streams       = ["Custom-${azapi_resource.p2p_agent[count.index].name}"]
+      streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.p2p_agent[count.index].name}"]
       destinations  = [azurerm_log_analytics_workspace.agent[count.index].name]
-      output_stream = "Custom-${azapi_resource.p2p_agent[count.index].name}"
+      output_stream = "Custom-${azurerm_log_analytics_workspace_table_custom_log.p2p_agent[count.index].name}"
     }
   }
 
@@ -287,7 +280,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
       content {
         name          = "cloud-init.log"
         format        = "text"
-        streams       = ["Custom-${azapi_resource.cloud_init[count.index].name}"]
+        streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init[count.index].name}"]
         file_patterns = ["/var/log/cloud-init.log"]
         settings {
           text {
@@ -303,7 +296,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
       content {
         name          = "cloud-init-output.log"
         format        = "text"
-        streams       = ["Custom-${azapi_resource.cloud_init_output[count.index].name}"]
+        streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init_output[count.index].name}"]
         file_patterns = ["/var/log/cloud-init-output.log"]
         settings {
           text {
@@ -319,7 +312,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
       content {
         name          = var.agent_log_file
         format        = "text"
-        streams       = ["Custom-${azapi_resource.p2p_agent[count.index].name}"]
+        streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.p2p_agent[count.index].name}"]
         file_patterns = ["${dirname(var.agent_base_folder)}/${var.agent_log_file}"]
         settings {
           text {
@@ -334,7 +327,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   dynamic "stream_declaration" {
     for_each = local.agent_logs ? [1] : []
     content {
-      stream_name = "Custom-${azapi_resource.cloud_init[count.index].name}"
+      stream_name = "Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init[count.index].name}"
       column {
         name = "TimeGenerated"
         type = "datetime"
@@ -350,7 +343,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   dynamic "stream_declaration" {
     for_each = local.agent_logs ? [1] : []
     content {
-      stream_name = "Custom-${azapi_resource.cloud_init_output[count.index].name}"
+      stream_name = "Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init_output[count.index].name}"
       column {
         name = "TimeGenerated"
         type = "datetime"
@@ -366,7 +359,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   dynamic "stream_declaration" {
     for_each = local.agent_logs ? [1] : []
     content {
-      stream_name = "Custom-${azapi_resource.p2p_agent[count.index].name}"
+      stream_name = "Custom-${azurerm_log_analytics_workspace_table_custom_log.p2p_agent[count.index].name}"
       column {
         name = "TimeGenerated"
         type = "datetime"
