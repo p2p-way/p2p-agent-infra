@@ -1,9 +1,10 @@
 # Locals
 locals {
-  arm_series = ["c4a", "t2a"]
+  arm_series = ["c4a", "n4a", "t2a"]
 
   # https://cloud.google.com/compute/docs/instances/arm-on-compute
   # C4A machine series
+  # N4A machine series
   # Tau T2A machine series
   # Add amd64/arm64 auto detection, when will be available in google_compute_machine_types data source
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_machine_types#attributes-reference
