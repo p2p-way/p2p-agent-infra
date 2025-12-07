@@ -20,8 +20,8 @@
     connect_timeout: 5
     timeout: 10
   register: common_check_app_port
-  when: common_listening_check == 'port'
   ignore_errors: true
+  when: common_listening_check == 'port'
 
 - name: '{{ common_app_name }}: Check app endpoint' # noqa: name[template]
   ansible.builtin.uri:
@@ -33,8 +33,8 @@
   retries: 2
   delay: 5
   timeout: 5
-  when: common_listening_check == 'endpoint'
   ignore_errors: true
+  when: common_listening_check == 'endpoint'
 
 - name: '{{ common_app_name }}: Compute check variables' # noqa: name[template]
   ansible.builtin.set_fact:
