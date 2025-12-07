@@ -1,9 +1,4 @@
 # TON - Install
-- name: Install dependencies
-  ansible.builtin.apt:
-    name: libgslcblas0
-    state: present
-
 - name: Create user
   ansible.builtin.user:
     name: '{{ ton_user }}'
