@@ -21,6 +21,18 @@
     update_cache: true
     cache_valid_time: 86400
 
+- name: Check apt
+  ansible.builtin.command: apt install -y
+  register: common_apt_status
+  changed_when: false
+  ignore_errors: true
+
+- name: Fix interrupted packages installation
+  ansible.builtin.command: dpkg --configure -a
+  changed_when: false
+  failed_when: false
+  when: common_apt_status.stderr is search('dpkg --configure')
+
 - name: Get Public IP
   ansible.builtin.include_tasks:
     file: public_ip.yml
