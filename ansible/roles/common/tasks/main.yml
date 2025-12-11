@@ -21,6 +21,11 @@
     update_cache: true
     cache_valid_time: 86400
 
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: acl
+    state: present
+
 - name: Check apt
   ansible.builtin.command: apt install -y
   register: common_apt_status

@@ -1,7 +1,13 @@
 # Torrent - Configure
 - name: Compute variables
-  ansible.builtin.set_fact:
-    torrent_admin_username: "{{ lookup('ansible.builtin.password', 'ansible_all_ipv4_addresses chars=ascii_lowercase,digits length=20') }}"
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "{{ ansible_hostname }}-{{ ansible_all_ipv4_addresses }}" | sha256sum | cut -c -20
+  args:
+    executable: bash
+  register: torrent_admin_username
+  changed_when: false
+  no_log: true
 
 - name: Check for app config changes
   ansible.builtin.template:
