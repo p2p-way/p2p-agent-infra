@@ -8,4 +8,5 @@
 
 - name: Compute check variables
   ansible.builtin.set_fact:
-    '{{ ipfs_name }}_is_listening': "{% if ipfs_check_port.state | default('stopped') == 'started' %}true{% else %}false{% endif %}"
+    '{{ ipfs_name }}_is_listening': >-
+      {% if ipfs_check_port.state | default('stopped') == 'started' %}{{ true | bool }}{% else %}{{ false | bool }}{% endif %}
