@@ -2,7 +2,7 @@
 - name: Compute variables
   ansible.builtin.shell: |
     set -o pipefail
-    echo "{{ ansible_hostname }}-{{ ansible_all_ipv4_addresses }}" | sha256sum | cut -c -20
+    echo "{{ ansible_facts['hostname'] }}-{{ ansible_facts['all_ipv4_addresses'] }}" | sha256sum | cut -c -20
   args:
     executable: bash
   register: torrent_admin_username

@@ -7,7 +7,7 @@ radicle_install_folder: /usr/local/bin
 radicle_bin:            radicle-node
 radicle_binaries:       'git-remote-rad rad {{ radicle_bin }}'
 radicle_version:        1.5.0 # https://radicle.xyz/download
-radicle_archive:        '{{ radicle_name }}-{{ radicle_version }}-{{ ansible_architecture }}-unknown-linux-musl.tar.xz'
+radicle_archive:        "{{ radicle_name }}-{{ radicle_version }}-{{ ansible_facts['architecture'] }}-unknown-linux-musl.tar.xz"
 radicle_archive_folder: '{{ temp_folder }}/{{ radicle_archive | splitext | first | splitext | first }}'
 radicle_url:            'https://files.radicle.xyz/releases/{{ radicle_version }}/{{ radicle_archive }}'
 radicle_mirror_url:     'https://pub-4fb74cdbbfce4d17aa026bb61edc2457.r2.dev/radicle/{{ radicle_version }}/{{ radicle_archive }}'

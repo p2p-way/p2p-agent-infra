@@ -8,11 +8,11 @@
 
 - name: '{{ common_app_name }}: Check app package' # noqa: name[template]
   ansible.builtin.package_facts:
-  when: ansible_facts.packages | default([]) | length == 0 and common_app_check == 'package'
+  when: ansible_facts['packages'] | default([]) | length == 0 and common_app_check == 'package'
 
 - name: '{{ common_app_name }}: Check app service' # noqa: name[template]
   ansible.builtin.service_facts:
-  when: ansible_facts.services | default([]) | length == 0
+  when: ansible_facts['services'] | default([]) | length == 0
 
 - name: '{{ common_app_name }}: Check app port' # noqa: name[template]
   ansible.builtin.wait_for:
@@ -41,7 +41,7 @@
     '{{ common_app_name }}_is_installed': >-
        {% if (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length)
        or
-       (common_app_check == 'package' and ansible_facts.packages[package] | default([]) | length) %}true{% else %}false{% endif %}
+       (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length) %}true{% else %}false{% endif %}
     '{{ common_app_name }}_service_is_ready': >-
        {% if ansible_facts['services'][common_service_name + '.service']['status'] | default('disabled') == 'enabled'
        and

@@ -76,7 +76,7 @@
 
 - name: Compute alias
   ansible.builtin.set_fact:
-    radicle_node_alias: "{{ ansible_all_ipv4_addresses | hash('sha256') | regex_search('[a-z,0-9]{10}') }}"
+    radicle_node_alias: "{{ ansible_facts['all_ipv4_addresses'] | hash('sha256') | regex_search('[a-z,0-9]{10}') }}"
   when: radicle_node_alias == ''
 
 - name: Init

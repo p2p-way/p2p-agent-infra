@@ -6,7 +6,7 @@ archivist_user:               '{{ archivist_name }}'
 archivist_install_folder:     /usr/local/bin
 archivist_bin:                '{{ archivist_name }}'
 archivist_version:            v0.1.0 # https://github.com/durability-labs/archivist-node/releases
-archivist_archive:            "{{ archivist_name }}-{{ archivist_version }}-linux-{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}.tar.gz"
+archivist_archive:            "{{ archivist_name }}-{{ archivist_version }}-linux-{{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }}.tar.gz" # noqa: yaml[line-length]
 archivist_archive_folder:     '{{ temp_folder }}/{{ archivist_archive | splitext | first | splitext | first }}'
 archivist_url:                'https://github.com/durability-labs/archivist-node/releases/download/{{ archivist_version }}/{{ archivist_archive }}'
 archivist_mirror_url:         'https://pub-4fb74cdbbfce4d17aa026bb61edc2457.r2.dev/archivist-node/{{ archivist_version }}/{{ archivist_archive }}'

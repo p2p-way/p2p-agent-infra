@@ -31,7 +31,7 @@
       akamai)      token=$(curl -X PUT -s http://169.254.169.254/v1/token -H "Metadata-Token-Expiry-Seconds: 180")
                    curl -s -H "Metadata-Token: ${token}" http://169.254.169.254/v1/network | awk '/ipv4.public/ {sub(/\/.*/,""); print $2}'
                    ;;
-      *)           echo {{ ansible_default_ipv4.address | default() }}
+      *)           echo {{ ansible_facts['default_ipv4']['address'] | default() }}
                    ;;
     esac
   args:
@@ -41,7 +41,7 @@
   when: common_cloud != 'unknown-cloud'
 
 - name: Get Public IPv6
-  ansible.builtin.command: echo '{{ ansible_default_ipv6.address | default() }}'
+  ansible.builtin.command: echo '{{ ansible_facts['default_ipv6']['address'] | default() }}'
   register: common_public_ipv6
   changed_when: false
   when: common_cloud != 'unknown-cloud'
