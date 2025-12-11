@@ -55,7 +55,7 @@
 - name: Find unarchived app bin
   ansible.builtin.find:
     paths: '{{ archivist_archive_folder }}'
-    patterns: '{{ archivist_archive | splitext | first | splitext | first }}'
+    patterns: '{{ archivist_bin }}*'
     recurse: true
   register: archivist_find_bin
 
