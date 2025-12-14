@@ -54,3 +54,4 @@ jobs:
           ANSIBLE_CALLBACKS_ENABLED: profile_tasks
           ANSIBLE_VERBOSITY: ${{ runner.debug == '1' && 3 || 0 }}
           ANSIBLE_DISPLAY_TRACEBACK: ${{ runner.debug == '1' && 'always' || 'never' }}
+          ANSIBLE_REMOTE_TMP: /tmp
