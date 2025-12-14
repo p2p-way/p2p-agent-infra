@@ -22,7 +22,7 @@
     app_is_ready: "{{ lookup('ansible.builtin.vars', ipfs_name + '_is_ready', default=true) }}"
 
 # IPFS - Configure
-- name: Config app
+- name: Configure app
   ansible.builtin.include_tasks:
     file: configure.yml
   when: ipfs_enabled
