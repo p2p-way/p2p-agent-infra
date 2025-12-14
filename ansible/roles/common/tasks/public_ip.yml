@@ -24,9 +24,9 @@
       gce)         curl -s -H "Metadata-Flavor: Google" \
                      http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
                    ;;
-      hetzner)     curl http://169.254.169.254/hetzner/v1/metadata/public-ipv4
+      hetzner)     curl -s http://169.254.169.254/hetzner/v1/metadata/public-ipv4
                    ;;
-      configdrive) curl http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address
+      configdrive) curl -s http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address
                    ;;
       akamai)      token=$(curl -X PUT -s http://169.254.169.254/v1/token -H "Metadata-Token-Expiry-Seconds: 180")
                    curl -s -H "Metadata-Token: ${token}" http://169.254.169.254/v1/network | awk '/ipv4.public/ {sub(/\/.*/,""); print $2}'
