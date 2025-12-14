@@ -43,15 +43,17 @@
     ipfs_swarm_addresses: '{{ (ipfs_swarm_addresses_tcp + ipfs_swarm_addresses_udp) | to_json }}'
   vars:
     ipfs_announce_tcp_addresses: >-
-      {% if ipfs_tcp_transports == '' %}{{ ('/ip4/' + common_public_ipv4 + '/tcp/' + ipfs_tcp_port | string) | split }}
-      {% else -%}
-      {{ ipfs_tcp_transports | split | map('regex_replace', '^(.*)$', '/ip4/' + common_public_ipv4 + '/tcp/' + ipfs_tcp_port | string + '/' + '\1') | list -}}
-      {% endif %}
+      {% if ipfs_tcp_transports == '' -%}
+        {{ ('/ip4/' + common_public_ipv4 + '/tcp/' + ipfs_tcp_port | string) | split }}
+      {%- else -%}
+        {{ ipfs_tcp_transports | split | map('regex_replace', '^(.*)$', '/ip4/' + common_public_ipv4 + '/tcp/' + ipfs_tcp_port | string + '/' + '\1') | list }}
+      {%- endif %}
     ipfs_announce_udp_addresses: >-
-      {% if ipfs_udp_transports == '' %}{{ ('/ip4/' + common_public_ipv4 + '/udp/' + ipfs_udp_port | string) | split }}
-      {% else -%}
-      {{ ipfs_udp_transports | split | map('regex_replace', '^(.*)$', '/ip4/' + common_public_ipv4 + '/udp/' + ipfs_udp_port | string + '/' + '\1') | list -}}
-      {% endif %}
+      {% if ipfs_udp_transports == '' -%}
+        {{ ('/ip4/' + common_public_ipv4 + '/udp/' + ipfs_udp_port | string) | split }}
+      {%- else -%}
+        {{ ipfs_udp_transports | split | map('regex_replace', '^(.*)$', '/ip4/' + common_public_ipv4 + '/udp/' + ipfs_udp_port | string + '/' + '\1') | list }}
+      {%- endif %}
     ipfs_swarm_addresses_tcp: >-
       {{ ipfs_current_swarm_addresses.stdout | from_json | select('search', 'tcp')
       | map('regex_replace', '(?P<protocol>.*/[a-z]+/)(?P<port>\d+)(?P<transport>.*)$', '\g<protocol>' + ipfs_tcp_port | string + '\g<transport>') | list }}
