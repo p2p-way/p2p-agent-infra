@@ -21,7 +21,10 @@
     timeout: 10
   register: common_check_app_port
   ignore_errors: true
-  when: common_listening_check == 'port'
+  when:
+    - common_listening_check == 'port'
+    - (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length) or
+      (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length)
 
 - name: '{{ common_app_name }}: Check app endpoint' # noqa: name[template]
   ansible.builtin.uri:
@@ -34,7 +37,10 @@
   delay: 5
   timeout: 5
   ignore_errors: true
-  when: common_listening_check == 'endpoint'
+  when:
+    - common_listening_check == 'endpoint'
+    - (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length) or
+      (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length)
 
 - name: '{{ common_app_name }}: Compute check variables' # noqa: name[template]
   ansible.builtin.set_fact:
@@ -62,10 +68,6 @@
        {%- else -%}
          {{ false | bool }}
        {%- endif %}
-  vars:
-    app_is_installed:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_installed') }}"
-    app_service_is_ready: "{{ lookup('ansible.builtin.vars', common_app_name + '_service_is_ready') }}"
-    app_is_listening:     "{{ lookup('ansible.builtin.vars', common_app_name + '_is_listening') }}"
 
 - name: '{{ common_app_name }}: Compute check status' # noqa: name[template]
   ansible.builtin.set_fact:
