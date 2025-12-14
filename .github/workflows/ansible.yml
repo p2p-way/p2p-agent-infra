@@ -43,7 +43,9 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install Ansible
-        run: sudo apt install -y curl jq ansible python3-jmespath
+        run: |
+          python3 -m pip install --user ansible jmespath
+          ansible --version
 
       - name: Run ansible-playbook
         run: ansible-playbook --become ${{ env.ansible-directory }}/playbook.yml
