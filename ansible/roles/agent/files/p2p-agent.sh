@@ -36,8 +36,8 @@ CC_COMMANDS_PREFIX="cc-a"
 # Log
 log() {
   [[ "${1}" == *"run_start -"* ]] && echo -e "####################" >> "${LOG_FILE}"
-  echo -e "$(date) - $$ - $1"
-  echo -e "$(date) - $$ - $1" >> "${LOG_FILE}"
+  echo -e "$(date "+%Y-%m-%d %H:%M:%S,%3N") - $$ - $1"
+  echo -e "$(date "+%Y-%m-%d %H:%M:%S,%3N") - $$ - $1" >> "${LOG_FILE}"
   [[ "${1}" == *"run_finish -"* ]] && echo -e "####################\n\n" >> "${LOG_FILE}"
 }
 
