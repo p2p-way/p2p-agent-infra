@@ -17,10 +17,11 @@ network:
           via: 0.0.0.0
           metric: 240
           type: unreachable
-        - to: 169.254.0.0/16     # Link-local                   | RFC 3927
-          via: 0.0.0.0
-          metric: 240
-          type: unreachable
+        # Breaks IMDS
+        # - to: 169.254.0.0/16     # Link-local                   | RFC 3927
+        #   via: 0.0.0.0
+        #   metric: 240
+        #   type: unreachable
         - to: 172.16.0.0/12      # Private-use networks         | RFC 1918
           via: 0.0.0.0
           metric: 240
