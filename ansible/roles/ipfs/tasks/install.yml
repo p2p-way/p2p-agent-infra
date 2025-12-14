@@ -79,6 +79,7 @@
   become_user: '{{ ipfs_user }}'
   environment:
     IPFS_PATH: '{{ ipfs_folder }}'
+    XDG_CONFIG_HOME: '{{ ipfs_folder }}'
   notify:
     - 'Restart service {{ ipfs_service_name }}'
 
