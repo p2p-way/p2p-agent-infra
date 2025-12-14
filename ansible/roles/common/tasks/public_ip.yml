@@ -18,8 +18,8 @@
       aws)         token=$(curl -X PUT -s http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 180")
                    curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/public-ipv4
                    ;;
-      azure)       curl -s -H "Metadata: true" --noproxy "*" "http://169.254.169.254/metadata/loadbalancer?api-version=2021-12-13" \
-                     | jq -r '.loadbalancer.publicIpAddresses[].frontendIpAddress'
+      azure)       curl -s -H "Metadata: true" --noproxy "*" "http://169.254.169.254/metadata/loadbalancer?api-version=2025-04-07" \
+                     | jq -r '.loadbalancer.publicIpAddresses[0].frontendIpAddress'
                    ;;
       gce)         curl -s -H "Metadata-Flavor: Google" \
                      http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
