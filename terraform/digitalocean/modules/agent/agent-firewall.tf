@@ -2,8 +2,9 @@
 resource "digitalocean_firewall" "agent" {
   count = local.create ? 1 : 0
 
-  name = local.resource_name
-  tags = [resource.digitalocean_tag.agent[count.index].id]
+  name        = local.resource_name
+  tags        = [resource.digitalocean_tag.agent[count.index].id]
+  droplet_ids = digitalocean_droplet.agent[*].id
 
   # Archivist TCP
   dynamic "inbound_rule" {
