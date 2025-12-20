@@ -8,9 +8,10 @@
 
  For P2P, we might consider to run nodes for initial content distribution
  1. [IPFS](ansible/readme.md)
- 2. [Radicle](ansible/readme.md)
- 3. [TON](ansible/readme.md)
- 4. [Torrent](ansible/readme.md)
+ 2. [TON](ansible/readme.md)
+ 3. [Torrent](ansible/readme.md)
+
+ [Radicle](ansible/readme.md) could be used for repository content distribution.
 
  Please check [Architecture](architecture.md) for more details.
 
