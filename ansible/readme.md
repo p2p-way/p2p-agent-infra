@@ -22,16 +22,16 @@
 | 7 | [ton](#ton-role)             | Install TON support - P2P                      |
 | 8 | [torrent](#torrent-role)     | Install Torrent support - P2P                  |
 
- Ansible roles are located in Git repository and agent will download and execute them. We also may update agent itself in case of need via [agent](#agent) role.
+ Ansible roles are located in a Git repository and agent will download and run them. We also may update agent itself in case of need via [Agent role](#agent-role).
 
- Each P2P role will install all required software and will start downloading content distributed via P2P protocols and agent node will become a distributor.
+ Each P2P role will install all required software components and will start downloading content distributed via P2P protocols and agent node will become a distributor.
 
 
 ## Roles
 
 ### Common role
 
- During agent configuration it may be required to perform some common tasks, like package installation, files and folders creation.
+ During agent configuration it may be required to perform some common tasks, like packages installation, files and folders creation.
 
 
 ### Agent role
@@ -46,7 +46,7 @@
 
 ### Archivist role
 
- P2P site is shared using [Archivist](https://archivist.storage). It is added in an experimental mode and does not support files metadata and name service at the moment.
+ P2P site is shared using [Archivist](https://archivist.storage). It is added in an experimental mode and does not support sites and name service.
 
 
 ### IPFS role
@@ -66,15 +66,14 @@
 
 ### Torrent role
 
- Some of the site resources are spread using [BitTorrent protocol](https://en.wikipedia.org/wiki/BitTorrent). [qBittorrent](https://www.qbittorrent.org/) is an open-source client with the cross-platform support and it provides API support which is required for torrents management.
+ Some of the site content is spread using [BitTorrent protocol](https://en.wikipedia.org/wiki/BitTorrent) and [qBittorrent](https://www.qbittorrent.org/) supports [WebUI API](https://github.com/qbittorrent/qBittorrent/wiki#webui-api) for torrents management.
 
 
 ## Conisderations
 
  1. Roles are named by the protocols instead of the applications.
- 2. Roles order matter on slow instances - gcp/e2-micro ~ 17 minutes vs ~ 24 minutes, when torrent role is located on top.
- 3. By default, application installation is done only when app check is not passed - that minimise run duration up to 50-100% on slow instances, however that approach slow down initial installation.
- 4. Some linting rules are not followed for readability reasons.
+ 2. By default, application installation is done only when app check is not passed and that minimize run duration up to 50-100% on slow instances.
+ 3. Some linting rules are not followed for readability reasons.
 
 
 ## Run roles locally
@@ -135,7 +134,7 @@
     # Service status
     systemctl status archivist
 
-    # Lists local CIDs
+    # Lists stored manifest CIDs
     curl -s -w '\n' http://localhost:8082/api/archivist/v1/data \
       | jq -r '.content[] | .cid + " - " + (.manifest.datasetSize | tostring) + " - " + (.manifest.mimetype | tostring) + " - " + (.manifest.filename // "null")'
     ```
@@ -229,14 +228,14 @@
  - `<app>_enabled` - defines if app is enabled and can be used to disable and stop it after it was already installed
  - `<app>_update` - defines if installation process should be forced, even if app is installed, running and ready
 
- Variable `apps_update` - in [*playbook.yml*](playbook.yml), overrides `<app>_update` for all P2P roles.
+ Variable `apps_update` in [*playbook.yml*](playbook.yml), overrides a default `<app>_update` for all P2P roles.
 
 
 ### Update agent
 
  We can update agent via [Agent role](#agent-role) and to peform this task we should
  1. Update [*roles/agent/files/p2p-agent.sh*](roles/agent/files/p2p-agent.sh) file if required.
- 2. Update `agent_file` and `cron_minute` variables and then set `update_agent` or `update_agent` variables to `true` in [*playbook.yml*](playbook.yml).
+ 2. Update `agent_file` and `cron_minute` variables and then set `update_agent` or `update_cron` variables to `true` in [*playbook.yml*](playbook.yml).
 
 
 ### Update watcher
@@ -251,7 +250,7 @@
     desired_capacity: 3
     desired_capacity: '{"all": 3}'
 
-    # AWS only - 2 nodes in all regions and 3 nodes in eu-central-1 one
+    # AWS only - 2 nodes in all regions and 3 nodes in eu-central-1
     desired_capacity: '{"aws": {"all": 2, "eu-central-1": 3}}'
 
     # Clouds and selected regions
