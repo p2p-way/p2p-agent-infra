@@ -17,12 +17,12 @@ cloud=$(cloud-init query cloud-name || true)
 # Mark instance as unhealth if Ansible was not installed
 if [[ -z "$(which ansible-pull)" ]]; then
   case "$${cloud}" in
-    akamai) halt -p                                       ;;
-    aliyun) halt -p                                       ;;
-    aws)    halt -p                                       ;;
-    azure)  systemctl disable ssh; systemctl stop ssh     ;;
-    gce)    systemctl disable ssh; systemctl stop ssh     ;;
-    *)      echo "Error - ansible-pull was not installed" ;;
+    akamai) halt -p                                                         ;;
+    aliyun) halt -p                                                         ;;
+    aws)    halt -p                                                         ;;
+    azure)  systemctl disable ssh ssh.socket; systemctl stop ssh ssh.socket ;;
+    gce)    systemctl disable ssh ssh.socket; systemctl stop ssh ssh.socket ;;
+    *)      echo "Error - ansible-pull was not installed"                   ;;
   esac
 fi
 
