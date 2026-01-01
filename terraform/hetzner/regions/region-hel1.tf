@@ -14,7 +14,7 @@ module "hel1" {
   default_labels            = var.default_labels
   allow_ssh                 = var.allow_ssh
   ssh_keys                  = local.ssh_keys
-  server_type               = var.server_type
+  server_type               = lookup(var.server_type, "hel1", var.server_type["default"])
   os_name                   = var.os_name
   desired_capacity          = var.desired_capacity
   enable_ipv6               = var.enable_ipv6

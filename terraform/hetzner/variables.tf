@@ -104,8 +104,16 @@ variable "os_name" {
 
 variable "server_type" {
   description = "Name of the server type this server should be created with."
-  type        = string
-  default     = "cpx11"
+  type        = map(string)
+  default = {
+    ash     = "cpx11"
+    fsn1    = "cx23"
+    hel1    = "cx23"
+    hil     = "cpx11"
+    nbg1    = "cx23"
+    sin     = "cpx12"
+    default = "cpx11"
+  }
 }
 
 variable "desired_capacity" {
