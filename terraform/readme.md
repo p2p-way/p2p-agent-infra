@@ -95,7 +95,7 @@
 
   - Instances will continue to work for `run_duration = "7 days"` and after this time Autoscaler will delete them. For Cloud Providers where Autoscaler is not supported, we have to delete instances manually.
   - Variable `start_offset` and `run_duration` can be set in one of the following units - `minutes/hours/days/months`.
-  - Variable `agent_cron_schedule` defines agen cron schedule on instance and can be specified in a short `*/15` or full form `*/15 * * * *`. It make sense to adjust it for small/slow instances. Because of the default `agent_commands_defaults["DEFAULT_FORCE_RUN"] = true`, ansible-pull will run the code, even if there were no changes in repository and that adds an additional load on the instance.
+  - Variable `agent_cron_schedule` defines agent cron schedule on instance and can be specified in a short `*/15` or full form `*/15 * * * *`. It make sense to adjust it for small/slow instances. Because of the default `agent_commands_defaults["DEFAULT_FORCE_RUN"] = true`, ansible-pull will run the code, even if there were no changes in repository and that adds an additional load on the instance.
   - Variable `agent_commands` control which run functions of the agent are enabled.
   - Variable `agent_commands_defaults` define default values for agent commands.
   - Variable `agent_cc_hosts` define control center URLs, the first one who returns the the headers will be used.
@@ -165,7 +165,7 @@
 
 ### Agent uses hardcoded commands and Radicle repository
 
- Agent will install Radicle, clone Radicle repository and use it's configuration and by thouse can be managed only by code in repository.
+ Agent will install Radicle, clone Radicle repository and use its configuration and by thouse can be managed only by code in repository.
 
  - *variables.auto.tfvars*
    ```terraform
@@ -244,7 +244,7 @@
 
  Agent will use `desired_capacity` value from Ansible or `cc-a-desired-capacity` returned by control center to manage nodes count.
 
- - Add header `cc-a-desired-capacity` on control center side
+ - Update `cc-a-desired-capacity` header on control center side
 
  - Update `desired_capacity` variable in [*ansible/playbook.yml*](../ansible/playbook.yml)
 
@@ -271,7 +271,9 @@
    agent_watcher = false
    ```
 
- - And optional set variable `enable_watcher=false` in [*ansible/playbook.yml*](../ansible/playbook.yml)
+ - And optional set variable `enable_watcher = false` in [*ansible/playbook.yml*](../ansible/playbook.yml)
+
+ - And optional set `cc-a-desired-capacity = "-"` header on control center side
 
 
 ## [Before deployment](#peer-to-peer-agent-terraform)
@@ -295,7 +297,7 @@
      torrent_magnet
      ```
 
- 5. Push latest changes to Radicle or Git repository.
+ 5. Push latest changes to Radicle and Git repository.
 
 
 ## [Run control centers](#peer-to-peer-agent-terraform)
