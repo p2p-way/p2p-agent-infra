@@ -48,7 +48,11 @@ jobs:
           ansible --version
 
       - name: Run ansible-playbook
-        run: ansible-playbook --become ${{ env.ansible-directory }}/playbook.yml
+        run: |
+          ansible-playbook \
+            --become \
+            --extra-vars '{ enable_archivist: true }' \
+            ${{ env.ansible-directory }}/playbook.yml
         env:
           ANSIBLE_LOCALHOST_WARNING: false
           ANSIBLE_INVENTORY_UNPARSED_WARNING: false

@@ -19,7 +19,7 @@
         desired_capacity:  ''
         # Components
         apps_update:       false
-        enable_archivist:  true
+        enable_archivist:  false
         enable_ipfs:       true
         enable_radicle:    true
         enable_ton:        true
