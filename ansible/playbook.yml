@@ -10,6 +10,7 @@
         temp_folder:       /tmp
         base_user:         root
         base_group:        root
+        enable_firewall:   true
         # Agent
         agent_cron:        '*/15'
         update_agent:      false

@@ -129,7 +129,16 @@
 
 ### Check
 
- 1. **Archivist**
+ 1. **Firewall**
+    ```shell
+    # Service status
+    systemctl status nftables
+
+    # List rules
+    nft list ruleset
+    ```
+
+ 2. **Archivist**
     ```shell
     # Service status
     systemctl status archivist
@@ -139,7 +148,7 @@
       | jq -r '.content[] | .cid + " - " + (.manifest.datasetSize | tostring) + " - " + (.manifest.mimetype | tostring) + " - " + (.manifest.filename // "null")'
     ```
 
- 2. **IPFS**
+ 3. **IPFS**
     ```shell
     # Service status
     systemctl status ipfs
@@ -160,7 +169,7 @@
     ipfs cat QmUsrhmu4wXnVHejbfp9kdtb1ZrWoZ6FTCUuFczDPzP1FG
     ```
 
- 3. **Radicle**
+ 4. **Radicle**
     ```shell
     # Service status
     systemctl status radicle
@@ -181,7 +190,7 @@
     find "${RAD_HOME}/storage" -maxdepth 2
     ```
 
- 4. **TON**
+ 5. **TON**
     ```shell
     # Service status
     systemctl status ton-storage
@@ -199,7 +208,7 @@
     find "${TON_PATH}/storage-db/torrent/torrent-files"
     ```
 
- 5. **Torrent**
+ 6. **Torrent**
     ```shell
     # Service status
     systemctl status qbittorrent

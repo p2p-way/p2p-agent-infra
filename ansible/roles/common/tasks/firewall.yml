@@ -1,0 +1,55 @@
+# Common - Setup firewall
+- name: Firewall - Install
+  ansible.builtin.apt:
+    name: '{{ common_firewall_package }}'
+    state: present
+  when: enable_firewall
+
+- name: Firewall - Create rules folder
+  ansible.builtin.file:
+    path: '{{ common_firewall_rules_folder }}'
+    state: directory
+    mode: '755'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+  when: enable_firewall
+
+- name: Firewall - Get binary path
+  ansible.builtin.command: which {{ common_firewall_binary }}
+  register: common_firewall_binary_path
+  changed_when: false
+  failed_when: false
+  when: enable_firewall
+
+- name: Firewall - Create config
+  ansible.builtin.template:
+    src: '{{ item | basename }}.j2'
+    dest: '{{ item }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '644'
+    backup: true
+  loop:
+    - '{{ common_firewall_config }}'
+  register: common_firewall_config_created
+  when: enable_firewall
+
+- name: Firewall - Enable and start service
+  ansible.builtin.systemd_service:
+    enabled: true
+    state: started
+    name: '{{ common_firewall_service_name }}'
+  when: enable_firewall
+
+- name: Firewall - Reload configuration # noqa: no-handler
+  ansible.builtin.systemd_service:
+    state: reloaded
+    name: '{{ common_firewall_service_name }}'
+  when: common_firewall_config_created.changed
+
+- name: Firewall - Disable
+  ansible.builtin.systemd_service:
+    enabled: false
+    state: stopped
+    name: '{{ common_firewall_service_name }}'
+  when: not enable_firewall

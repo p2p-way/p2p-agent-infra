@@ -1,0 +1,26 @@
+#!{{ common_firewall_binary_path.stdout }} -f
+
+flush ruleset
+
+table inet filter {
+    # Input
+    chain input {
+        type filter hook input priority 0; counter; policy drop;
+
+        # Basic
+        ct state established,related counter accept
+        ct state invalid drop
+        iifname lo accept
+
+        # SSH
+        tcp dport ssh counter accept
+
+        # Include P2P
+        include "{{ common_firewall_rules_folder }}/*.{{ common_firewall_rules_extension }}"
+    }
+
+    # Output
+    chain output {
+        type filter hook output priority 0; counter; policy accept;
+    }
+}

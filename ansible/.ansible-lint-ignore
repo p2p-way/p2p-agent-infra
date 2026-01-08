@@ -1,4 +1,5 @@
 playbook.yml                     yaml[colons]
+roles/common/defaults/main.yml   yaml[colons]
 roles/common/tasks/app_check.yml yaml[colons]
 roles/ipfs/defaults/main.yml     yaml[colons]
 roles/radicle/defaults/main.yml  yaml[colons]

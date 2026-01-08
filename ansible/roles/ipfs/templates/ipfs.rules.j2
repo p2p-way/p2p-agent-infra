@@ -1,0 +1,2 @@
+tcp dport {{ ipfs_tcp_port }} counter accept comment "{{ ipfs_name | upper }} - TCP"
+udp dport {{ ipfs_udp_port }} counter accept comment "{{ ipfs_name | upper }} - UDP"

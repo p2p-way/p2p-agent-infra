@@ -13,6 +13,17 @@
     common_service_name: '{{ torrent_service_name }}'
   when: torrent_enabled and not (apps_update | ternary(apps_update, torrent_update))
 
+# Torrent - Firewall
+- name: Set app firewall rules
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_firewall
+  vars:
+    common_app_name: '{{ torrent_name }}'
+    common_app_rules_template: '{{ torrent_name }}.{{ common_firewall_rules_extension }}.j2'
+    common_app_enabled: '{{ torrent_enabled }}'
+  when: enable_firewall
+
 # Torrent - Install
 - name: Install app
   ansible.builtin.include_tasks:

@@ -41,3 +41,7 @@
 - name: Get Public IP
   ansible.builtin.include_tasks:
     file: public_ip.yml
+
+- name: Setup firewall
+  ansible.builtin.include_tasks:
+    file: firewall.yml

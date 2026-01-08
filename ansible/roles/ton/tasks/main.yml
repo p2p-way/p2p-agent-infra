@@ -13,6 +13,17 @@
     common_service_name: '{{ ton_service_name }}'
   when: ton_enabled and not (apps_update | ternary(apps_update, ton_update))
 
+# TON - Firewall
+- name: Set app firewall rules
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app_firewall
+  vars:
+    common_app_name: '{{ ton_name }}'
+    common_app_rules_template: '{{ ton_name }}.{{ common_firewall_rules_extension }}.j2'
+    common_app_enabled: '{{ ton_enabled }}'
+  when: enable_firewall
+
 # TON - Install
 - name: Install app
   ansible.builtin.include_tasks:

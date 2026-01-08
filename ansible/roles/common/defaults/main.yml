@@ -1,0 +1,9 @@
+# Common - Variables
+---
+common_firewall_name:            nftables
+common_firewall_binary:          nft
+common_firewall_package:         '{{ common_firewall_name }}'
+common_firewall_service_name:    '{{ common_firewall_name }}'
+common_firewall_config:          '/etc/{{ common_firewall_name }}.conf'
+common_firewall_rules_folder:    '/etc/{{ common_firewall_name }}'
+common_firewall_rules_extension: rules

@@ -1,0 +1,2 @@
+tcp dport {{ torrent_tcp_udp_port }} counter accept comment "{{ torrent_name }} - TCP"
+udp dport {{ torrent_tcp_udp_port }} counter accept comment "{{ torrent_name }} - UDP"

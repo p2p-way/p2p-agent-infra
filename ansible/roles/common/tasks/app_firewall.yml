@@ -1,0 +1,23 @@
+# Common - App firewall rules
+- name: '{{ common_app_name }}: Create app firewall rules' # noqa: name[template]
+  ansible.builtin.template:
+    src: '{{ common_app_rules_template }}'
+    dest: '{{ common_firewall_rules_folder }}/{{ common_app_name }}.{{ common_firewall_rules_extension }}'
+    owner: '{{ base_user }}'
+    group: '{{ base_group }}'
+    mode: '644'
+  register: common_firewall_app_rules_created
+  when: common_app_enabled
+
+- name: '{{ common_app_name }}: Delete app firewall rules' # noqa: name[template]
+  ansible.builtin.file:
+    path: '{{ common_firewall_rules_folder }}/{{ common_app_name }}.{{ common_firewall_rules_extension }}'
+    state: absent
+  register: common_firewall_app_rules_deleted
+  when: not common_app_enabled
+
+- name: '{{ common_app_name }}: Reload firewall configuration' # noqa: name[template]
+  ansible.builtin.systemd_service:
+    state: reloaded
+    name: '{{ common_firewall_service_name }}'
+  when: common_firewall_app_rules_created.changed or common_firewall_app_rules_deleted.changed
