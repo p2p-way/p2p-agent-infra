@@ -59,19 +59,19 @@
   ansible.builtin.command: ipfs config Addresses.AppendAnnounce --json '{{ ipfs_appendannounce_addresses }}'
   environment:
     IPFS_PATH: '{{ ipfs_folder }}'
-  when: (ipfs_appendannounce_addresses | from_json | join ) not in (ipfs_current_appendannounce_addresses.stdout | from_json | join)
   changed_when: true
   notify:
     - 'Restart service {{ ipfs_service_name }}'
+  when: (ipfs_appendannounce_addresses | from_json | join ) not in (ipfs_current_appendannounce_addresses.stdout | from_json | join)
 
 - name: Confgure Swarm addresses
   ansible.builtin.command: ipfs config Addresses.Swarm --json '{{ ipfs_swarm_addresses }}'
   environment:
     IPFS_PATH: '{{ ipfs_folder }}'
-  when: (ipfs_swarm_addresses | from_json | join ) not in (ipfs_current_swarm_addresses.stdout | from_json | join)
   changed_when: true
   notify:
     - 'Restart service {{ ipfs_service_name }}'
+  when: (ipfs_swarm_addresses | from_json | join ) not in (ipfs_current_swarm_addresses.stdout | from_json | join)
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers

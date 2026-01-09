@@ -56,9 +56,9 @@
     mode: '644'
     owner: '{{ ton_user }}'
     group: '{{ ton_user }}'
-  when: ton_download_config.failed
   notify:
     - 'Restart service {{ ton_service_name }}'
+  when: ton_download_config.failed
 
 - name: Create install folder
   ansible.builtin.file:

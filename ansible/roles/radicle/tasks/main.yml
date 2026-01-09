@@ -28,9 +28,9 @@
 - name: Install app
   ansible.builtin.include_tasks:
     file: install.yml
-  when: radicle_enabled and (not app_is_ready or (apps_update | ternary(apps_update, radicle_update)))
   vars:
     app_is_ready: "{{ lookup('ansible.builtin.vars', radicle_name + '_is_ready', default=true) }}"
+  when: radicle_enabled and (not app_is_ready or (apps_update | ternary(apps_update, radicle_update)))
 
 # Radicle - Configure
 - name: Configure app

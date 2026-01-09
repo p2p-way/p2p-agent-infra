@@ -34,9 +34,9 @@
     owner: '{{ torrent_user }}'
     group: '{{ torrent_user }}'
     mode: '660'
-  when: torrent_config_diff.changed
   notify:
     - 'Restart service {{ torrent_service_name }}'
+  when: torrent_config_diff.changed
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers

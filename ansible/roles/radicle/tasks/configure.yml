@@ -23,9 +23,9 @@
   environment:
     RAD_HOME: '{{ radicle_folder }}'
   changed_when: false
-  when: common_public_ipv4 != '' and radicle_current_external_address not in radicle_configured_external_address
   notify:
     - 'Restart service {{ radicle_service_name }}'
+  when: common_public_ipv4 != '' and radicle_current_external_address not in radicle_configured_external_address
 
 - name: Remove old external addresses
   ansible.builtin.command: rad config remove node.externalAddresses '{{ item }}'
@@ -33,9 +33,9 @@
   environment:
     RAD_HOME: '{{ radicle_folder }}'
   changed_when: false
-  when: common_public_ipv4 != ''
   notify:
     - 'Restart service {{ radicle_service_name }}'
+  when: common_public_ipv4 != ''
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
