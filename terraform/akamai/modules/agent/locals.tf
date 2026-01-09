@@ -1,24 +1,14 @@
 # Locals
 locals {
-  create                        = var.agent_create
-  agent_name                    = lower(replace(var.agent_name, " ", "-"))
-  region                        = var.region
-  location_description          = try(data.linode_region.current[0].label, "")
-  agent_p2p_archivist_tcp_ports = try(element(var.agent_p2p_archivist_ports, 0), null)
-  agent_p2p_archivist_udp_ports = try(element(var.agent_p2p_archivist_ports, 1), null)
-  agent_p2p_ipfs_tcp_ports      = try(element(var.agent_p2p_ipfs_ports, 0), null)
-  agent_p2p_ipfs_udp_ports      = try(element(var.agent_p2p_ipfs_ports, 1), null)
-  agent_p2p_radicle_tcp_ports   = try(element(var.agent_p2p_radicle_ports, 0), null)
-  agent_p2p_radicle_udp_ports   = try(element(var.agent_p2p_radicle_ports, 1), null)
-  agent_p2p_ton_tcp_ports       = try(element(var.agent_p2p_ton_ports, 0), null)
-  agent_p2p_ton_udp_ports       = try(element(var.agent_p2p_ton_ports, 1), null)
-  agent_p2p_torrent_tcp_ports   = try(element(var.agent_p2p_torrent_ports, 0), null)
-  agent_p2p_torrent_udp_ports   = try(element(var.agent_p2p_torrent_ports, 1), null)
-  agent_custom_tcp_ports        = try(element(var.agent_custom_ports, 0), null)
-  agent_custom_udp_ports        = try(element(var.agent_custom_ports, 1), null)
-  resource_name                 = "${local.agent_name}-${local.region}"
-  resource_description          = "${var.agent_name} - ${local.location_description}"
-  tags                          = [local.resource_name]
+  create               = var.agent_create
+  agent_name           = lower(replace(var.agent_name, " ", "-"))
+  region               = var.region
+  location_description = try(data.linode_region.current[0].label, "")
+  agent_open_tcp_ports = try(element(var.agent_open_ports, 0), null)
+  agent_open_udp_ports = try(element(var.agent_open_ports, 1), null)
+  resource_name        = "${local.agent_name}-${local.region}"
+  resource_description = "${var.agent_name} - ${local.location_description}"
+  tags                 = [local.resource_name]
 }
 
 # Region

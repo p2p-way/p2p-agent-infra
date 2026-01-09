@@ -35,6 +35,7 @@ resource "aws_launch_template" "agent" {
   # Resource tags
   dynamic "tag_specifications" {
     for_each = var.tag_specifications
+
     content {
       resource_type = tag_specifications.value
 

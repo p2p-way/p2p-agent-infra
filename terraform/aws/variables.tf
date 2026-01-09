@@ -119,40 +119,10 @@ variable "agent_logs_retention" {
   default     = 7
 }
 
-variable "agent_p2p_archivist_ports" {
-  description = "P2P agent Archivist [TCP, UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
+variable "agent_open_ports" {
+  description = "P2P agent open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
   type        = list(any)
-  default     = [8090, 8090]
-}
-
-variable "agent_p2p_ipfs_ports" {
-  description = "P2P agent IPFS [TCP, UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = [4001, 4001]
-}
-
-variable "agent_p2p_radicle_ports" {
-  description = "P2P agent Radicle [TCP, UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = [8776, null]
-}
-
-variable "agent_p2p_ton_ports" {
-  description = "P2P agent TON [TCP, UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = [null, 3333]
-}
-
-variable "agent_p2p_torrent_ports" {
-  description = "P2P agent Torrent [TCP, UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = [2345, 2345]
-}
-
-variable "agent_custom_ports" {
-  description = "P2P agent custom [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = []
+  default     = ["1024-65535", "1024-65535"]
 }
 
 # VPC

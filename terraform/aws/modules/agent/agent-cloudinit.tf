@@ -36,6 +36,7 @@ data "cloudinit_config" "agent" {
   # CloudWatch agent
   dynamic "part" {
     for_each = local.agent_logs || local.agent_metrics ? [1] : []
+
     content {
       filename     = "01-cloudwatch-agent.sh"
       content_type = "text/x-shellscript"
@@ -48,6 +49,7 @@ data "cloudinit_config" "agent" {
   # P2P agent
   dynamic "part" {
     for_each = local.agent_logs && local.agent_metrics ? [] : [1]
+
     content {
       content_type = "text/cloud-config"
       content = yamlencode({
@@ -75,6 +77,7 @@ data "cloudinit_config" "agent" {
   # P2P agent and logs
   dynamic "part" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       content_type = "text/cloud-config"
       content = yamlencode({
@@ -112,6 +115,7 @@ data "cloudinit_config" "agent" {
   # P2P agent and metrics
   dynamic "part" {
     for_each = local.agent_metrics ? [1] : []
+
     content {
       content_type = "text/cloud-config"
       content = yamlencode({
@@ -149,6 +153,7 @@ data "cloudinit_config" "agent" {
   # P2P agent, logs and metrics
   dynamic "part" {
     for_each = local.agent_logs && local.agent_metrics ? [1] : []
+
     content {
       content_type = "text/cloud-config"
       content = yamlencode({

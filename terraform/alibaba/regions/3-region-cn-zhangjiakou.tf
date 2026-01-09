@@ -11,12 +11,7 @@ module "cn-zhangjiakou" {
   agent_watcher                 = var.agent_watcher
   agent_logs                    = var.agent_logs
   agent_metrics                 = var.agent_metrics
-  agent_p2p_archivist_ports     = var.agent_p2p_archivist_ports
-  agent_p2p_ipfs_ports          = var.agent_p2p_ipfs_ports
-  agent_p2p_radicle_ports       = var.agent_p2p_radicle_ports
-  agent_p2p_ton_ports           = var.agent_p2p_ton_ports
-  agent_p2p_torrent_ports       = var.agent_p2p_torrent_ports
-  agent_custom_ports            = var.agent_custom_ports
+  agent_open_ports              = var.agent_open_ports
   default_tags                  = var.default_tags
   cidr_block                    = var.cidr_block
   az_number                     = var.az_number

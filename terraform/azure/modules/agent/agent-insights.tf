@@ -185,6 +185,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
     # Destination - Logs Analytics
     dynamic "log_analytics" {
       for_each = local.agent_logs ? [1] : []
+
       content {
         name                  = local.resource_name
         workspace_resource_id = azurerm_log_analytics_workspace.agent[count.index].id
@@ -194,6 +195,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
     # Destination - Monitor Insights
     dynamic "azure_monitor_metrics" {
       for_each = local.agent_metrics ? [1] : []
+
       content {
         name = "${local.resource_name}-metrics"
       }
@@ -203,6 +205,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Data flow - Metrics
   dynamic "data_flow" {
     for_each = local.agent_metrics ? [1] : []
+
     content {
       streams      = ["Microsoft-InsightsMetrics"]
       destinations = ["${local.resource_name}-metrics"]
@@ -212,6 +215,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Data flow - Syslog
   dynamic "data_flow" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       streams       = ["Microsoft-Syslog"]
       destinations  = [azurerm_log_analytics_workspace.agent[count.index].name]
@@ -223,6 +227,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Data flow - cloud-init.log
   dynamic "data_flow" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init[count.index].name}"]
       destinations  = [azurerm_log_analytics_workspace.agent[count.index].name]
@@ -233,6 +238,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Data flow - cloud-init-output.log
   dynamic "data_flow" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init_output[count.index].name}"]
       destinations  = [azurerm_log_analytics_workspace.agent[count.index].name]
@@ -243,6 +249,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Data flow - p2p-agent.log
   dynamic "data_flow" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       streams       = ["Custom-${azurerm_log_analytics_workspace_table_custom_log.p2p_agent[count.index].name}"]
       destinations  = [azurerm_log_analytics_workspace.agent[count.index].name]
@@ -255,6 +262,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
     # Data source - metrics
     dynamic "performance_counter" {
       for_each = local.agent_metrics ? [1] : []
+
       content {
         name                          = local.resource_name
         streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
@@ -266,6 +274,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
     # Data source - syslog
     dynamic "syslog" {
       for_each = local.agent_logs ? [1] : []
+
       content {
         name           = "syslog"
         facility_names = ["*"]
@@ -277,6 +286,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
     # Data source - cloud-init.log
     dynamic "log_file" {
       for_each = local.agent_logs ? [1] : []
+
       content {
         name          = "cloud-init.log"
         format        = "text"
@@ -293,6 +303,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
     # Data source - cloud-init-output.log
     dynamic "log_file" {
       for_each = local.agent_logs ? [1] : []
+
       content {
         name          = "cloud-init-output.log"
         format        = "text"
@@ -309,6 +320,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
     # Data source - p2p-agent.log
     dynamic "log_file" {
       for_each = local.agent_logs ? [1] : []
+
       content {
         name          = var.agent_log_file
         format        = "text"
@@ -326,6 +338,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Stream - cloud-init
   dynamic "stream_declaration" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       stream_name = "Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init[count.index].name}"
       column {
@@ -342,6 +355,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Stream - cloud-init-output
   dynamic "stream_declaration" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       stream_name = "Custom-${azurerm_log_analytics_workspace_table_custom_log.cloud_init_output[count.index].name}"
       column {
@@ -358,6 +372,7 @@ resource "azurerm_monitor_data_collection_rule" "agent" {
   # Stream - p2p-agent.log
   dynamic "stream_declaration" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       stream_name = "Custom-${azurerm_log_analytics_workspace_table_custom_log.p2p_agent[count.index].name}"
       column {

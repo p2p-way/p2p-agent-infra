@@ -71,156 +71,26 @@ resource "alicloud_security_group" "agent" {
   }
 }
 
-# Ingress - Archivist TCP
-resource "alicloud_security_group_rule" "archivist_tcp" {
-  count = local.create && local.agent_p2p_archivist_tcp_ports != null ? 1 : 0
+# Ingress - Open TCP
+resource "alicloud_security_group_rule" "agent_tcp" {
+  count = local.create && local.agent_open_tcp_ports != null ? 1 : 0
 
   type        = "ingress"
-  description = "Archivist TCP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_archivist_tcp_ports), 0)}/${element(split("-", local.agent_p2p_archivist_tcp_ports), 1)}"
+  description = "Open TCP - Any"
+  port_range  = "${element(split("-", local.agent_open_tcp_ports), 0)}/${element(split("-", local.agent_open_tcp_ports), 1)}"
   ip_protocol = "tcp"
   cidr_ip     = "0.0.0.0/0"
 
   security_group_id = alicloud_security_group.agent[count.index].id
 }
 
-# Ingress - Archivist UDP
-resource "alicloud_security_group_rule" "archivist_udp" {
-  count = local.create && local.agent_p2p_archivist_udp_ports != null ? 1 : 0
+# Ingress - Open UDP
+resource "alicloud_security_group_rule" "agent_udp" {
+  count = local.create && local.agent_open_udp_ports != null ? 1 : 0
 
   type        = "ingress"
-  description = "Archivist UDP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_archivist_udp_ports), 0)}/${element(split("-", local.agent_p2p_archivist_udp_ports), 1)}"
-  ip_protocol = "udp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - IPFS TCP
-resource "alicloud_security_group_rule" "ipfs_tcp" {
-  count = local.create && local.agent_p2p_ipfs_tcp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "IPFS TCP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_ipfs_tcp_ports), 0)}/${element(split("-", local.agent_p2p_ipfs_tcp_ports), 1)}"
-  ip_protocol = "tcp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - IPFS UDP
-resource "alicloud_security_group_rule" "ipfs_udp" {
-  count = local.create && local.agent_p2p_ipfs_udp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "IPFS UDP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_ipfs_udp_ports), 0)}/${element(split("-", local.agent_p2p_ipfs_udp_ports), 1)}"
-  ip_protocol = "udp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - Radicle TCP
-resource "alicloud_security_group_rule" "radicle_tcp" {
-  count = local.create && local.agent_p2p_radicle_tcp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "Radicle TCP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_radicle_tcp_ports), 0)}/${element(split("-", local.agent_p2p_radicle_tcp_ports), 1)}"
-  ip_protocol = "tcp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - Radicle UDP
-resource "alicloud_security_group_rule" "radicle_udp" {
-  count = local.create && local.agent_p2p_radicle_udp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "Radicle UDP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_radicle_udp_ports), 0)}/${element(split("-", local.agent_p2p_radicle_udp_ports), 1)}"
-  ip_protocol = "udp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - TON Storage TCP
-resource "alicloud_security_group_rule" "ton_tcp" {
-  count = local.create && local.agent_p2p_ton_tcp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "TON Storage TCP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_ton_tcp_ports), 0)}/${element(split("-", local.agent_p2p_ton_tcp_ports), 1)}"
-  ip_protocol = "tcp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - TON Storage UDP
-resource "alicloud_security_group_rule" "ton_udp" {
-  count = local.create && local.agent_p2p_ton_udp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "TON Storage UDP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_ton_udp_ports), 0)}/${element(split("-", local.agent_p2p_ton_udp_ports), 1)}"
-  ip_protocol = "udp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - Torrent TCP
-resource "alicloud_security_group_rule" "torrent_tcp" {
-  count = local.create && local.agent_p2p_torrent_tcp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "Torrent TCP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_torrent_tcp_ports), 0)}/${element(split("-", local.agent_p2p_torrent_tcp_ports), 1)}"
-  ip_protocol = "tcp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - Torrent UDP
-resource "alicloud_security_group_rule" "torrent_udp" {
-  count = local.create && local.agent_p2p_torrent_udp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "Torrent UDP - Any"
-  port_range  = "${element(split("-", local.agent_p2p_torrent_udp_ports), 0)}/${element(split("-", local.agent_p2p_torrent_udp_ports), 1)}"
-  ip_protocol = "udp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - Custom TCP
-resource "alicloud_security_group_rule" "custom_tcp" {
-  count = local.create && local.agent_custom_tcp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "Custom TCP - Any"
-  port_range  = "${element(split("-", local.agent_custom_tcp_ports), 0)}/${element(split("-", local.agent_custom_tcp_ports), 1)}"
-  ip_protocol = "tcp"
-  cidr_ip     = "0.0.0.0/0"
-
-  security_group_id = alicloud_security_group.agent[count.index].id
-}
-
-# Ingress - Custom UDP
-resource "alicloud_security_group_rule" "custom_udp" {
-  count = local.create && local.agent_custom_udp_ports != null ? 1 : 0
-
-  type        = "ingress"
-  description = "Custom UDP - Any"
-  port_range  = "${element(split("-", local.agent_custom_udp_ports), 0)}/${element(split("-", local.agent_custom_udp_ports), 1)}"
+  description = "Open UDP - Any"
+  port_range  = "${element(split("-", local.agent_open_udp_ports), 0)}/${element(split("-", local.agent_open_udp_ports), 1)}"
   ip_protocol = "udp"
   cidr_ip     = "0.0.0.0/0"
 

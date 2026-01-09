@@ -126,229 +126,39 @@ resource "aws_vpc_security_group_ingress_rule" "security_group" {
   region = local.region
 }
 
-# Ingress - Archivist TCP
-resource "aws_vpc_security_group_ingress_rule" "archivist_tcp" {
-  count = local.create && local.agent_p2p_archivist_tcp_ports != null ? 1 : 0
+# Ingress - Open TCP
+resource "aws_vpc_security_group_ingress_rule" "agent_tcp" {
+  count = local.create && local.agent_open_tcp_ports != null ? 1 : 0
 
-  description = "Archivist TCP - Any"
-  from_port   = element(split("-", local.agent_p2p_archivist_tcp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_archivist_tcp_ports), 1)
+  description = "Open TCP - Any"
+  from_port   = element(split("-", local.agent_open_tcp_ports), 0)
+  to_port     = element(split("-", local.agent_open_tcp_ports), 1)
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
   security_group_id = aws_security_group.agent[count.index].id
 
   tags = {
-    Name = "Archivist TCP - Any"
+    Name = "Open TCP - Any"
   }
 
   region = local.region
 }
 
-# Ingress - Archivist UDP
-resource "aws_vpc_security_group_ingress_rule" "archivist_udp" {
-  count = local.create && local.agent_p2p_archivist_udp_ports != null ? 1 : 0
+# Ingress - Open UDP
+resource "aws_vpc_security_group_ingress_rule" "agent_udp" {
+  count = local.create && local.agent_open_udp_ports != null ? 1 : 0
 
-  description = "Archivist UDP - Any"
-  from_port   = element(split("-", local.agent_p2p_archivist_udp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_archivist_udp_ports), 1)
+  description = "Open UDP - Any"
+  from_port   = element(split("-", local.agent_open_udp_ports), 0)
+  to_port     = element(split("-", local.agent_open_udp_ports), 1)
   ip_protocol = "udp"
   cidr_ipv4   = "0.0.0.0/0"
 
   security_group_id = aws_security_group.agent[count.index].id
 
   tags = {
-    Name = "Archivist UDP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - IPFS TCP
-resource "aws_vpc_security_group_ingress_rule" "ipfs_tcp" {
-  count = local.create && local.agent_p2p_ipfs_tcp_ports != null ? 1 : 0
-
-  description = "IPFS TCP - Any"
-  from_port   = element(split("-", local.agent_p2p_ipfs_tcp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_ipfs_tcp_ports), 1)
-  ip_protocol = "tcp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "IPFS TCP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - IPFS UDP
-resource "aws_vpc_security_group_ingress_rule" "ipfs_udp" {
-  count = local.create && local.agent_p2p_ipfs_udp_ports != null ? 1 : 0
-
-  description = "IPFS UDP - Any"
-  from_port   = element(split("-", local.agent_p2p_ipfs_udp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_ipfs_udp_ports), 1)
-  ip_protocol = "udp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "IPFS UDP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - Radicle TCP
-resource "aws_vpc_security_group_ingress_rule" "radicle_tcp" {
-  count = local.create && local.agent_p2p_radicle_tcp_ports != null ? 1 : 0
-
-  description = "Radicle TCP - Any"
-  from_port   = element(split("-", local.agent_p2p_radicle_tcp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_radicle_tcp_ports), 1)
-  ip_protocol = "tcp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "Radicle TCP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - Radicle UDP
-resource "aws_vpc_security_group_ingress_rule" "radicle_udp" {
-  count = local.create && local.agent_p2p_radicle_udp_ports != null ? 1 : 0
-
-  description = "Radicle UDP - Any"
-  from_port   = element(split("-", local.agent_p2p_radicle_udp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_radicle_udp_ports), 1)
-  ip_protocol = "udp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "Radicle UDP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - TON Storage TCP
-resource "aws_vpc_security_group_ingress_rule" "ton_tcp" {
-  count = local.create && local.agent_p2p_ton_tcp_ports != null ? 1 : 0
-
-  description = "TON Storage TCP - Any"
-  from_port   = element(split("-", local.agent_p2p_ton_tcp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_ton_tcp_ports), 1)
-  ip_protocol = "tcp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "TON Storage TCP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - TON Storage UDP
-resource "aws_vpc_security_group_ingress_rule" "ton_udp" {
-  count = local.create && local.agent_p2p_ton_udp_ports != null ? 1 : 0
-
-  description = "TON Storage UDP - Any"
-  from_port   = element(split("-", local.agent_p2p_ton_udp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_ton_udp_ports), 1)
-  ip_protocol = "udp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "TON Storage UDP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - Torrent TCP
-resource "aws_vpc_security_group_ingress_rule" "torrent_tcp" {
-  count = local.create && local.agent_p2p_torrent_tcp_ports != null ? 1 : 0
-
-  description = "Torrent TCP - Any"
-  from_port   = element(split("-", local.agent_p2p_torrent_tcp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_torrent_tcp_ports), 1)
-  ip_protocol = "tcp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "Torrent TCP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - Torrent UDP
-resource "aws_vpc_security_group_ingress_rule" "torrent_udp" {
-  count = local.create && local.agent_p2p_torrent_udp_ports != null ? 1 : 0
-
-  description = "Torrent UDP - Any"
-  from_port   = element(split("-", local.agent_p2p_torrent_udp_ports), 0)
-  to_port     = element(split("-", local.agent_p2p_torrent_udp_ports), 1)
-  ip_protocol = "udp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "Torrent UDP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - Custom TCP
-resource "aws_vpc_security_group_ingress_rule" "custom_tcp" {
-  count = local.create && local.agent_custom_tcp_ports != null ? 1 : 0
-
-  description = "Custom TCP - Any"
-  from_port   = element(split("-", local.agent_custom_tcp_ports), 0)
-  to_port     = element(split("-", local.agent_custom_tcp_ports), 1)
-  ip_protocol = "tcp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "Custom TCP - Any"
-  }
-
-  region = local.region
-}
-
-# Ingress - Custom UDP
-resource "aws_vpc_security_group_ingress_rule" "custom_udp" {
-  count = local.create && local.agent_custom_udp_ports != null ? 1 : 0
-
-  description = "Custom UDP - Any"
-  from_port   = element(split("-", local.agent_custom_udp_ports), 0)
-  to_port     = element(split("-", local.agent_custom_udp_ports), 1)
-  ip_protocol = "udp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  security_group_id = aws_security_group.agent[count.index].id
-
-  tags = {
-    Name = "Custom UDP - Any"
+    Name = "Open UDP - Any"
   }
 
   region = local.region

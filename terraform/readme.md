@@ -69,7 +69,7 @@
   - Variable `agent_watcher` enable [Agent side watcher](../architecture.md#agent-side-watcher), which imply IAM resources creation.
   - Variable `agent_logs` enable logs in the cloud (Alibaba/AWS/GCP only).
   - Variable `agent_metrics` enable metrics in the cloud (Alibaba/AWS/GCP only).
-  - Variable `agent_custom_ports` can be used to open a wide range of TCP/UDP ports like following `["1024-65535", "1024-65535"]`
+  - Variable `agent_open_ports` should be used to open a wide range of TCP/UDP ports, for P2P applications, like following - `["1024-65535", "1024-65535"]` and then [Ansible](../ansible) will take care about opening just ports required by the applications, using OS level firewall.
   - Variable `allow_ssh` specify hosts/subnets for SSH access to the instances.
   - When `public_keys = []`, we generate the keys for instances SSH access, we also can pass own list of keys or skip it (excluding Azure), by set value to `[""]`.
   - Variable `os_name` should be set to `ubuntu`, which defaults to ubuntu 24.04.

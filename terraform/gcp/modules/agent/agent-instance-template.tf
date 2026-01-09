@@ -21,6 +21,7 @@ resource "google_compute_instance_template" "agent" {
   #  Identity and API access
   dynamic "service_account" {
     for_each = local.agent_iam_create ? [1] : []
+
     content {
       email  = google_service_account.agent[count.index].email
       scopes = local.sa_scope
@@ -32,6 +33,7 @@ resource "google_compute_instance_template" "agent" {
   # Networking
   dynamic "network_interface" {
     for_each = local.regional_network_create ? [] : [1]
+
     content {
       network = lookup(var.global_network, "name")
       access_config {
@@ -41,6 +43,7 @@ resource "google_compute_instance_template" "agent" {
 
   dynamic "network_interface" {
     for_each = local.regional_network_create ? [1] : []
+
     content {
       subnetwork = google_compute_subnetwork.agent[count.index].id
       access_config {

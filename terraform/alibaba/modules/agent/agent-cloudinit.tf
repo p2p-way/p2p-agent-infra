@@ -36,6 +36,7 @@ data "cloudinit_config" "agent" {
   # CloudMonitor agent
   dynamic "part" {
     for_each = local.agent_metrics ? [1] : []
+
     content {
       filename     = "01-cloudmonitor-agent.sh"
       content_type = "text/x-shellscript"
@@ -49,6 +50,7 @@ data "cloudinit_config" "agent" {
   # Logtail agent
   dynamic "part" {
     for_each = local.agent_logs ? [1] : []
+
     content {
       filename     = "01-logtail.sh"
       content_type = "text/x-shellscript"
@@ -62,6 +64,7 @@ data "cloudinit_config" "agent" {
   # P2P agent
   dynamic "part" {
     for_each = local.create ? [1] : []
+
     content {
       content_type = "text/cloud-config"
       content = yamlencode({

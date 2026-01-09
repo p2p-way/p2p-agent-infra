@@ -6,18 +6,13 @@ default_labels = {
 }
 
 # Agent
-location                  = "fsn1"
-agent_create              = true
-agent_name                = "P2P agent"
-agent_p2p_archivist_ports = [8090, 8090]
-agent_p2p_ipfs_ports      = [4001, 4001]
-agent_p2p_radicle_ports   = [8776, null]
-agent_p2p_ton_ports       = [null, 3333]
-agent_p2p_torrent_ports   = [2345, 2345]
-agent_custom_ports        = []
-allow_ssh                 = []
-public_keys               = []
-os_name                   = "ubuntu"
+location         = "fsn1"
+agent_create     = true
+agent_name       = "P2P agent"
+agent_open_ports = ["1024-65535", "1024-65535"]
+allow_ssh        = []
+public_keys      = []
+os_name          = "ubuntu"
 server_type = {
   ash     = "cpx11"
   fsn1    = "cx23"

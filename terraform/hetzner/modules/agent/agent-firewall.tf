@@ -4,159 +4,29 @@ resource "hcloud_firewall" "agent" {
 
   name = local.resource_name
 
-  # Archivist TCP
+  # Open TCP
   dynamic "rule" {
-    for_each = local.agent_p2p_archivist_tcp_ports != null ? [1] : []
+    for_each = local.agent_open_tcp_ports != null ? [1] : []
 
     content {
       direction   = "in"
       protocol    = "tcp"
-      port        = local.agent_p2p_archivist_tcp_ports
+      port        = local.agent_open_tcp_ports
       source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Archivist TCP - Any"
+      description = "Open TCP - Any"
     }
   }
 
-  # Archivist UDP
+  # Open UDP
   dynamic "rule" {
-    for_each = local.agent_p2p_archivist_udp_ports != null ? [1] : []
+    for_each = local.agent_open_udp_ports != null ? [1] : []
 
     content {
       direction   = "in"
       protocol    = "udp"
-      port        = local.agent_p2p_archivist_udp_ports
+      port        = local.agent_open_udp_ports
       source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Archivist UDP - Any"
-    }
-  }
-
-  # IPFS TCP
-  dynamic "rule" {
-    for_each = local.agent_p2p_ipfs_tcp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "tcp"
-      port        = local.agent_p2p_ipfs_tcp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "IPFS TCP - Any"
-    }
-  }
-
-  # IPFS UDP
-  dynamic "rule" {
-    for_each = local.agent_p2p_ipfs_udp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "udp"
-      port        = local.agent_p2p_ipfs_udp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "IPFS UDP - Any"
-    }
-  }
-
-  # Radicle TCP
-  dynamic "rule" {
-    for_each = local.agent_p2p_radicle_tcp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "tcp"
-      port        = local.agent_p2p_radicle_tcp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Radicle TCP - Any"
-    }
-  }
-
-  # Radicle UDP
-  dynamic "rule" {
-    for_each = local.agent_p2p_radicle_udp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "udp"
-      port        = local.agent_p2p_radicle_udp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Radicle UDP - Any"
-    }
-  }
-
-  # TON Storage TCP
-  dynamic "rule" {
-    for_each = local.agent_p2p_ton_tcp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "tcp"
-      port        = local.agent_p2p_ton_tcp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "TON Storage TCP - Any"
-    }
-  }
-
-  # TON Storage UDP
-  dynamic "rule" {
-    for_each = local.agent_p2p_ton_udp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "udp"
-      port        = local.agent_p2p_ton_udp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "TON Storage UDP - Any"
-    }
-  }
-
-  # Torrent TCP
-  dynamic "rule" {
-    for_each = local.agent_p2p_torrent_tcp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "tcp"
-      port        = local.agent_p2p_torrent_tcp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Torrent TCP - Any"
-    }
-  }
-
-  # Torrent UDP
-  dynamic "rule" {
-    for_each = local.agent_p2p_torrent_udp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "udp"
-      port        = local.agent_p2p_torrent_udp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Torrent UDP - Any"
-    }
-  }
-
-  # Custom TCP
-  dynamic "rule" {
-    for_each = local.agent_custom_tcp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "tcp"
-      port        = local.agent_custom_tcp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Custom TCP - Any"
-    }
-  }
-
-  # Custom UDP
-  dynamic "rule" {
-    for_each = local.agent_custom_udp_ports != null ? [1] : []
-
-    content {
-      direction   = "in"
-      protocol    = "udp"
-      port        = local.agent_custom_udp_ports
-      source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Custom UDP - Any"
+      description = "Open UDP - Any"
     }
   }
 

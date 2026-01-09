@@ -26,6 +26,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "agent" {
 
   dynamic "admin_ssh_key" {
     for_each = var.public_keys
+
     content {
       username   = local.admin_username
       public_key = admin_ssh_key.value
@@ -83,6 +84,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "agent" {
   # Identity
   dynamic "identity" {
     for_each = local.agent_iam_create ? [1] : []
+
     content {
       type = "SystemAssigned"
     }
