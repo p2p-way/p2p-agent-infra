@@ -3,22 +3,6 @@
   ansible.builtin.include_tasks:
     file: wait.yml
 
-- name: Restart service to apply previous config changes
-  ansible.builtin.systemd_service:
-    enabled: true
-    state: restarted
-    name: '{{ ipfs_service_name }}'
-  when: not app_is_listening
-  vars:
-    app_is_listening: "{{ lookup('ansible.builtin.vars', ipfs_name + '_is_listening') }}"
-
-- name: Wait app
-  ansible.builtin.include_tasks:
-    file: wait.yml
-  when: not app_is_listening
-  vars:
-    app_is_listening: "{{ lookup('ansible.builtin.vars', ipfs_name + '_is_listening') }}"
-
 - name: Get existing Swarm addresses
   ansible.builtin.command: ipfs config Addresses.Swarm
   become: true
@@ -76,7 +60,7 @@
   environment:
     IPFS_PATH: '{{ ipfs_folder }}'
   when: (ipfs_appendannounce_addresses | from_json | join ) not in (ipfs_current_appendannounce_addresses.stdout | from_json | join)
-  changed_when: false
+  changed_when: true
   notify:
     - 'Restart service {{ ipfs_service_name }}'
 
@@ -85,7 +69,7 @@
   environment:
     IPFS_PATH: '{{ ipfs_folder }}'
   when: (ipfs_swarm_addresses | from_json | join ) not in (ipfs_current_swarm_addresses.stdout | from_json | join)
-  changed_when: false
+  changed_when: true
   notify:
     - 'Restart service {{ ipfs_service_name }}'
 
