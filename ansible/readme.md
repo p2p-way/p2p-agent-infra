@@ -193,7 +193,7 @@
  5. **TON**
     ```shell
     # Service status
-    systemctl status ton-storage
+    systemctl status ton
 
     # Set TON Storage location
     TON_PATH="/opt/p2p/ton"

@@ -17,7 +17,7 @@ ton_db_folder:              '{{ ton_folder }}/storage-db'
 ton_config_file:            global.config.json
 ton_config_file_url:        'https://ton-blockchain.github.io/{{ ton_config_file }}'
 ton_config_file_mirror_url: 'https://pub-4fb74cdbbfce4d17aa026bb61edc2457.r2.dev/ton/{{ ton_config_file }}'
-ton_service_name:           '{{ ton_name }}-storage'
+ton_service_name:           '{{ ton_name }}'
 ton_udp_port:               3333
 ton_api_port:               5555
 ton_api_endpoint:           '127.0.0.1:{{ ton_api_port }}'
