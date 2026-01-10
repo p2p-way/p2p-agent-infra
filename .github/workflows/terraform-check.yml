@@ -5,15 +5,12 @@ on:
   push:
     branches:
       - main
-    paths:
+    paths: &paths
       - terraform/**
       - '!**.md'
       - .github/workflows/terraform-check.yml
   pull_request:
-    paths:
-      - terraform/**
-      - '!**.md'
-      - .github/workflows/terraform-check.yml
+    paths: *paths
   workflow_dispatch:
 
 
@@ -33,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Terraform - Install
         uses: hashicorp/setup-terraform@v3
@@ -65,7 +62,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Terraform - Variables
         run: |
