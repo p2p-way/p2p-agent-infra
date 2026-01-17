@@ -56,13 +56,17 @@
 
     | Cloud        | First run, m | Second run, m | Instance           | Resources       | Watcher | Logs/Metrics |
     | ------------ | ------------ | ------------- | ------------------ | --------------- | ------- | ------------ |
-    | Alibaba      | `04:31.856`  | `01:41.493`   | `ecs.e-c1m1.large` | `2 vCPU / 2 GB` | `true`  | `false`      |
-    | AWS          | `02:20.215`  | `00:32.133`   | `t3.micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | Azure        | `09:49.054`  | `00:40.678`   | `Standard_B1s`     | `1 vCPU / 1 GB` | `true`  | `false`      |
-    | GCP          | `18:35.642`  | `02:56.779`   | `e2-micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | Akamai       | `01:46.099`  | `00:28.742`   | `g6-nanode-1`      | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Hetzner      | `01:15.514`  | `00:22.803`   | `cpx11`            | `2 vCPU / 2 GB` | `-`     | `-`          |
-    | DigitalOcean | `04:21.258`  | `01:29.230`   | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Alibaba      | `01:31.106`  | `00:24.716`   | `ecs.e-c1m1.large` | `2 vCPU / 2 GB` | `true`  | `false`      |
+    | AWS          | `02:23.360`  | `00:35.495`   | `t3.micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Azure        | `03:22.027`  | `00:53.851`   | `Standard_B1s`     | `1 vCPU / 1 GB` | `true`  | `false`      |
+    | GCP          | `19:01.057`  | `06:46.945`   | `e2-micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Akamai       | `03:55.760`  | `00:32.801`   | `g6-nanode-1`      | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Hetzner      | `02:24.137`  | `00:50.155`   | `cx23`             | `2 vCPU / 4 GB` | `-`     | `-`          |
+    | DigitalOcean | `05:28.838`  | `01:11.635`   | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
+
+    > Provided timing is approximate and might be influenced by the time when crontab is executed after instance bootstrap.
+
+    > Thu Jan 17 20:00:00 UTC 2026
     </details>
 
   - Variable `agent_name` sets the name of the created resources, in the default configuration with the value `P2P agent`, all resource will be prefixed with the `p2p-agent-<region>`.
