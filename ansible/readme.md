@@ -11,16 +11,15 @@
 
  This folder contains Ansible roles for P2P agent
 
-| # | Role                         | Description                                    |
-| - | ---------------------------- | ---------------------------------------------- |
-| 1 | [common](#common-role)       | Common tasks                                   |
-| 2 | [agent](#agent-role)         | Update agent script and scheduler              |
-| 3 | [watcher](#watcher-role)     | Act as a watcher and configure Autoscaler      |
-| 4 | [archivist](#archivist-role) | Install Archivist support - P2P (experimental) |
-| 5 | [ipfs](#ipfs-role)           | Install IPFS support - P2P                     |
-| 6 | [radicle](#radicle-role)     | Install Radicle support - P2P                  |
-| 7 | [ton](#ton-role)             | Install TON support - P2P                      |
-| 8 | [torrent](#torrent-role)     | Install Torrent support - P2P                  |
+| # | Role                     | Description                               |
+| - | ------------------------ | ----------------------------------------- |
+| 1 | [common](#common-role)   | Common tasks                              |
+| 2 | [agent](#agent-role)     | Update agent script and scheduler         |
+| 3 | [watcher](#watcher-role) | Act as a watcher and configure Autoscaler |
+| 4 | [ipfs](#ipfs-role)       | Install IPFS support - P2P                |
+| 5 | [radicle](#radicle-role) | Install Radicle support - P2P             |
+| 6 | [ton](#ton-role)         | Install TON support - P2P                 |
+| 7 | [torrent](#torrent-role) | Install Torrent support - P2P             |
 
  Ansible roles are located in a Git repository and agent will download and run them. We also may update agent itself in case of need via [Agent role](#agent-role).
 
@@ -42,11 +41,6 @@
 ### Watcher role
 
  In order to be able to manage Autoscaler settings we use [Agent side watcher](/architecture.md#agent-side-watcher).
-
-
-### Archivist role
-
- P2P site is shared using [Archivist](https://archivist.storage). It is added in an experimental mode and does not support sites and name service.
 
 
 ### IPFS role
@@ -102,8 +96,6 @@
     ```shell
     # Watcher
     export desired_capacity=1
-    # Archivist
-    export archivist_cid="zDvZRwzkwcFgCVMjd6VJKNSzGbNMU1HfZEcrebfmJ5NzW5C8paB3"
     # IPFS
     export ipfs_cid="bafybeicjxk7fb3btcabn36rpyooao36ixbfdw6iwy6fvksvpvuo3iyscxm"
     # Radicle
@@ -138,17 +130,7 @@
     nft list ruleset
     ```
 
- 2. **Archivist**
-    ```shell
-    # Service status
-    systemctl status archivist
-
-    # Lists stored manifest CIDs
-    curl -s -w '\n' http://localhost:8082/api/archivist/v1/data \
-      | jq -r '.content[] | .cid + " - " + (.manifest.datasetSize | tostring) + " - " + (.manifest.mimetype | tostring) + " - " + (.manifest.filename // "null")'
-    ```
-
- 3. **IPFS**
+ 2. **IPFS**
     ```shell
     # Service status
     systemctl status ipfs
@@ -169,7 +151,7 @@
     ipfs cat QmUsrhmu4wXnVHejbfp9kdtb1ZrWoZ6FTCUuFczDPzP1FG
     ```
 
- 4. **Radicle**
+ 3. **Radicle**
     ```shell
     # Service status
     systemctl status radicle
@@ -190,7 +172,7 @@
     find "${RAD_HOME}/storage" -maxdepth 2
     ```
 
- 5. **TON**
+ 4. **TON**
     ```shell
     # Service status
     systemctl status ton
@@ -208,7 +190,7 @@
     find "${TON_PATH}/storage-db/torrent/torrent-files"
     ```
 
- 6. **Torrent**
+ 5. **Torrent**
     ```shell
     # Service status
     systemctl status qbittorrent
@@ -267,12 +249,6 @@
     ```
 
 
-### Update Archivist CID
-
- We can update Archivist CID via [Archivist role](#archivist-role) and to peform this task we should
- 1. Update `archivist_cid` in [*playbook.yml*](playbook.yml).
-
-
 ### Update IPFS CID
 
  We can update IPFS CID via [IPFS role](#ipfs-role) and to peform this task we should
@@ -297,4 +273,4 @@
  1. Update `torrent_magnet` in [*playbook.yml*](playbook.yml).
 
 > [!NOTE]
-> Variables `archivist_cid`, `ipfs_cid`, `radicle_rid`, `ton_bagid` and `torrent_magnet` accept multiple, space delimited values.
+> Variables `ipfs_cid`, `radicle_rid`, `ton_bagid` and `torrent_magnet` accept multiple, space delimited values.

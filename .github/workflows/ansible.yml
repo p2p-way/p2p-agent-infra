@@ -51,7 +51,6 @@ jobs:
         run: |
           ansible-playbook \
             --become \
-            --extra-vars '{ enable_archivist: true }' \
             ${{ env.ansible-directory }}/playbook.yml
         env:
           ANSIBLE_LOCALHOST_WARNING: false

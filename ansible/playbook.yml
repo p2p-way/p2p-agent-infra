@@ -20,13 +20,11 @@
         desired_capacity:  ''
         # Components
         apps_update:       false
-        enable_archivist:  false
         enable_ipfs:       true
         enable_radicle:    true
         enable_ton:        true
         enable_torrent:    true
         # P2P
-        archivist_cid:     zDvZRwzkwcFgCVMjd6VJKNSzGbNMU1HfZEcrebfmJ5NzW5C8paB3
         ipfs_cid:          bafybeicjxk7fb3btcabn36rpyooao36ixbfdw6iwy6fvksvpvuo3iyscxm
         radicle_rid:       rad:z3gqcJUoA1n9HaHKufZs5FCSGazv5
         ton_bagid:         12432C1BEE1BF12FE294CB63694EFFED189B1041F4E88D51E3E65CCB2A64D8B4
@@ -40,4 +38,3 @@
     - {role: ipfs,      when: enable_ipfs,                 ignore_errors: true} # noqa: yaml[commas]
     - {role: ton,       when: enable_ton,                  ignore_errors: true} # noqa: yaml[commas]
     - {role: torrent,   when: enable_torrent,              ignore_errors: true} # noqa: yaml[commas]
-    - {role: archivist, when: enable_archivist,            ignore_errors: true} # noqa: yaml[commas]

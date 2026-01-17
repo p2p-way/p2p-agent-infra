@@ -290,7 +290,6 @@
 
  4. Update variables in the [*ansible/readme.md*](../ansible/readme.md) and [*ansible/playbook.yml*](../ansible/playbook.yml) files
     ```yaml
-     archivist_cid
      ipfs_cid
      radicle_rid
      ton_bagid

@@ -16,7 +16,6 @@
  2. Open the following ports
     | App       | Ports           |
     | --------- | --------------- |
-    | Archivist | `TCP/UDP: 8090` |
     | IPFS      | `TCP/UDP: 4001` |
     | Radicle   | `TCP: 8776`     |
     | TON       | `UDP: 3333`     |

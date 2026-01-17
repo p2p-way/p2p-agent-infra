@@ -1,9 +1,0 @@
-# Archivist - Wait
-- name: Wait app endpoint
-  ansible.builtin.uri:
-    url: '{{ archivist_api_endpoint_check }}'
-  until: archivist_api_endpoint_check_probe.status == 200
-  register: archivist_api_endpoint_check_probe
-  retries: 2
-  delay: 5
-  timeout: 5
