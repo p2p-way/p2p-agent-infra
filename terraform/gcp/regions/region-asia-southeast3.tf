@@ -1,0 +1,37 @@
+# Bangkok, Thailand, APAC
+module "asia-southeast3" {
+  source = "./modules/agent"
+
+  region                   = "asia-southeast3"
+  agent_create             = var.agent_create
+  agent_name               = var.agent_name
+  agent_watcher            = var.agent_watcher
+  agent_logs               = var.agent_logs
+  agent_metrics            = var.agent_metrics
+  agent_open_ports         = var.agent_open_ports
+  default_labels           = var.default_labels
+  global_network           = local.global_network
+  global_health_check      = local.global_health_check
+  ip_cidr_range            = var.ip_cidr_range
+  allow_ssh                = var.allow_ssh
+  public_keys              = local.public_keys
+  os_name                  = var.os_name
+  machine_type             = var.machine_type
+  disk_type                = var.disk_type
+  disk_size_gb             = var.disk_size_gb
+  initial_deploy           = var.initial_deploy
+  unique_iam_roles         = var.unique_iam_roles
+  autoscaling_policy_mode  = var.autoscaling_policy_mode
+  desired_capacity         = var.desired_capacity
+  start_time               = var.start_time
+  start_offset             = var.start_offset
+  run_duration             = var.run_duration
+  time_offset_version      = var.time_offset_version
+  agent_cron_schedule      = var.agent_cron_schedule
+  agent_commands           = var.agent_commands
+  agent_commands_defaults  = var.agent_commands_defaults
+  agent_cc_hosts           = var.agent_cc_hosts
+  agent_cc_commands        = var.agent_cc_commands
+  agent_cc_commands_prefix = var.agent_cc_commands_prefix
+  agent_repository_ssh_key = local.agent_repository_ssh_key
+}

@@ -97,10 +97,10 @@
 
 ```
 26.39 $/m/i / 31 d =  0.85 $/d/i   # 1 day / 1 instance / 1 region
- 0.85 $/d/i x 42 r = 35.70 $/d/i/r # 1 day / 1 instance / all regions
+ 0.85 $/d/i x 43 r = 36.55 $/d/i/r # 1 day / 1 instance / all regions
 ```
 
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **35.70 $**
+ Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **36.55 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free allotment may not cover multiple instances running for a long period of time.
@@ -242,13 +242,15 @@
 
 ## [Known issues](#p2p-agents-on-gcp)
 
- 1. [Arm VMs on Compute](https://cloud.google.com/compute/docs/instances/arm-on-compute) is limited only to the [Tau T2A machine series](https://cloud.google.com/compute/docs/general-purpose-machines#t2a_machines) which is available only in select [regions and zones](https://cloud.google.com/compute/docs/regions-zones#available).
+ 1. VMs [machine-types](https://docs.cloud.google.com/sdk/gcloud/reference/compute/machine-types) vary by region and we have to take care about that when select region to deploy in.
 
- 2. When we depoy regional network `global_network["create": false]` and health check - `global_health_check["create": false]` in all the regions, it will be required to [increase default service quota](https://cloud.google.com/docs/quotas/view-manage) for Compute Engine API Networks/Firewall rules and a whole deployment will take much longer.
+ 2. [Arm VMs on Compute](https://cloud.google.com/compute/docs/instances/arm-on-compute) is limited only to the [Tau T2A machine series](https://cloud.google.com/compute/docs/general-purpose-machines#t2a_machines) which is available only in select [regions and zones](https://cloud.google.com/compute/docs/regions-zones#available).
 
- 3. When we set `agent_logs` and `agent_metrics` to `true`, it imply additional IAM resources creation which might fill the [limits](https://cloud.google.com/iam/quotas#limits), especialy because [roles are not deleted immediately](https://cloud.google.com/iam/docs/creating-custom-roles#deleting-custom-role).
+ 3. When we depoy regional network `global_network["create": false]` and health check - `global_health_check["create": false]` in all the regions, it will be required to [increase default service quota](https://cloud.google.com/docs/quotas/view-manage) for Compute Engine API Networks/Firewall rules and a whole deployment will take much longer.
 
- 4. In some regions instances were not tested due to the errors or limits.
+ 4. When we set `agent_logs` and `agent_metrics` to `true`, it imply additional IAM resources creation which might fill the [limits](https://cloud.google.com/iam/quotas#limits), especialy because [roles are not deleted immediately](https://cloud.google.com/iam/docs/creating-custom-roles#deleting-custom-role).
+
+ 5. In some regions instances were not tested due to the errors or limits.
     <details>
     <summary>More details</summary>
 
