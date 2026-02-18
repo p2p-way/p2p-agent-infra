@@ -1,9 +1,16 @@
 # Common - Setup firewall
+- name: Firewall - Get binary path
+  ansible.builtin.command: which {{ common_firewall_binary }}
+  register: common_firewall_binary_path
+  changed_when: false
+  failed_when: false
+  when: enable_firewall
+
 - name: Firewall - Install
   ansible.builtin.apt:
     name: '{{ common_firewall_package }}'
     state: present
-  when: enable_firewall
+  when: enable_firewall and common_firewall_binary_path.stdout == ''
 
 - name: Firewall - Create rules folder
   ansible.builtin.file:
@@ -12,13 +19,6 @@
     mode: '755'
     owner: '{{ base_user }}'
     group: '{{ base_group }}'
-  when: enable_firewall
-
-- name: Firewall - Get binary path
-  ansible.builtin.command: which {{ common_firewall_binary }}
-  register: common_firewall_binary_path
-  changed_when: false
-  failed_when: false
   when: enable_firewall
 
 - name: Firewall - Create config
