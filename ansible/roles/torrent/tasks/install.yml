@@ -1,12 +1,38 @@
 # Torrent - Install
-- name: Add PPA repository
-  ansible.builtin.apt_repository:
-    repo: ppa:qbittorrent-team/qbittorrent-stable
+- name: Get binary path
+  ansible.builtin.command: which {{ torrent_bin }}
+  register: torrent_binary_path
+  changed_when: false
+  failed_when: false
 
-- name: Install qBittorrent # noqa: package-latest
+- name: Get PPA repository key fingerprint
+  ansible.builtin.uri:
+    url: https://api.launchpad.net/devel/~qbittorrent-team/+archive/ubuntu/qbittorrent-stable
+    return_content: true
+    method: GET
+    headers:
+      Accept: 'application/json'
+  register: torrent_repository_key_fingerprint
+  when: torrent_binary_path.stdout == ''
+
+- name: Add repository
+  ansible.builtin.deb822_repository:
+    name: "qbittorrent-stable-{{ ansible_facts['distribution_release'] }}"
+    types: deb
+    uris: https://ppa.launchpadcontent.net/qbittorrent-team/qbittorrent-stable/ubuntu
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    signed_by: |
+      {{ lookup('ansible.builtin.url',
+      'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ torrent_repository_key_fingerprint.json.signing_key_fingerprint }}',
+      split_lines=False) }}
+  when: torrent_binary_path.stdout == ''
+
+- name: Install qBittorrent
   ansible.builtin.apt:
     name: qbittorrent-nox
-    state: latest
+    state: present
+  when: torrent_binary_path.stdout == ''
 
 - name: Create user
   ansible.builtin.user:
