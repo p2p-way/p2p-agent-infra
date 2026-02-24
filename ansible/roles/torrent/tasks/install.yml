@@ -24,7 +24,7 @@
     components: main
     signed_by: |
       {{ lookup('ansible.builtin.url',
-      'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ torrent_repository_key_fingerprint.json.signing_key_fingerprint }}',
+      'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x' + torrent_repository_key_fingerprint.json.signing_key_fingerprint,
       split_lines=False) }}
   when: torrent_binary_path.stdout == ''
 
