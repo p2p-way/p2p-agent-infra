@@ -29,7 +29,7 @@
 | 4 | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3/4`              | [`0.85`](gcp/readme.md#costs)          |
 | 5 | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       |
 | 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`13`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) |
-| 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.29`](hetzner/readme.md#costs)      |
+| 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.36`](hetzner/readme.md#costs)      |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)

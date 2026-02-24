@@ -56,18 +56,18 @@
 
  [Pricing](https://www.hetzner.com/cloud#pricing)
 
- | Resource                                                                           | Price        | Costs      | Comment           |
- | ---------------------------------------------------------------------------------- | ------------ | ---------- | ----------------- |
- | [VPS with AMD EPYC™ 7002 series processors](https://www.hetzner.com/cloud#pricing) | `0.0146 $/h` | `8.49 $/m` | CPX11 / Singapore |
- | [Primary IPv4](https://www.hetzner.com/cloud#pricing)                              | `0.001 $/h`  | `0.60 $/m` |                   |
- | TOTAL                                                                              |              | `9.09 $/m` |                   |
+ | Resource                                                                           | Price        | Costs       | Comment           |
+ | ---------------------------------------------------------------------------------- | ------------ | ----------- | ----------------- |
+ | [VPS with AMD EPYC™ 7002 series processors](https://www.hetzner.com/cloud#pricing) | `0.0152 $/h` | `11.31 $/m` | CPX12 / Singapore |
+ | [Primary IPv4](https://www.hetzner.com/cloud#pricing)                              | `0.001 $/h`  | `0.60 $/m`  |                   |
+ | TOTAL                                                                              |              | `9.09 $/m`  |                   |
 
 ```
-9.09 $/m/i / 31 d = 0.29 $/d/i   # 1 day / 1 instance / 1 region
-0.29 $/d/i x  6 r = 1.74 $/d/i/r # 1 day / 1 instance / all regions
+11.31 $/m/i / 31 d = 0.36 $/d/i   # 1 day / 1 instance / 1 region
+ 0.36 $/d/i x  6 r = 2.16 $/d/i/r # 1 day / 1 instance / all regions
 ```
 
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **1.74 $**
+ Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **2.16 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.
