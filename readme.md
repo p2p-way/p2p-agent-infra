@@ -13,20 +13,7 @@
 
  [Radicle](ansible/readme.md) could be used for repository content distribution.
 
- Please check [Architecture](architecture.md) for more details.
-
-
-## Run agents
-
- For more information about how to run P2P agents, please see the following guides
- 1. [P2P agent on Alibaba](terraform/alibaba/readme.md)
- 2. [P2P agent on AWS](terraform/aws/readme.md)
- 3. [P2P agent on Azure](terraform/azure/readme.md)
- 4. [P2P agent on GCP](terraform/gcp/readme.md)
- 5. [P2P agent on Akamai](terraform/akamai/readme.md)
- 6. [P2P agent on DigitalOcean](terraform/digitalocean/readme.md)
- 7. [P2P agent on Hetzner](terraform/hetzner/readme.md)
- 8. [P2P agent on generic installation](terraform/generic/readme.md)
+ Please check [Architecture](architecture.md) for more details and follow the [guides to Run agents](terraform/readme.md).
 
 
 ## To do
