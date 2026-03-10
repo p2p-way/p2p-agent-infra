@@ -15,6 +15,8 @@ resource "aws_scheduler_schedule" "scheduler" {
     arn      = aws_lambda_function.watcher[count.index].arn
     role_arn = aws_iam_role.scheduler[count.index].arn
   }
+
+  region = local.region
 }
 
 # IAM Role - Scheduler
@@ -48,6 +50,8 @@ resource "aws_lambda_permission" "scheduler" {
   function_name = aws_lambda_function.watcher[count.index].function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_scheduler_schedule.scheduler[count.index].arn
+
+  region = local.region
 }
 
 # Lambda permission - Scheduler alias
@@ -60,4 +64,6 @@ resource "aws_lambda_permission" "scheduler_alias" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_scheduler_schedule.scheduler[count.index].arn
   qualifier     = aws_lambda_alias.watcher[count.index].name
+
+  region = local.region
 }

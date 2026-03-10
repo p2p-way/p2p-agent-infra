@@ -19,6 +19,8 @@ resource "aws_lambda_function" "watcher" {
       active    = true
     }
   }
+
+  region = local.region
 }
 
 # Lambda alias - Watcher
@@ -29,6 +31,8 @@ resource "aws_lambda_alias" "watcher" {
   description      = "Latest version of ${local.watcher_name} function"
   function_name    = aws_lambda_function.watcher[count.index].function_name
   function_version = "$LATEST"
+
+  region = local.region
 }
 
 # Bucket suffix - Watcher
@@ -46,6 +50,8 @@ resource "aws_s3_bucket" "watcher" {
 
   bucket        = "${local.watcher_name}-${random_string.watcher[count.index].result}"
   force_destroy = true
+
+  region = local.region
 }
 
 # Archive - Watcher
@@ -65,6 +71,8 @@ resource "aws_s3_object" "watcher" {
   key         = "${local.watcher_file}-${local.region}.zip"
   source      = data.archive_file.watcher[count.index].output_path
   source_hash = filemd5(data.archive_file.watcher[count.index].output_path)
+
+  region = local.region
 }
 
 # IAM Role - Watcher
@@ -153,4 +161,6 @@ resource "aws_cloudwatch_log_group" "watcher" {
 
   name              = "/aws/lambda/${aws_lambda_function.watcher[count.index].function_name}"
   retention_in_days = 7
+
+  region = local.region
 }
