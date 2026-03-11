@@ -250,6 +250,18 @@ variable "watcher_name" {
   default     = "P2P watcher"
 }
 
+variable "watcher_file" {
+  description = "Name of the lambda file."
+  type        = string
+  default     = "watcher.py"
+}
+
+variable "watcher_runtime" {
+  description = "Name of the lambda runtime."
+  type        = string
+  default     = "python3.14"
+}
+
 # Scheduler
 variable "scheduler_name" {
   description = "Name to be used for scheduler resources."

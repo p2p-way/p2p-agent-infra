@@ -8,8 +8,8 @@ resource "aws_lambda_function" "watcher" {
   s3_bucket        = aws_s3_bucket.watcher[count.index].id
   s3_key           = aws_s3_object.watcher[count.index].key
   role             = aws_iam_role.watcher[count.index].arn
-  handler          = "lambda_function.lambda_handler"
-  runtime          = "python3.14"
+  handler          = "${trimsuffix(var.watcher_file, format(".%s", element(split(".", var.watcher_file), -1)))}.lambda_handler"
+  runtime          = var.watcher_runtime
   architectures    = var.lambda_architecture
   source_code_hash = filebase64sha256(data.archive_file.watcher[count.index].output_path)
 
@@ -59,8 +59,8 @@ data "archive_file" "watcher" {
   count = local.watcher_create ? 1 : 0
 
   type        = "zip"
-  source_file = "${path.module}/files/${local.watcher_file}"
-  output_path = "${local.watcher_file}-${local.region}.zip"
+  source_file = "${path.module}/files/${var.watcher_file}"
+  output_path = "${var.watcher_file}-${local.region}.zip"
 }
 
 # Upload to S3 - Watcher
@@ -68,7 +68,7 @@ resource "aws_s3_object" "watcher" {
   count = local.watcher_create ? 1 : 0
 
   bucket      = aws_s3_bucket.watcher[count.index].id
-  key         = "${local.watcher_file}-${local.region}.zip"
+  key         = "${var.watcher_file}-${local.region}.zip"
   source      = data.archive_file.watcher[count.index].output_path
   source_hash = filemd5(data.archive_file.watcher[count.index].output_path)
 
@@ -145,10 +145,11 @@ resource "aws_iam_role_policy" "watcher" {
       },
       {
         Action = [
+          "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
         Effect   = "Allow"
-        Resource = "${aws_cloudwatch_log_group.watcher[count.index].arn}"
+        Resource = "${aws_cloudwatch_log_group.watcher[count.index].arn}:*"
         Sid      = "CloudWatch"
       }
     ]
