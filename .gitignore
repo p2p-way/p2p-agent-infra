@@ -32,6 +32,9 @@ terraform.rc
 # Ignore dependency lock file
 .terraform.lock.hcl
 
+# Lambda artifacts
+*.zip
+
 # SSH keys
 *.pem
 *.key

@@ -41,6 +41,7 @@ resource "aws_iam_role_policy" "agent_watcher" {
     Statement = [
       {
         Action = [
+          "autoscaling:DescribeAutoScalingGroups",
           "autoscaling:DescribeScheduledActions"
         ]
         Effect   = "Allow"
