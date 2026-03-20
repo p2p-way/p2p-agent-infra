@@ -31,7 +31,7 @@
   changed_when: false
   when: watcher_aws_cli.stdout == ''
 
-- name: Update Autoscaler
+- name: Update autoscaler
   ansible.builtin.shell: |
     set -o pipefail
 
@@ -52,26 +52,67 @@
     export AWS_SECRET_ACCESS_KEY=$(jq -r '.SecretAccessKey' <<< "${credentials}")
     export AWS_SESSION_TOKEN=$(jq -r '.Token' <<< "${credentials}")
 
-    # Get stop scheduler and current time diff
+    # Check if scaling is required
+    desired_capacity_current=$(aws autoscaling describe-auto-scaling-groups \
+      --region "${region}" \
+      --auto-scaling-group-name "${asg_name}" \
+      --query 'AutoScalingGroups[0].DesiredCapacity')
+
+    scaling_drift="${desired_capacity_current} --> ${desired_capacity}"
+
+    if [[ -n "${desired_capacity_current}" ]]; then
+      if [[ ${desired_capacity_current} -eq ${desired_capacity} ]]; then
+        echo "Skip scaling agent instances: ${scaling_drift}"
+        exit 0
+      fi
+    fi
+
+    # Get stop scheduler
     scheduler_time_asg=$(aws autoscaling describe-scheduled-actions \
       --region "${region}" \
       --auto-scaling-group-name "${asg_name}" \
       --query 'ScheduledUpdateGroupActions[?ScheduledActionName==`'${stop_scheduler}'`].StartTime' \
       --output=text)
-    [[ -n "${scheduler_time_asg}" ]] && scheduler_time=$(date -d "${scheduler_time_asg}" "+%s") || scheduler_time=$(date "+%s")
-    current_time=$(date "+%s")
-    diff_time=$((scheduler_time - current_time))
 
-    # Skip update when near the stop
-    [[ "${diff_time}" -lt "${diff_time_admissible}" ]] && exit 0
+    # Check stop scheduler and current time diff
+    if [[ -n "${scheduler_time_asg}" ]]; then
+      scheduler_time=$(date -d "${scheduler_time_asg}" "+%s")
+      current_time=$(date "+%s")
+      diff_time=$((scheduler_time - current_time))
 
-    # Update Autoscaler
+      # Skip update when near the stop
+      if [[ "${diff_time}" -lt "${diff_time_admissible}" ]]; then
+        echo "Skip scaling agent instances - stop diff_time ${diff_time} is lower than ${diff_time_admissible}"
+        exit 0
+      else
+        echo "Scaling agent instances will be performed - stop diff_time is $(date -d @${diff_time} +%T)"
+      fi
+    fi
+
+    # Update autoscaler
     aws autoscaling update-auto-scaling-group \
       --region "${region}" \
       --auto-scaling-group-name "${asg_name}" \
-      --min-size "${desired_capacity}" \
-      --max-size "${desired_capacity}" \
       --desired-capacity "${desired_capacity}"
+
+    # Check scaling status
+    if [[ $? -eq 0 ]]; then
+      echo "Scaling agent instances successful: ${scaling_drift}"
+    else
+      echo "Scaling agent instances failed: ${scaling_drift}"
+    fi
   args:
     executable: bash
+  register: watcher_autoscaler
   changed_when: false
+
+- name: Show autoscaler output
+  ansible.builtin.debug:
+    msg: |
+      {{ item }}:
+      {% for out in item | extract(watcher_autoscaler) %}
+      {{ out }}
+      {% endfor %}
+  loop:
+    - stdout_lines
+    - stderr_lines
