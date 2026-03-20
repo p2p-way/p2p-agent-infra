@@ -2,50 +2,58 @@
 module "multi-regions" {
   source = "./modules/agent"
 
+  # All the regions
   for_each = data.aws_regions.all-regions[0].names
-  # for_each = toset(["eu-central-1"])
 
-  region                   = each.key
-  agent_create             = var.agent_create
-  agent_name               = var.agent_name
-  agent_watcher            = var.agent_watcher
-  agent_logs               = var.agent_logs
-  agent_metrics            = var.agent_metrics
-  agent_logs_retention     = var.agent_logs_retention
-  agent_open_ports         = var.agent_open_ports
-  default_tags             = var.default_tags
-  cidr_block               = var.cidr_block
-  az_number                = var.az_number
-  allow_ssh                = var.allow_ssh
-  public_keys              = local.public_keys
-  os_name                  = var.os_name
-  instance_type            = var.instance_type
-  volume_size              = var.volume_size
-  volume_type              = var.volume_type
-  volume_iops              = var.volume_iops
-  volume_throughput        = var.volume_throughput
-  initial_deploy           = var.initial_deploy
-  desired_capacity         = var.desired_capacity
-  start_time               = var.start_time
-  start_offset             = var.start_offset
-  run_duration             = var.run_duration
-  time_offset_version      = var.time_offset_version
-  agent_cron_schedule      = var.agent_cron_schedule
-  agent_commands           = var.agent_commands
-  agent_commands_defaults  = var.agent_commands_defaults
-  agent_cc_hosts           = local.agent_cc_hosts
-  agent_cc_commands        = var.agent_cc_commands
-  agent_cc_commands_prefix = var.agent_cc_commands_prefix
-  agent_repository_ssh_key = local.agent_repository_ssh_key
-  watcher_name             = var.watcher_name
-  scheduler_name           = var.scheduler_name
-  scheduler_expression     = var.scheduler_expression
-  lambda_architecture      = var.lambda_architecture
+  # Specific regions
+  # for_each = toset(["eu-central-1", "eu-south-1"])
+
+  # Exclude affected regions
+  # for_each = setsubtract(sort(data.aws_regions.all-regions[0].names), ["me-central-1", "me-south-1"])
+
+  region                      = each.key
+  agent_create                = var.agent_create
+  agent_name                  = var.agent_name
+  agent_watcher               = var.agent_watcher
+  agent_logs                  = var.agent_logs
+  agent_metrics               = var.agent_metrics
+  agent_logs_retention        = var.agent_logs_retention
+  agent_open_ports            = var.agent_open_ports
+  default_tags                = var.default_tags
+  cidr_block                  = var.cidr_block
+  az_number                   = var.az_number
+  allow_ssh                   = var.allow_ssh
+  public_keys                 = local.public_keys
+  os_name                     = var.os_name
+  instance_type               = var.instance_type
+  volume_size                 = var.volume_size
+  volume_type                 = var.volume_type
+  volume_iops                 = var.volume_iops
+  volume_throughput           = var.volume_throughput
+  initial_deploy              = var.initial_deploy
+  desired_capacity            = var.desired_capacity
+  start_time                  = var.start_time
+  start_offset                = var.start_offset
+  run_duration                = var.run_duration
+  time_offset_version         = var.time_offset_version
+  agent_cron_schedule         = var.agent_cron_schedule
+  agent_commands              = var.agent_commands
+  agent_commands_defaults     = var.agent_commands_defaults
+  agent_cc_hosts              = local.agent_cc_hosts
+  agent_cc_commands           = var.agent_cc_commands
+  agent_cc_commands_prefix    = var.agent_cc_commands_prefix
+  agent_repository_ssh_key    = local.agent_repository_ssh_key
+  watcher_name                = var.watcher_name
+  watcher_file                = var.watcher_file
+  watcher_runtime             = var.watcher_runtime
+  watcher_cc_agent_prefix     = var.watcher_cc_agent_prefix
+  watcher_cc_scheduler_prefix = var.watcher_cc_scheduler_prefix
+  scheduler_name              = var.scheduler_name
+  scheduler_expression        = local.scheduler_expression
+  lambda_architecture         = var.lambda_architecture
 }
 
 # All regions
 data "aws_regions" "all-regions" {
   count = var.agent_create ? 1 : 0
-
-  all_regions = true
 }

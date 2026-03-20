@@ -3,9 +3,9 @@ resource "aws_autoscaling_group" "agent" {
   count = local.create ? 1 : 0
 
   name             = local.resource_name
-  desired_capacity = var.initial_deploy ? 0 : var.desired_capacity
-  max_size         = var.initial_deploy ? 0 : var.desired_capacity
-  min_size         = var.initial_deploy ? 0 : var.desired_capacity
+  min_size         = var.min_size
+  max_size         = var.max_size
+  desired_capacity = var.start_time == "watcher" ? null : var.initial_deploy ? 0 : var.desired_capacity
 
   vpc_zone_identifier = [for subnet in aws_subnet.agent : subnet.id]
 
@@ -22,8 +22,8 @@ resource "aws_autoscaling_schedule" "agent_start" {
   count = var.start_time == "watcher" || !var.initial_deploy || !local.create ? 0 : 1
 
   scheduled_action_name  = "initial-start"
-  min_size               = var.desired_capacity
-  max_size               = var.desired_capacity
+  min_size               = var.min_size
+  max_size               = var.max_size
   desired_capacity       = var.desired_capacity
   start_time             = local.start_time
   autoscaling_group_name = try(aws_autoscaling_group.agent[count.index].name, "")

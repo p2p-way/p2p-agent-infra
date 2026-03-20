@@ -41,6 +41,7 @@ resource "aws_iam_role_policy" "watcher" {
       },
       {
         Action = [
+          "autoscaling:UpdateAutoScalingGroup",
           "autoscaling:BatchDeleteScheduledAction",
           "autoscaling:BatchPutScheduledUpdateGroupAction",
           "autoscaling:DeleteScheduledAction",
@@ -60,11 +61,20 @@ resource "aws_iam_role_policy" "watcher" {
       },
       {
         Action = [
+          "scheduler:GetSchedule",
           "scheduler:UpdateSchedule"
         ]
         Effect   = "Allow"
         Resource = "${aws_scheduler_schedule.scheduler[count.index].arn}"
         Sid      = "EventBridge"
+      },
+      {
+        Action = [
+          "iam:PassRole"
+        ]
+        Effect   = "Allow"
+        Resource = "${aws_iam_role.scheduler[count.index].arn}"
+        Sid      = "EventBridgeIam"
       },
       {
         Action = [

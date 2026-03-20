@@ -41,7 +41,7 @@ variable "cc_commands" {
   description = "Map of the control center commands."
   type        = map(any)
   default = {
-    cc-w-scheduler          = "*/10 * * * *"
+    cc-w-s-expression       = "rate(15 minutes)"
     cc-w-a-desired-capacity = 1
     cc-w-a-start            = "2022-11-28T13:00:00Z"
     cc-w-a-start-offset     = "15 minutes"
@@ -204,11 +204,6 @@ variable "start_time" {
   description = "Time for this action to start. Can be `watcher`, `now`or `custom` in `YYYY-MM-DDThh:mm:ssZ` format in UTC/GMT only (for example, 2014-06-01T00:00:00Z )."
   type        = string
   default     = "now"
-
-  validation {
-    condition     = var.start_time != "watcher"
-    error_message = "Watcher is not implemented yet, please set value to \"now\" or custom \"YYYY-MM-DDThh:mm:ssZ\" format."
-  }
 }
 
 variable "start_offset" {
@@ -291,6 +286,30 @@ variable "watcher_name" {
   description = "Name to be used for watcher resources."
   type        = string
   default     = "P2P watcher"
+}
+
+variable "watcher_file" {
+  description = "Name of the lambda file."
+  type        = string
+  default     = "watcher.py"
+}
+
+variable "watcher_runtime" {
+  description = "Name of the lambda runtime."
+  type        = string
+  default     = "python3.14"
+}
+
+variable "watcher_cc_agent_prefix" {
+  description = "Control center agent prefix for the watcher."
+  type        = string
+  default     = "cc-w-a"
+}
+
+variable "watcher_cc_scheduler_prefix" {
+  description = "Control center scheduler prefix for the watcher."
+  type        = string
+  default     = "cc-w-s"
 }
 
 # Scheduler

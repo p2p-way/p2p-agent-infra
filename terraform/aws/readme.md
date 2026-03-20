@@ -62,9 +62,8 @@
 ## [Limitations](#p2p-agents-on-aws)
 
  1. Almost all of the AWS Regions have 3 Availability Zones and some of them like *Northern California* and *São Paulo* may provide access just to two AZ's.
- 2. Watcher is not implemented yet and we should set variable [`start_time`](../readme.md#configuration) only as `now` or specify a custom time.
- 3. Control center [alternate domain name](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-https-alternate-domain-names.html) is not implemented yet and a distribution default domain name will be used.
- 4. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
+ 2. Control center [alternate domain name](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-https-alternate-domain-names.html) is not implemented yet and a distribution default domain name will be used.
+ 3. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
 ## [Regions](#p2p-agents-on-aws)
@@ -103,7 +102,7 @@
     # List small instances in the region
     aws ec2 describe-instance-types \
       --region eu-central-1 \
-      --query 'sort_by(InstanceTypes[], &InstanceType)[?VCpuInfo.DefaultVCpus<=`2`].{"  Instance": InstanceType, " vCPU": VCpuInfo.DefaultVCpus, Memory: MemoryInfo.SizeInMiB}' \
+      --query 'sort_by(InstanceTypes[], &InstanceType)[?VCpuInfo.DefaultVCpus<=`2`&&MemoryInfo.SizeInMiB<=`4096`].{"  Instance": InstanceType, " vCPU": VCpuInfo.DefaultVCpus, Memory: MemoryInfo.SizeInMiB}' \
       --output table
 
    # Lists the applied quota values for the EC2 service
@@ -226,6 +225,8 @@
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions or even update control center configuration. And next steps mainly depends on the start time we set.
 
+ We also should keep in mind that when we set `start_time = "watcher"`, we assume to manage `scheduler_expression` via control center `cc-w-s-expression` variable. If control center is managed outside of this code, we might get a configuration drift which can be solved by sync code variable with the value from a control center.
+
  **Nodes not started yet**
 
  Update is very transparent and we need just to set `desired_capacity` with the required number and run Terraform.
@@ -279,6 +280,11 @@
  1. Cleanup resources created by Terraform
     ```shell
     terraform destroy
+    ```
+
+ 2. Cleanup created zip archives when `start_time = "watcher"`
+    ```shell
+    rm -rf *.zip
     ```
 
 

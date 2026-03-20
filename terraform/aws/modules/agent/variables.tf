@@ -151,6 +151,18 @@ variable "initial_deploy" {
   default     = true
 }
 
+variable "min_size" {
+  description = "Min number of Amazon EC2 instances that should be running in the group."
+  type        = number
+  default     = 0
+}
+
+variable "max_size" {
+  description = "Max number of Amazon EC2 instances that should be running in the group."
+  type        = number
+  default     = 30
+}
+
 variable "desired_capacity" {
   description = "Number of Amazon EC2 instances that should be running in the group."
   type        = number
@@ -161,11 +173,6 @@ variable "start_time" {
   description = "Time for this action to start. Can be `watcher`, `now`or `custom` in `YYYY-MM-DDThh:mm:ssZ` format in UTC/GMT only (for example, 2014-06-01T00:00:00Z )."
   type        = string
   default     = "now"
-
-  validation {
-    condition     = var.start_time != "watcher"
-    error_message = "Watcher is not implemented yet, please set value to \"now\" or custom \"YYYY-MM-DDThh:mm:ssZ\" format."
-  }
 }
 
 variable "start_offset" {
@@ -260,6 +267,18 @@ variable "watcher_runtime" {
   description = "Name of the lambda runtime."
   type        = string
   default     = "python3.14"
+}
+
+variable "watcher_cc_agent_prefix" {
+  description = "Control center agent prefix for the watcher."
+  type        = string
+  default     = "cc-w-a"
+}
+
+variable "watcher_cc_scheduler_prefix" {
+  description = "Control center scheduler prefix for the watcher."
+  type        = string
+  default     = "cc-w-s"
 }
 
 # Scheduler

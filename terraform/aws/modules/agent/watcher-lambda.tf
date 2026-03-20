@@ -15,8 +15,14 @@ resource "aws_lambda_function" "watcher" {
 
   environment {
     variables = {
-      agent_arn = aws_autoscaling_group.agent[count.index].arn,
-      active    = true
+      cloud                = var.default_tags["Cloud"]
+      region               = var.region,
+      cc_hosts             = join(" ", var.agent_cc_hosts),
+      agent_name           = aws_autoscaling_group.agent[count.index].name
+      agent_prefix         = var.watcher_cc_agent_prefix,
+      scheduler_name       = local.scheduler_name
+      scheduler_prefix     = var.watcher_cc_scheduler_prefix,
+      scheduler_group_name = aws_scheduler_schedule_group.scheduler[count.index].name
     }
   }
 
@@ -58,6 +64,16 @@ resource "aws_lambda_permission" "watcher_scheduler_alias" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_scheduler_schedule.scheduler[count.index].arn
   qualifier     = aws_lambda_alias.watcher[count.index].name
+
+  region = local.region
+}
+
+# Lambda URL - Watcher (development/debug)
+resource "aws_lambda_function_url" "watcher" {
+  count = local.watcher_create && false ? 1 : 0
+
+  function_name      = aws_lambda_function.watcher[count.index].function_name
+  authorization_type = "NONE"
 
   region = local.region
 }
