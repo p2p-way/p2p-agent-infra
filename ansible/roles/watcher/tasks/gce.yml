@@ -33,7 +33,7 @@
     update_cache: true
   when: watcher_gcloud_cli.stdout == ''
 
-- name: Update Autoscaler
+- name: Update autoscaler
   ansible.builtin.shell: |
     set -o pipefail
 
@@ -45,7 +45,7 @@
     region=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone | xargs basename | sed 's/-[a-z]$//')
     instance_group=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/created-by | xargs basename)
 
-    # Update Autoscaler
+    # Update autoscaler
     gcloud compute instance-groups managed \
       update-autoscaling "${instance_group}" \
       --region="${region}" \

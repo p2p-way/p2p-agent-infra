@@ -15,7 +15,7 @@
 | - | ------------------------ | ----------------------------------------- |
 | 1 | [common](#common-role)   | Common tasks                              |
 | 2 | [agent](#agent-role)     | Update agent script and scheduler         |
-| 3 | [watcher](#watcher-role) | Act as a watcher and configure Autoscaler |
+| 3 | [watcher](#watcher-role) | Act as a watcher and configure autoscaler |
 | 4 | [ipfs](#ipfs-role)       | Install IPFS support - P2P                |
 | 5 | [radicle](#radicle-role) | Install Radicle support - P2P             |
 | 6 | [ton](#ton-role)         | Install TON support - P2P                 |
@@ -40,7 +40,7 @@
 
 ### Watcher role
 
- In order to be able to manage Autoscaler settings we use [Agent side watcher](/architecture.md#agent-side-watcher).
+ In order to be able to manage autoscaler settings we use [Agent side watcher](/architecture.md#agent-side-watcher).
 
 
 ### IPFS role

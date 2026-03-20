@@ -14,7 +14,7 @@
 ## [Description](#p2p-agents-on-alibaba)
 
  This code provides [Terraform](../readme.md) configuration for [Alibaba Cloud](https://www.alibabacloud.com) stack deployment for P2P content distribution.
- 1. [Function Compute](https://www.alibabacloud.com/en/product/function-compute) - Run a function which will act as watcher and orchestrate VM provisioning via Autoscaler.
+ 1. [Function Compute](https://www.alibabacloud.com/en/product/function-compute) - Run a function which will act as watcher and orchestrate VM provisioning via autoscaler.
  2. [EventBridge](https://www.alibabacloud.com/en/product/eventbridge) - Provides a scheduler to invoke the function.
  3. [Virtual Private Cloud (VPC)](https://www.alibabacloud.com/en/product/vpc) - Provides a network for the VM instances.
  4. [Auto Scaling](https://www.alibabacloud.com/en/product/auto-scaling) - Scale and manage VM instances.

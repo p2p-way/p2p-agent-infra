@@ -95,7 +95,7 @@
       Agent watcher:    {{ watcher_enabled }}
       Desired capacity: {{ watcher_desired_capacity }}
 
-- name: Cloud Autoscaler
+- name: Cloud autoscaler
   ansible.builtin.include_tasks:
     file: '{{ common_cloud }}.yml'
   when: watcher_enabled and common_cloud != '' and watcher_desired_capacity | int >= 0

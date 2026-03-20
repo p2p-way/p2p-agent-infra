@@ -14,7 +14,7 @@
 ## [Description](#p2p-agents-on-gcp)
 
  This code provides [Terraform](../readme.md) configuration for [Google Cloud Platform](https://cloud.google.com/) stack deployment for P2P content distribution.
- 1. [Cloud Functions](https://cloud.google.com/functions) - Run a function which will act as watcher and orchestrate VM provisioning via Autoscaler.
+ 1. [Cloud Functions](https://cloud.google.com/functions) - Run a function which will act as watcher and orchestrate VM provisioning via autoscaler.
  2. [Cloud Scheduler](https://cloud.google.com/scheduler) - Provides a scheduler to invoke the function.
  3. [Cloud VPC](https://cloud.google.com/vpc) - Provides a network for the VM instances.
  4. [Cloud Instance groups](https://cloud.google.com/compute/docs/instance-groups/) - Manage VM instances.
@@ -190,11 +190,11 @@
  **Nodes already started**
 
  When nodes already started, following things are happened
- - Capacity of the Instance groups was changed by the Autoscaler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new Autoscaler start and it will lead to the down-time.
+ - Capacity of the Instance groups was changed by the autoscaler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new autoscaler start and it will lead to the down-time.
  - We should also note that `"Resizing of autoscaled regional managed instance groups is not allowed."`.
 
  To overcome this, we should set `initial_deploy = false` and `autoscaling_policy_mode = "OFF"` and Terraform will change it's behavior in the following way
- - Capacity for Autoscaler, which is initially set to 0, will use value from `desired_capacity`.
+ - Capacity for autoscaler, which is initially set to 0, will use value from `desired_capacity`.
  - We will be able to update instance group settings.
 
  Update variables in the *variables.auto.tfvars* file
