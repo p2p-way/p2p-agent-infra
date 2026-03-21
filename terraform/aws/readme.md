@@ -17,12 +17,13 @@
  1. [Amazon CloudFront](https://aws.amazon.com/cloudfront/) - Control center which will return headers based on the CloudFront Functions.
  2. [Amazon S3](https://aws.amazon.com/s3/) - Origin for control center CloudFront distribution.
  3. [AWS WAF](https://aws.amazon.com/waf/) - Protect control center.
- 4. [AWS Lambda](https://aws.amazon.com/lambda/) - Run a function which will act as watcher and orchestrate VM provisioning via Auto Scaling groups.
- 5. [Amazon EventBridge](https://aws.amazon.com/eventbridge/) - Provides a scheduler to invoke the Lambda function.
- 6. [Amazon VPC](https://aws.amazon.com/vpc/) - Provides a network for the VM.
- 7. [AWS Auto Scaling](https://aws.amazon.com/autoscaling/) - Scale and manage VM instances.
- 8. [Amazon EC2](https://aws.amazon.com/ec2/) - VM provisioning.
- 9. [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) - Logs and Metrics.
+ 4. [AWS Identity and Access Management](https://aws.amazon.com/iam/) - Provides access for Lambda and VM instances to update Auto Scaling groups and EventBridge scheduler.
+ 5. [AWS Lambda](https://aws.amazon.com/lambda/) - Run a function which will act as watcher and orchestrate VM provisioning via Auto Scaling groups.
+ 6. [Amazon EventBridge](https://aws.amazon.com/eventbridge/) - Provides a scheduler to invoke the Lambda function.
+ 7. [Amazon VPC](https://aws.amazon.com/vpc/) - Provides a network for the VM.
+ 8. [AWS Auto Scaling](https://aws.amazon.com/autoscaling/) - Scale and manage VM instances.
+ 9. [Amazon EC2](https://aws.amazon.com/ec2/) - VM provisioning.
+ 10. [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) - Logs and Metrics.
 
  Generally, this configuration will do the following
 
@@ -33,17 +34,17 @@
  4. Create AWS WAF and assign it to the CloudFront distribution.
 
 **Watcher and scheduler**
- > [!NOTE]
- > Watcher and scheduler is not implemented yet
- 1. Create an S3 bucket and upload Lambda code into it.
- 2. Create a Lambda function from the code located on S3.
- 3. Create a scheduler using EventBridge which will invoke Lambda function.
+ 1. Create IAM role with policies.
+ 2. Create CloudWatch Log group.
+ 3. Create S3 bucket and upload Lambda code into it.
+ 4. Create Lambda function from the code located on S3.
+ 5. Create scheduler using EventBridge which will invoke Lambda function.
 
 **Agent**
- 1. Create a VPC for EC2 instances.
- 2. Create IAM instance profile.
- 3. Create an EC2 Launch template for the instances.
- 4. Create an Auto Scaling group using EC2 Launch template.
+ 1. Create VPC for EC2 instances.
+ 2. Create IAM instance profile with policies.
+ 3. Create EC2 Launch template for the instances.
+ 4. Create Auto Scaling group using EC2 Launch template.
  5. Create CloudWatch Log group.
 
 
