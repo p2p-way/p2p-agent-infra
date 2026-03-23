@@ -18,7 +18,7 @@ events_scheduler = boto3.client("scheduler")
 # Variables
 timeout = 3
 cloud = os.environ["cloud"]
-region = os.environ["AWS_REGION"]
+region = os.environ["region"]
 name = os.environ["AWS_LAMBDA_FUNCTION_NAME"]
 cc_hosts = os.environ["cc_hosts"].split()
 agent_name = os.environ["agent_name"]
