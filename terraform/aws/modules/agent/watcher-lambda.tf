@@ -10,7 +10,7 @@ resource "aws_lambda_function" "watcher" {
   role             = aws_iam_role.watcher[count.index].arn
   handler          = "${trimsuffix(var.watcher_file, format(".%s", element(split(".", var.watcher_file), -1)))}.lambda_handler"
   runtime          = var.watcher_runtime
-  architectures    = var.lambda_architecture
+  architectures    = var.watcher_architecture
   source_code_hash = filebase64sha256(data.archive_file.watcher[count.index].output_path)
 
   environment {
@@ -70,7 +70,7 @@ resource "aws_lambda_permission" "watcher_scheduler_alias" {
 
 # Lambda URL - Watcher (development/debug)
 resource "aws_lambda_function_url" "watcher" {
-  count = local.watcher_create && false ? 1 : 0
+  count = local.watcher_create && true ? 1 : 0
 
   function_name      = aws_lambda_function.watcher[count.index].function_name
   authorization_type = "NONE"

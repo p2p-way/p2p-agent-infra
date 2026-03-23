@@ -10,12 +10,12 @@ locals {
   agent_open_tcp_ports  = try(element(var.agent_open_ports, 0), null)
   agent_open_udp_ports  = try(element(var.agent_open_ports, 1), null)
   allow_ssh             = local.create ? var.allow_ssh : []
+  watcher_create        = var.start_time == "watcher" && local.create
+  watcher_name          = "${lower(replace(var.watcher_name, " ", "-"))}-${local.region}"
+  watcher_description   = "${var.watcher_name} - ${local.region_description}"
   scheduler_create      = local.watcher_create
   scheduler_name        = "${lower(replace(var.scheduler_name, " ", "-"))}-${local.region}"
   scheduler_description = "${var.scheduler_name} - ${local.region_description}"
-  watcher_name          = "${lower(replace(var.watcher_name, " ", "-"))}-${local.region}"
-  watcher_description   = "${var.watcher_name} - ${local.region_description}"
-  watcher_create        = var.start_time == "watcher" && local.create
   resource_name         = "${local.agent_name}-${local.region}"
   resource_description  = "${var.agent_name} - ${local.region_description}"
   region                = try(data.aws_region.current[0].region, "")

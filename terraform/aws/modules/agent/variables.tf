@@ -269,6 +269,12 @@ variable "watcher_runtime" {
   default     = "python3.14"
 }
 
+variable "watcher_architecture" {
+  description = "Lambda function architecture."
+  type        = list(any)
+  default     = ["x86_64"]
+}
+
 variable "watcher_cc_agent_prefix" {
   description = "Control center agent prefix for the watcher."
   type        = string
@@ -292,10 +298,4 @@ variable "scheduler_expression" {
   description = "Scheduler expression."
   type        = string
   default     = "rate(15 minutes)"
-}
-
-variable "lambda_architecture" {
-  description = "Lambda function architecture."
-  type        = list(any)
-  default     = ["x86_64"]
 }

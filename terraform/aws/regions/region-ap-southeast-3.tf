@@ -37,9 +37,9 @@ module "ap-southeast-3" {
   watcher_name                = var.watcher_name
   watcher_file                = var.watcher_file
   watcher_runtime             = var.watcher_runtime
+  watcher_architecture        = var.watcher_architecture
   watcher_cc_agent_prefix     = var.watcher_cc_agent_prefix
   watcher_cc_scheduler_prefix = var.watcher_cc_scheduler_prefix
   scheduler_name              = var.scheduler_name
   scheduler_expression        = local.scheduler_expression
-  lambda_architecture         = var.lambda_architecture
 }
