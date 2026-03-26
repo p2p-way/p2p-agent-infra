@@ -7,7 +7,7 @@ import json
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(message)s',
+    format="%(message)s",
     force=True
 )
 log = logging.getLogger()
@@ -28,7 +28,7 @@ scheduler_prefix = os.environ["scheduler_prefix"]
 scheduler_group_name = os.environ["scheduler_group_name"]
 
 
-def lambda_handler(event, context):
+def main_handler(event, context):
 
     # Timing
     start_time = time.time()
@@ -110,36 +110,38 @@ def lambda_handler(event, context):
 
     def update_agent_autoscaler(agent_commands):
         # Check desired_capacity from CC
-        desired_capacity = agent_commands.get("desired_capacity", "undefined")
-        desired_capacity = desired_capacity.replace("'", "\"")
+        desired_capacity_cc = agent_commands.get(
+            "desired_capacity", "undefined")
+        desired_capacity_cc = desired_capacity_cc.replace("'", '"')
         try:
-            desired_capacity = json.loads(desired_capacity)
+            desired_capacity_cc = json.loads(desired_capacity_cc)
             try:
                 # int from json
-                desired_capacity = int(desired_capacity)
+                desired_capacity_cc = int(desired_capacity_cc)
             except TypeError:
                 try:
                     # json
-                    clouds = desired_capacity.get('all', -1)
-                    cloud_all = desired_capacity.get(cloud, {}).get('all', -1)
-                    cloud_region = desired_capacity.get(
+                    clouds = desired_capacity_cc.get("all", -1)
+                    cloud_all = desired_capacity_cc.get(
+                        cloud, {}).get("all", -1)
+                    cloud_region = desired_capacity_cc.get(
                         cloud, {}).get(region, -1)
-                    desired_capacity = cloud_region if (cloud_region >= 0) \
+                    desired_capacity_cc = cloud_region if (cloud_region >= 0) \
                         else cloud_all if cloud_all >= 0 \
                         else clouds
                 except AttributeError:
                     log.info(
-                        "Please check json format - can't get values from %s", desired_capacity)
-                    desired_capacity = -1
+                        "Please check json format - can't get values from %s", desired_capacity_cc)
+                    desired_capacity_cc = -1
         except TypeError:
             # int
-            desired_capacity = int(desired_capacity)
+            desired_capacity_cc = int(desired_capacity_cc)
         except json.decoder.JSONDecodeError:
             # undefined
-            desired_capacity = agent_commands.get("desired_capacity")
+            desired_capacity_cc = agent_commands.get("desired_capacity")
 
         # Update autoscaler
-        if desired_capacity not in ("", "-", "undefined") and desired_capacity >= 0:
+        if desired_capacity_cc not in ("", "-", "undefined") and desired_capacity_cc >= 0:
             # Get autoscaler config
             autoscaler_config = autoscaling.describe_auto_scaling_groups(
                 AutoScalingGroupNames=[
@@ -148,43 +150,50 @@ def lambda_handler(event, context):
             )
 
             # Update autoscaler
-            if (
-                autoscaler_config["AutoScalingGroups"][0]["DesiredCapacity"]
-                != desired_capacity
-            ):
-                log.info("Scaling agent instances to %s", desired_capacity)
+            desired_capacity_current = autoscaler_config["AutoScalingGroups"][0]["DesiredCapacity"]
+            if desired_capacity_current != desired_capacity_cc:
+                log.info("Scaling agent instances: %s --> %s",
+                         desired_capacity_current, desired_capacity_cc)
                 autoscaling.update_auto_scaling_group(
                     AutoScalingGroupName=agent_name,
-                    DesiredCapacity=desired_capacity
+                    DesiredCapacity=desired_capacity_cc
                 )
             else:
-                log.info("Skip agent instances update - value is same")
+                log.info("Skip agent instances update: %s --> %s",
+                         desired_capacity_current, desired_capacity_cc)
         else:
             log.info(
-                "Skip agent instances scaling - value is '%s'", desired_capacity)
+                "Skip agent instances scaling: '%s'", desired_capacity_cc)
 
         log_searator()
 
     def update_scheduler(scheduler_commands):
         # Check scheduler expression from CC
-        expression = scheduler_commands.get("expression", "undefined")
+        scheduler_expression_cc = scheduler_commands.get(
+            "expression", "undefined")
 
-        if expression not in ("", "-", "undefined"):
+        if scheduler_expression_cc not in ("", "-", "undefined"):
             # Get scheduler config
             scheduler_config = events_scheduler.get_schedule(
                 GroupName=scheduler_group_name,
                 Name=scheduler_name
             )
 
+            scheduler_expression_cc = f"rate({scheduler_expression_cc})"
+            scheduler_expression_current = scheduler_config["ScheduleExpression"]
+
             # Update scheduler
-            if scheduler_config["ScheduleExpression"] == expression:
-                log.info("Skip scheduler expression update - value is same")
+            if scheduler_expression_current == scheduler_expression_cc:
+                log.info("Skip scheduler expression update: %s --> %s",
+                         scheduler_expression_current, scheduler_expression_cc)
             else:
-                log.info("Update scheduler expression to %s", expression)
+                log.info("Update scheduler expression: %s --> %s",
+                         scheduler_expression_current, scheduler_expression_cc)
+
                 events_scheduler.update_schedule(
                     GroupName=scheduler_name,
                     Name=scheduler_name,
-                    ScheduleExpression=expression,
+                    ScheduleExpression=scheduler_expression_cc,
                     Description=scheduler_config["Description"],
                     ActionAfterCompletion=scheduler_config["ActionAfterCompletion"],
                     ScheduleExpressionTimezone=scheduler_config[
@@ -196,7 +205,7 @@ def lambda_handler(event, context):
                 )
         else:
             log.info(
-                "Skip scheduler expression update - value is '%s'", expression)
+                "Skip scheduler expression update: '%s'", scheduler_expression_cc)
 
         log_searator()
 

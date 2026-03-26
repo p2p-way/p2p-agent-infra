@@ -8,7 +8,7 @@ resource "aws_lambda_function" "watcher" {
   s3_bucket        = aws_s3_bucket.watcher[count.index].id
   s3_key           = aws_s3_object.watcher[count.index].key
   role             = aws_iam_role.watcher[count.index].arn
-  handler          = "${trimsuffix(var.watcher_file, format(".%s", element(split(".", var.watcher_file), -1)))}.lambda_handler"
+  handler          = "${trimsuffix(var.watcher_file, format(".%s", element(split(".", var.watcher_file), -1)))}.main_handler"
   runtime          = var.watcher_runtime
   architectures    = var.watcher_architecture
   source_code_hash = filebase64sha256(data.archive_file.watcher[count.index].output_path)
@@ -16,12 +16,12 @@ resource "aws_lambda_function" "watcher" {
   environment {
     variables = {
       cloud                = var.default_tags["Cloud"]
-      region               = var.region,
-      cc_hosts             = join(" ", var.agent_cc_hosts),
+      region               = var.region
+      cc_hosts             = join(" ", var.agent_cc_hosts)
       agent_name           = aws_autoscaling_group.agent[count.index].name
-      agent_prefix         = var.watcher_cc_agent_prefix,
+      agent_prefix         = var.watcher_cc_agent_prefix
       scheduler_name       = local.scheduler_name
-      scheduler_prefix     = var.watcher_cc_scheduler_prefix,
+      scheduler_prefix     = var.watcher_cc_scheduler_prefix
       scheduler_group_name = aws_scheduler_schedule_group.scheduler[count.index].name
     }
   }
