@@ -24,7 +24,7 @@ variable "cc_commands" {
   description = "Map of the control center commands."
   type        = map(any)
   default = {
-    cc-w-s-expression       = "rate(15 minutes)"
+    cc-w-s-expression       = "15 minutes"
     cc-w-a-desired-capacity = 1
     cc-w-a-start            = "2022-11-28T13:00:00Z"
     cc-w-a-start-offset     = "15 minutes"

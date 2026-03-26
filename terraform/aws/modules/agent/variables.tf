@@ -297,5 +297,5 @@ variable "scheduler_name" {
 variable "scheduler_expression" {
   description = "Scheduler expression."
   type        = string
-  default     = "rate(15 minutes)"
+  default     = "15 minutes"
 }

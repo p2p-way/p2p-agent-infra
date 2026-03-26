@@ -11,7 +11,7 @@ resource "aws_scheduler_schedule" "scheduler" {
     mode = "OFF"
   }
 
-  schedule_expression = var.scheduler_expression
+  schedule_expression = "rate(${var.scheduler_expression})"
 
   target {
     arn      = aws_lambda_function.watcher[count.index].arn
