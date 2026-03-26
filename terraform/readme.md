@@ -253,7 +253,7 @@
 
  - Add headers on control center side, with a prefix from the `watcher_cc_agent_prefix` and `watcher_cc_scheduler_prefix` variables
    ```
-   cc-w-s-expression       = "rate(15 minutes)"
+   cc-w-s-expression       = "15 minutes"
    cc-w-a-desired-capacity = 1
    ```
 

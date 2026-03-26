@@ -74,7 +74,7 @@ Scheduler --- Watcher --- Control center     Agent     Setup ------- P2P - TON
 | Variable                  | Scope     | Value                                                  | Description                             |
 | ------------------------- | --------- | ------------------------------------------------------ | --------------------------------------- |
 | **Watcher**               |           |                                                        |                                         |
-| `cc-w-s-expression`       | `watcher` | `rate(15 minutes)`                                     | Watcher set scheduler expression        |
+| `cc-w-s-expression`       | `watcher` | `15 minutes` `2 hours` `3 days`                        | Watcher set scheduler expression        |
 | `cc-w-a-desired-capacity` | `watcher` | `3` `{"all": 3, "aws": {"all": 2, "eu-central-1": 1}}` | Watcher set agent desired count         |
 | `cc-w-a-start`            | `watcher` | `2022-11-28T13:00:00Z`                                 | Watcher set agent start time            |
 | `cc-w-a-start-offset`     | `watcher` | `3 minutes`                                            | Watcher set agent start time offset     |
