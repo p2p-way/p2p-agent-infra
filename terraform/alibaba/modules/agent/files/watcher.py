@@ -1,0 +1,284 @@
+import os
+import ast
+import time
+import logging
+import urllib.request
+import json
+
+from alibabacloud_ess20220222.client import Client as Ess20220222Client
+from alibabacloud_ess20220222 import models as ess_20220222_models
+from alibabacloud_fc20230330.client import Client as FC20230330Client
+from alibabacloud_fc20230330 import models as fc20230330_models
+from alibabacloud_credentials.client import Client as CredentialClient
+from alibabacloud_tea_openapi import models as open_api_models
+from alibabacloud_tea_util import models as util_models
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+    force=True
+)
+log = logging.getLogger()
+
+runtime = util_models.RuntimeOptions(
+    autoretry=True,
+    max_attempts=3,
+    read_timeout=3000,
+    connect_timeout=3000
+)
+
+# Variables
+timeout = 3
+cloud = os.environ["cloud"]
+region = os.environ["region"]
+name = os.environ["FC_FUNCTION_NAME"]
+cc_hosts = os.environ["cc_hosts"].split()
+agent_name = os.environ["agent_name"]
+agent_prefix = os.environ["agent_prefix"]
+scheduler_name = os.environ["scheduler_name"]
+scheduler_prefix = os.environ["scheduler_prefix"]
+ess_endpoint = f"ess.{region}.aliyuncs.com"
+fc_endpoint = f"{os.environ['account']}.{region}.fc.aliyuncs.com"
+
+
+def handler(event, context):
+
+    # Timing
+    start_time = time.time()
+
+    # Functions
+    def log_searator():
+        log.info("----------------")
+
+    def show_variables():
+        log_searator()
+        log.info("# event \n %s", event)
+        log.info("# context \n %s", context)
+        log.info("# variables")
+        for var in """
+                    region cc_hosts agent_name agent_prefix scheduler_name scheduler_prefix
+                """.split():
+            log.info("%s: %s", var, globals()[var])
+        log_searator()
+
+    def contact_cc(hosts):
+        # Contact control center
+        for cc in hosts:
+            log.info("Control center: %s", cc)
+
+            # Get data from CC
+            try:
+                with urllib.request.urlopen(
+                        urllib.request.Request(url=cc, method="HEAD"), timeout=timeout) as response:
+                    headers = response.headers
+
+            # Set headers from HTTPError in case of a non 200 code
+            except urllib.error.HTTPError as err:
+                if err.code not in [200]:
+                    headers = err.headers
+
+            # Lowercase response header names
+            headers_lower = {k.lower(): v for k, v in headers.items()}
+
+            # Get agent headers
+            agent_commands = dict(
+                filter(
+                    lambda item: agent_prefix in item[0], headers_lower.items())
+            )
+
+            # Get scheduler header
+            scheduler_commands = dict(
+                filter(
+                    lambda item: scheduler_prefix in item[0], headers_lower.items())
+            )
+
+            # Log values received from CC
+            log.info(headers_lower)
+            log.info("agent_commands: %s", agent_commands)
+            log.info("scheduler_commands: %s", scheduler_commands)
+
+            # Stop on first CC which returned headers
+            if len(agent_commands) > 0:
+                break
+
+        log_searator()
+
+        return agent_commands, scheduler_commands
+
+    def rename_headers(commands, prefix):
+        # Rename headers
+        commands = {
+            k.replace(prefix + "-", "").replace("-", "_"): v
+            for k, v in commands.items()
+        }
+
+        # Log headers
+        for k, v in commands.items():
+            log.info("%s: %s", k, v)
+
+        if commands != {}:
+            log_searator()
+
+        return commands
+
+    def create_cloud_service_client(service, endpoint):
+        credential = CredentialClient()
+        config = open_api_models.Config(
+            credential=credential,
+            endpoint=endpoint
+        )
+        return service(config)
+
+    def update_agent_autoscaler(agent_commands):
+        # Check desired_capacity from CC
+        desired_capacity_cc = agent_commands.get(
+            "desired_capacity", "undefined")
+        desired_capacity_cc = desired_capacity_cc.replace("'", '"')
+        try:
+            desired_capacity_cc = json.loads(desired_capacity_cc)
+            try:
+                # int from json
+                desired_capacity_cc = int(desired_capacity_cc)
+            except TypeError:
+                try:
+                    # json
+                    clouds = desired_capacity_cc.get("all", -1)
+                    cloud_all = desired_capacity_cc.get(
+                        cloud, {}).get("all", -1)
+                    cloud_region = desired_capacity_cc.get(
+                        cloud, {}).get(region, -1)
+                    desired_capacity_cc = cloud_region if (cloud_region >= 0) \
+                        else cloud_all if cloud_all >= 0 \
+                        else clouds
+                except AttributeError:
+                    log.info(
+                        "Please check json format - can't get values from %s", desired_capacity_cc)
+                    desired_capacity_cc = -1
+        except TypeError:
+            # int
+            desired_capacity_cc = int(desired_capacity_cc)
+        except json.decoder.JSONDecodeError:
+            # undefined
+            desired_capacity_cc = agent_commands.get("desired_capacity")
+
+        # Update autoscaler
+        if desired_capacity_cc not in ("", "-", "undefined") and desired_capacity_cc >= 0:
+            # Get autoscaler config
+            autoscaling = create_cloud_service_client(
+                Ess20220222Client, ess_endpoint)
+            describe_scaling_groups_request = ess_20220222_models.DescribeScalingGroupsRequest(
+                region_id=region,
+                scaling_group_name=agent_name
+            )
+
+            autoscaler_config = autoscaling.describe_scaling_groups_with_options(
+                describe_scaling_groups_request, runtime)
+            autoscaler_config = ast.literal_eval(str(autoscaler_config))
+
+            # Update autoscaler
+            desired_capacity_current = autoscaler_config["body"]["ScalingGroups"][0].get(
+                "DesiredCapacity", 0)
+            if desired_capacity_current != desired_capacity_cc:
+                log.info("Scaling agent instances: %s --> %s",
+                         desired_capacity_current, desired_capacity_cc)
+
+                modify_scaling_group_request = ess_20220222_models.ModifyScalingGroupRequest(
+                    scaling_group_id=autoscaler_config["body"]["ScalingGroups"][0]["ScalingGroupId"],
+                    desired_capacity=desired_capacity_cc
+                )
+                autoscaling.modify_scaling_group_with_options(
+                    modify_scaling_group_request, runtime)
+            else:
+                log.info("Skip agent instances update: %s --> %s",
+                         desired_capacity_current, desired_capacity_cc)
+        else:
+            log.info(
+                "Skip agent instances scaling: '%s'", desired_capacity_cc)
+
+        log_searator()
+
+    def update_scheduler(scheduler_commands):
+        # Check scheduler expression from CC
+        scheduler_expression_cc = scheduler_commands.get(
+            "expression", "undefined")
+
+        if scheduler_expression_cc not in ("", "-", "undefined"):
+            # Get scheduler config
+            scheduler = create_cloud_service_client(
+                FC20230330Client, fc_endpoint)
+
+            scheduler_config = scheduler.get_trigger_with_options(
+                name, scheduler_name, {}, runtime)
+            scheduler_config = ast.literal_eval(str(scheduler_config))
+            scheduler_expression_current = scheduler_config["body"]["triggerConfig"]
+            scheduler_expression_current = json.loads(
+                scheduler_expression_current)
+            scheduler_expression_current = scheduler_expression_current["cronExpression"]
+
+            # Compute scheduler expression
+            value = int(
+                scheduler_expression_cc.split(" ")[0])
+            units = scheduler_expression_cc.split(" ")[
+                1]
+            multiplier = {
+                "minutes": 1,
+                "hours": 60,
+                "days": 1440
+            }
+            minutes = value * \
+                multiplier[units]
+
+            scheduler_expression_cc = f"@every {minutes}m"
+
+            # Update scheduler
+            if scheduler_expression_current == scheduler_expression_cc:
+                log.info("Skip scheduler expression update: %s --> %s",
+                         scheduler_expression_current, scheduler_expression_cc)
+            else:
+                log.info("Update scheduler expression: %s --> %s",
+                         scheduler_expression_current, scheduler_expression_cc)
+
+                # input
+                update_trigger_input = fc20230330_models.UpdateTriggerInput(
+                    trigger_config=f'{{"payload": "", "cronExpression": "{scheduler_expression_cc}","enable": true}}'
+                )
+
+                # request
+                update_trigger_request = fc20230330_models.UpdateTriggerRequest(
+                    body=update_trigger_input
+                )
+
+                # update
+                scheduler.update_trigger_with_options(
+                    name, scheduler_name, update_trigger_request, {}, runtime)
+        else:
+            log.info(
+                "Skip scheduler expression update: '%s'", scheduler_expression_cc)
+
+        log_searator()
+
+    # Run
+    show_variables()
+
+    agent_commands, scheduler_commands = contact_cc(cc_hosts)
+
+    agent_commands = rename_headers(agent_commands, agent_prefix)
+
+    scheduler_commands = rename_headers(scheduler_commands, scheduler_prefix)
+
+    update_agent_autoscaler(agent_commands)
+
+    update_scheduler(scheduler_commands)
+
+    duration = f"{(time.time() - start_time) * 1000:.3f} msec"
+    log.info("Run duration: %s", duration)
+
+    log_searator()
+
+    now = time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime())
+
+    return {
+        "statusCode": 200,
+        "body": f"{name} in {region} region - {context.request_id} - {now} - {duration}\n"
+    }

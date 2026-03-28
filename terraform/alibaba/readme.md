@@ -11,47 +11,55 @@
  9. [Known issues](#known-issues)
 
 
-## [Description](#p2p-agents-on-alibaba)
+## [Description](#p2p-agent-on-alibaba)
 
  This code provides [Terraform](../readme.md) configuration for [Alibaba Cloud](https://www.alibabacloud.com) stack deployment for P2P content distribution.
- 1. [Function Compute](https://www.alibabacloud.com/en/product/function-compute) - Run a function which will act as watcher and orchestrate VM provisioning via autoscaler.
- 2. [EventBridge](https://www.alibabacloud.com/en/product/eventbridge) - Provides a scheduler to invoke the function.
+ 1. [Resource Access Management (RAM)](https://www.alibabacloud.com/en/product/ram) - Provides access for Function and VM instance to update  Auto Scaling group and Function trigger.
+ 2. [Function Compute](https://www.alibabacloud.com/en/product/function-compute) - Run a function which will act as a watcher and setup a trigger which will act as a scheduler and orchestrate VM provisioning via autoscaler.
  3. [Virtual Private Cloud (VPC)](https://www.alibabacloud.com/en/product/vpc) - Provides a network for the VM instances.
  4. [Auto Scaling](https://www.alibabacloud.com/en/product/auto-scaling) - Scale and manage VM instances.
  5. [Elastic Compute Service](https://www.alibabacloud.com/en/product/ecs) - VM provisioning.
- 6. [Simple Log Service](https://www.alibabacloud.com/en/product/log-service) - VM Logs.
- 7. [CloudMonitor](https://www.alibabacloud.com/en/product/cloud-monitor) - VM Metrics.
+ 6. [Simple Log Service](https://www.alibabacloud.com/en/product/log-service) - VM and function logs.
+ 7. [CloudMonitor](https://www.alibabacloud.com/en/product/cloud-monitor) - VM metrics.
+
  Generally, this configuration will do the following
 
+**Watcher and scheduler**
+ 1. Create RAM role with policies.
+ 2. Create Simple Log Service project and Logstore.
+ 3. Create OSS bucket and upload Function layer package into it.
+ 4. Create Function layer from the package located on OSS.
+ 5. Create scheduler using Function trigger which will invoke function.
 
 **Agent**
- 1. Create a VPC for ECS instances.
- 2. Create RAM instance role.
- 3. Create an ECS Launch template for the instances.
- 4. Create an Auto Scaling group using ECS Launch template.
- 5. Create Simple Log Service Logstore.
+ 1. Create VPC for ECS instances.
+ 2. Create RAM instance role with policies.
+ 3. Create ECS Launch template for the instances.
+ 4. Create Auto Scaling group using ECS Launch template.
+ 5. Create Simple Log Service project and Logstore.
 
-## [Considerations](#p2p-agents-on-alibaba)
+
+## [Considerations](#p2p-agent-on-alibaba)
 
  1. Check [Considerations](../readme.md#considerations).
 
 
-## [Limitations](#p2p-agents-on-alibaba)
+## [Limitations](#p2p-agent-on-alibaba)
 
  1. Alibaba [ECS Availability Zones](https://www.alibabacloud.com/help/en/ecs/regions-and-zones) vary by region and can be from 1 up to 12, please check [Supported regions and zones](https://www.alibabacloud.com/help/en/ecs/regions-and-zones#concept-nwo-3ho-q3v) for more details.
- 2. Watcher is not implemented yet and we should set variable [`start_time`](../readme.md#configuration) only as `now` or specify a custom time.
+ 2. Watcher can be used just in several regions, please check [Known issues](#known-issues) for more details.
  3. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
-## [Regions](#p2p-agents-on-alibaba)
+## [Regions](#p2p-agent-on-alibaba)
 
- - [Data Centers Around the World](https://www.alibabacloud.com/en/global-locations?_p_lc=1#J_8338958430)
+ - [Data Centers Around the World](https://www.alibabacloud.com/en/global-locations)
  - [Regions and zones](https://www.alibabacloud.com/help/en/ecs/regions-and-zones)
- - [Products by Regions](https://www.alibabacloud.com/en/global-locations?_p_lc=1#J_5253092060)
+ - [Products by Regions](https://www.alibabacloud.com/en/global-locations)
  - [Elastic Compute Service - Supported regions and zones](https://www.alibabacloud.com/help/en/ecs/regions-and-zones#concept-nwo-3ho-q3v)
  - [Elastic Compute Service - Query the regions supported by ECS](https://www.alibabacloud.com/help/en/ecs/regions-and-zones#100e5a1cee6s0)
- - [Instance Types Available for Each Region](https://ecs-buy.aliyun.com/instanceTypes/?spm=a2c63.p38356.0.0.19a83591dCAgdv#/instanceTypeByRegion)
- - [ECS instance type selection](https://www.alibabacloud.com/help/en/ecs/user-guide/best-practices-for-instance-type-selection?spm=a2c63.p38356.help-menu-25365.d_4_1_2_1.6d4f30ef4agWYI&scm=20140722.H_58291._.OR_help-T_intl~en-V_1)
+ - [Instance Types Available for Each Region](https://ecs-buy.aliyun.com/instanceTypes/)
+ - [ECS instance type selection](https://www.alibabacloud.com/help/en/ecs/user-guide/best-practices-for-instance-type-selection)
 
    ```shell
    # Query the regions supported by ECS
@@ -65,13 +73,13 @@
      echo -e "${region}\t\t${zones_count}\t${zones_list}\n"
    done
 
-   # List instance type provided by Elastic Compute Service
+   # List instance type provided by ECS
    aliyun ecs DescribeInstanceTypes \
      --output cols="InstanceTypeId,CpuArchitecture,CpuCoreCount,MemorySize,InstanceCategory" \
      rows="InstanceTypes.InstanceType" \
      num=true
 
-   # List small instance type provided by Elastic Compute Service
+   # List small instance type provided by ECS
    aliyun ecs DescribeInstanceTypes \
      --MaximumCpuCoreCount 2 \
      --output cols="InstanceTypeId,CpuArchitecture,CpuCoreCount,MemorySize,InstanceCategory" \
@@ -90,7 +98,7 @@
    ```
 
 
-## [Costs](#p2p-agents-on-alibaba)
+## [Costs](#p2p-agent-on-alibaba)
 
  [Alibaba Cloud Product Price Calculator](https://www.alibabacloud.com/en/pricing-calculator)
 
@@ -100,6 +108,7 @@
  | [Elastic Block Storage](https://www.alibabacloud.com/product/disk/pricing)                | `0.000106 $/GiB/h` | `1.53 $/20GiB/m` | Enhanced SSD Entry                         |
  | [ECS Bandwidth](https://www.alibabacloud.com/en/product/ecs)                              | `17 $/m`           | `17 $/m`         | Pay-By-Bandwidth 5Mbps / China (Hong Kong) |
  | [CloudMonitor](https://www.alibabacloud.com/help/en/cms/product-overview/pay-as-you-go-1) | `-`                | `-`              | Free quota                                 |
+ | [Function Compute](https://www.alibabacloud.com/en/product/function-compute/pricing)      | `0.2 $/mil calls`  | `-`              | Free quota                                 |
  | [Simple Log Service](https://www.alibabacloud.com/en/product/log-service/pricing)         | `-`                | `-`              | Free quota                                 |
  | TOTAL                                                                                     |                    | `33.34 $/m`      |                                            |
 
@@ -114,13 +123,12 @@
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free quota may not cover multiple instances running for a long period of time.
 
 
-## [Requirements](#p2p-agents-on-alibaba)
+## [Requirements](#p2p-agent-on-alibaba)
 
  In order to proceed with this deployment, we need
  1. Linux host with [Terraform](https://developer.hashicorp.com/terraform/install) installed.
  2. Alibaba Cloud [RAM user](https://www.alibabacloud.com/help/en/ram/user-guide/overview-of-ram-users) with the following programmatic access permissions
-      * `AliyunFnFFullAccess`
-      * `AliyunEventBridgeFullAccess`
+      * `AliyunFCFullAccess`
       * `AliyunVPCFullAccess`
       * `AliyunRAMFullAccess`
       * `AliyunECSFullAccess`
@@ -128,7 +136,7 @@
       * `AliyunCloudMonitorFullAccess`
 
 
-## [Deployment](#p2p-agents-on-alibaba)
+## [Deployment](#p2p-agent-on-alibaba)
 
  1. Get Terraform code from GitHub repository
     ```shell
@@ -155,7 +163,35 @@
     export ALIBABA_CLOUD_ACCESS_KEY_SECRET="<secret access key>"
     ```
 
- 5. Run Terraform
+ 5. When we set `start_time = "watcher"` it is required to prepare a function layer package.
+    <details><summary>More details</summary>
+
+    Default runtime does not contain all required dependencies and [public layers](https://www.alibabacloud.com/help/en/functioncompute/fc/user-guide/configure-common-layers-for-a-function-1) as well and we have to use a custom layer - [Install third-party dependencies for a function](https://www.alibabacloud.com/help/en/functioncompute/fc/user-guide/install-third-party-dependencies-for-a-function). One of the way to [Create a custom layer](https://www.alibabacloud.com/help/en/functioncompute/fc/user-guide/create-a-custom-layer-1) would be to follow [Use a Dockerfile to build a layer](https://www.alibabacloud.com/help/en/functioncompute/fc/user-guide/use-a-dockerfile-to-build-a-layer-1)
+    ```shell
+    layer_folder="watcher-python-layer"
+    layer_package="watcher-python-layer.zip"
+    base_image="aliyunfc/runtime-custom.debian10"
+
+    docker run -it \
+      --entrypoint=bash \
+      --volume ./:/opt \
+      ${base_image} \
+      -c "pip install --upgrade pip; \
+        pip install --target /opt/python \
+          alibabacloud_fc20230330 \
+          alibabacloud_ess20220222 \
+          alibabacloud_credentials \
+          alibabacloud_tea_openapi \
+          alibabacloud_tea_util; \
+        cd /opt; \
+        zip -r /opt/${layer_package} python; \
+        rm -rf /opt/python"
+    ```
+
+    By the end we will get a *watcher-python-layer.zip* archive which will be used by Terraform at function layer creation.
+    </details>
+
+ 6. Run Terraform
     ```shell
     # Initialize
     terraform init
@@ -167,7 +203,7 @@
     terraform apply
     ```
 
- 6. Get SSH keys
+ 7. Get SSH keys
     ```shell
     # Agent - Private key
     terraform output -raw instance_private_key
@@ -182,15 +218,17 @@
     terraform output repository_public_key
     ```
 
- 7. Add value of the `repository_public_key` output to the Git repository
+ 8. Add value of the `repository_public_key` output to the Git repository
     - GitHub: Repository --> Settings --> Security --> Deploy keys
 
  After some period of time all resources will be created and nodes will start. After the start, they will connect to the control center and will setup all configuration required to support P2P content distribution.
 
 
-### [Update configuration](#p2p-agents-on-alibaba)
+### [Update configuration](#p2p-agent-on-alibaba)
 
- After we deployed initial configuration, it may be required to update nodes capacity or add more regions or even update control center configuration. And next steps mainly depends on the start time we set.
+ After we deployed initial configuration, it may be required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
+
+ We also should keep in mind that when we set `start_time = "watcher"`, we assume to manage `scheduler_expression` via control center `cc-w-s-expression` variable. If control center is managed outside of this code, we might get a configuration drift which can be solved by sync code variable with the value from a control center.
 
  **Nodes not started yet**
 
@@ -202,7 +240,7 @@
  **Nodes already started**
 
  When nodes already started, following things are happened
- - Desired capacity of the Auto Scaling group was changed already by start scheduler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new scheduler start and it will lead to the down-time.
+ - Desired capacity of the Auto Scaling group was changed already by start scheduler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new scheduler start and it will lead to a down-time.
 
  To overcome both cases, we should set `initial_deploy = false` and Terraform will change it's behavior in the following way
  - Capacity for Auto Scaling group, which is initially set to 0, will use value from `desired_capacity`.
@@ -216,7 +254,7 @@
  ```
 
 
-#### [Update capacity](#p2p-agents-on-aws)
+#### [Update capacity](#p2p-agent-on-aws)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
@@ -224,7 +262,7 @@
  4. Run `terraform apply`.
 
 
-#### [Add new region](#p2p-agents-on-aws)
+#### [Add new region](#p2p-agent-on-aws)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Add a configuration file for the new region.
@@ -237,7 +275,7 @@
  9. Run `terraform apply`.
 
 
-## [Cleanup](#p2p-agents-on-alibaba)
+## [Cleanup](#p2p-agent-on-alibaba)
 
  In order to cleanup all created resources we should use the following steps
  1. Cleanup resources created by Terraform
@@ -245,38 +283,41 @@
     terraform destroy
     ```
 
+ 2. Cleanup created zip archives when `start_time = "watcher"`
+    ```shell
+    rm -rf *.zip
+    ```
 
-## [Known issues](#p2p-agents-on-alibaba)
 
- 1. We rely on the [system route table](https://www.alibabacloud.com/help/en/vpc/user-guide/routing-table/?spm=a2c63.p38356.0.0.4046760dgImlpo), because we got an intermittent error when trying to attach custom route table to vSwitches.
+## [Known issues](#p2p-agent-on-alibaba)
+
+ 1. We rely on the [system route table](https://www.alibabacloud.com/help/en/vpc/user-guide/routing-table/), because we got an intermittent error when trying to attach custom route table to vSwitches.
 
  2. Before enabling `agent_metrics`, we should make sure that [`AliyunServiceRoleForCloudMonitor` linked role](https://www.alibabacloud.com/help/en/cms/user-guide/manage-the-service-linked-role-for-cloudmonitor) was already created.
 
- 3. On newly created account, you might not be able to run instances due to `This operation is forbidden by Aliyun RiskControl system.` error and we should contact support for [ID Verification - KYC](https://www.alibabacloud.com/help/en/ekyc/latest/product-introduction).
+ 3. On newly created account, you might not be able to run instances due to "`This operation is forbidden by Aliyun RiskControl system.`" error and we should contact support for [ID Verification - KYC](https://www.alibabacloud.com/help/en/ekyc/latest/product-introduction).
 
- 4. Some regions endpoints are flacky and it might be required to re-run Terraform apply/destroy
-    ```
-    Error: [ERROR] terraform-provider-alicloud/alicloud/data_source_alicloud_regions.go:72: Datasource alicloud_regions DescribeRegions Failed!!! [SDK alibaba-cloud-sdk-go ERROR]:
-    ```
+ 4. Some regions endpoints are flaky and it might be required to re-run Terraform apply/destroy
+    > `Error: [ERROR] terraform-provider-alicloud/alicloud/data_source_alicloud_regions.go:72: Datasource alicloud_regions DescribeRegions Failed!!! [SDK alibaba-cloud-sdk-go ERROR]:`
     - `region-cn-chengdu.tf`
+    - `region-cn-shenzhen.tf`
+    - `region-cn-fuzhou.tf`
+    - `region-cn-shanghai.tf`
+    - `region-cn-guangzhou.tf`
+    - `region-cn-heyuan.tf`
 
  5. In some regions instances were not tested due to the errors or limits.
     <details>
     <summary>More details</summary>
 
     **Scaling Group is created but instances failed to start**
-    ```
-    Fail to scale instances for scaling group(code:"InvalidInstanceType.NotAuthorized", msg:"Instance types are not authorized.").
-    ```
+    > `Fail to scale instances for scaling group(code:"InvalidInstanceType.NotAuthorized", msg:"Instance types are not authorized.").`
     - `1-region-cn-wuhan-lr.tf`
-    ```
-    Fail to scale instances for scaling group(code:"RecommendEmpty.DiskTypeNoStock", msg:"The diskTypes are out of usage."). 
-    ```
+
+    > `Fail to scale instances for scaling group(code:"RecommendEmpty.DiskTypeNoStock", msg:"The diskTypes are out of usage.").`
     - `2-region-cn-beijing.tf`
 
-    ```
-    Fail to scale instances for scaling group(code:"RecommendEmpty.InstanceTypeNoStock", msg:"The instanceTypes are out of usage.").
-    ```
+    > `Fail to scale instances for scaling group(code:"RecommendEmpty.InstanceTypeNoStock", msg:"The instanceTypes are out of usage.").`
     - `3-region-cn-hangzhou.tf`
     - `3-region-cn-qingdao.tf`
     - `3-region-cn-zhangjiakou.tf`
@@ -304,3 +345,44 @@
     </details>
 
  6. Download from GitHub is very slow (limited?) in China regions, at least in Guangzhou.
+
+ 7. When we use `start_time = "watcher"` and recreate resources, [Service-linked role of Function Compute](https://www.alibabacloud.com/help/en/functioncompute/fc/service-linked-role-of-function-compute) does not work properly and we get an error
+    > `"errorMessage": "Error: Forbidden.Unauthorized code: 403, {\"effectMap\":{\"0\":\"DENY\"},\"ramAuthResponseList\":[{\"accessDeniedDetail\":{\"authAction\":\"ess:DescribeScalingGroups\",\"authPrincipalDisplayName\":\"p2p-watcher-eu-central-1:FunctionCompute\",\"authPrincipalOwnerId\":\"<1111111111111111>\",\"authPrincipalType\":\"AssumedRoleUser\",\"encodedDiagnosticMessage\"`
+
+    As a workaround, we add a random suffix to roles names at creation.
+
+ 8. [Alibaba  Function Compute](https://www.alibabacloud.com/en/product/function-compute) does not work properly in some regions and we can't use `start_time = "watcher"` for them
+
+    **Functions Compute service is not available in all re regions** - check [Endpoints of Function Compute](https://www.alibabacloud.com/help/en/functioncompute/fc/developer-reference/fc-endpoints) as a reference
+    - `region-ap-southeast-6.tf`
+    - `region-cn-guangzhou.tf`
+    - `region-cn-fuzhou.tf`
+    - `region-cn-nanjing.tf`
+    - `region-cn-heyuan.tf`
+    - `region-na-south-1.tf`
+
+    **Functions executes with an error**
+    > Error: Function timed out after 5 seconds
+    <details>
+    <summary>Error details</summary>
+
+    > `'  File "/var/fc/runtime/python3.12/bootstrap.py", line 631, in <module>\n    main()\n', '  File "/var/fc/runtime/python3.12/bootstrap.py", line 619, in main\n    handler.handle_request()\n', '  File "/var/fc/runtime/python3.12/bootstrap.py", line 252, in handle_request\n    valid_handler, request_handler = _concurrent_get_handler(handler)\n', '  File "/var/fc/runtime/python3.12/bootstrap.py", line 87, in _concurrent_get_handler\n    return _get_handler(handler)\n', '  File "/var/fc/runtime/python3.12/bootstrap.py", line 108, in _get_handler\n    m = importlib.import_module(modname.replace("/", "."))\n', '  File "/var/fc/lang/python3.12/lib/python3.12/importlib/__init__.py", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n', '  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import\n', '  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load\n', '  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked\n', '  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked\n', '  File "<frozen importlib._bootstrap_external>", line 995, in exec_module\n', '  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed\n', '  File "/code/watcher.py", line 8, in <module>\n    from alibabacloud_ess20220222.client import Client as Ess20220222Client\n', '  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load\n', '  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked\n', '  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked\n', '  File "<frozen importlib._bootstrap_external>", line 995, in exec_module\n', '  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed\n', '  File "/opt/python/alibabacloud_ess20220222/client.py", line 7, in <module>\n    from alibabacloud_ess20220222 import models as main_models\n', '  File "<frozen importlib._bootstrap>", line 1415, in _handle_fromlist\n', '  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed\n', '  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load\n', '  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked\n', '  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked\n', '  File "<frozen importlib._bootstrap_external>", line 995, in exec_module\n', '  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed\n', '  File "/opt/python/alibabacloud_ess20220222/models/__init__.py", line 237, in <module>\n    from ._modify_scaling_configuration_request import ModifyScalingConfigurationRequest\n', '  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load\n', '  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked\n', '  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked\n', '  File "<frozen importlib._bootstrap_external>", line 991, in exec_module\n', '  File "<frozen importlib._bootstrap_external>", line 1129, in get_code\n', '  File "<frozen importlib._bootstrap_external>", line 1059, in source_to_code\n', '  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed\n', '  File "/var/fc/runtime/python3.12/bootstrap.py", line 31, in dump_stacks\n    detail_msg = traceback.format_stack(stack)\n'`
+    </details>
+
+    - `region-ap-northeast-2.tf`
+    - `region-ap-southeast-3.tf`
+    - `region-ap-southeast-5.tf`
+    - `region-ap-southeast-7.tf`
+    - `region-cn-chengdu.tf`
+    - `region-eu-west-1.tf`
+    - `region-cn-wulanchabu.tf`
+
+
+    > Name or service not known
+    <details>
+    <summary>Error details</summary>
+
+    > `"errorMessage": "{'message': 'HTTPSConnectionPool(host=\\'ess.cn-shanghai.aliyuncs.com\\', port=443): Max retries exceeded with url: /?RegionId=cn-shanghai&ScalingGroupName=p2p-agent-cn-shanghai (Caused by NameResolutionError(\"HTTPSConnection(host=\\'ess.cn-shanghai.aliyuncs.com\\', port=443): Failed to resolve \\'ess.cn-shanghai.aliyuncs.com\\' ([Errno -2] Name or service not known)\"))'}"`
+    </details>
+
+    - `region-cn-shanghai.tf`

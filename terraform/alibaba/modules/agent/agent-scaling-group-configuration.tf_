@@ -44,5 +44,5 @@ resource "alicloud_ess_scaling_configuration" "agent" {
   tags = merge(var.default_tags, { agent-watcher = "${local.agent_watcher}" })
 
   # Resource Group
-  resource_group_id = alicloud_resource_manager_resource_group.agent[count.index].id
+  resource_group_id = alicloud_resource_manager_resource_group.common[count.index].id
 }

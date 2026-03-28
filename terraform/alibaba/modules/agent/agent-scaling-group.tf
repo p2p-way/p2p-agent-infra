@@ -9,8 +9,9 @@ resource "alicloud_ess_scaling_group" "agent" {
   launch_template_id      = alicloud_ecs_launch_template.agent[count.index].id
   launch_template_version = "Default"
 
-  min_size         = var.initial_deploy ? 0 : var.desired_capacity
-  max_size         = var.initial_deploy ? 0 : var.desired_capacity
+  min_size         = var.min_size
+  max_size         = var.max_size
+  desired_capacity = var.start_time == "watcher" ? null : var.initial_deploy ? 0 : var.desired_capacity
   default_cooldown = 60
 
   vswitch_ids = [for vswitch in alicloud_vswitch.agent : vswitch.id]
@@ -28,7 +29,7 @@ resource "alicloud_ess_scaling_group" "agent" {
 
   capacity_options_on_demand_percentage_above_base_capacity = 100
 
-  resource_group_id = alicloud_resource_manager_resource_group.agent[count.index].id
+  resource_group_id = alicloud_resource_manager_resource_group.common[count.index].id
 }
 
 # Scheduled task - Start

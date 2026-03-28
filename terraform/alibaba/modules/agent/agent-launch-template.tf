@@ -53,8 +53,8 @@ resource "alicloud_ecs_launch_template" "agent" {
   template_tags = var.default_tags
 
   # Resource Group
-  resource_group_id          = alicloud_resource_manager_resource_group.agent[count.index].id
-  template_resource_group_id = alicloud_resource_manager_resource_group.agent[count.index].id
+  resource_group_id          = alicloud_resource_manager_resource_group.common[count.index].id
+  template_resource_group_id = alicloud_resource_manager_resource_group.common[count.index].id
 
   # Other
   update_default_version_number = true

@@ -5,7 +5,7 @@ resource "alicloud_vpc" "agent" {
   vpc_name          = local.resource_name
   description       = local.resource_description
   cidr_block        = var.cidr_block
-  resource_group_id = alicloud_resource_manager_resource_group.agent[count.index].id
+  resource_group_id = alicloud_resource_manager_resource_group.common[count.index].id
 
   tags = var.default_tags
 }
@@ -18,7 +18,7 @@ resource "alicloud_vpc_ipv4_gateway" "agent" {
   ipv4_gateway_name        = local.resource_name
   ipv4_gateway_description = local.resource_description
   vpc_id                   = alicloud_vpc.agent[count.index].id
-  resource_group_id        = alicloud_resource_manager_resource_group.agent[count.index].id
+  resource_group_id        = alicloud_resource_manager_resource_group.common[count.index].id
 
   tags = var.default_tags
 }
@@ -62,7 +62,7 @@ resource "alicloud_security_group" "agent" {
   security_group_name = local.resource_name
   description         = local.resource_description
   vpc_id              = alicloud_vpc.agent[count.index].id
-  resource_group_id   = alicloud_resource_manager_resource_group.agent[count.index].id
+  resource_group_id   = alicloud_resource_manager_resource_group.common[count.index].id
 
   tags = var.default_tags
 

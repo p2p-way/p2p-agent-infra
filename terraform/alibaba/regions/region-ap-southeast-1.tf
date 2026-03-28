@@ -39,4 +39,11 @@ module "ap-southeast-1" {
   agent_cc_commands             = var.agent_cc_commands
   agent_cc_commands_prefix      = var.agent_cc_commands_prefix
   agent_repository_ssh_key      = local.agent_repository_ssh_key
+  watcher_name                  = var.watcher_name
+  watcher_file                  = var.watcher_file
+  watcher_runtime               = var.watcher_runtime
+  watcher_cc_agent_prefix       = var.watcher_cc_agent_prefix
+  watcher_cc_scheduler_prefix   = var.watcher_cc_scheduler_prefix
+  scheduler_name                = var.scheduler_name
+  scheduler_expression          = var.scheduler_expression
 }

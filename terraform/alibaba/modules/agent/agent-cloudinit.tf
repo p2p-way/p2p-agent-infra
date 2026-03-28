@@ -56,7 +56,7 @@ data "cloudinit_config" "agent" {
       content_type = "text/x-shellscript"
       content = templatefile("${path.module}/files/logtail.sh", {
         region          = local.region,
-        user_defined_id = alicloud_log_project.agent[count.index].project_name
+        user_defined_id = alicloud_log_project.common[count.index].project_name
       })
     }
   }

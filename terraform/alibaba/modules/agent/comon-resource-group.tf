@@ -1,5 +1,5 @@
-# Resource group
-resource "alicloud_resource_manager_resource_group" "agent" {
+# Resource group - Common
+resource "alicloud_resource_manager_resource_group" "common" {
   count = local.create ? 1 : 0
 
   resource_group_name = local.resource_name

@@ -2,7 +2,7 @@
 resource "alicloud_ram_role" "agent" {
   count = local.agent_ram_create ? 1 : 0
 
-  role_name                   = local.resource_name
+  role_name                   = local.role_random_suffix ? "${local.resource_name}-${random_string.role_suffix[count.index].result}" : local.resource_name
   description                 = local.resource_description
   force                       = true
   assume_role_policy_document = <<EOF
@@ -39,7 +39,7 @@ resource "alicloud_ram_policy" "agent_watcher" {
           "ess:DescribeScheduledTasks"
         ],
         "Effect": "Allow",
-        "Resource": "*"
+        "Resource": "acs:ecs:${local.region}:${local.account}:scalinggroup/*"
       },
       {
         "Action": [
@@ -47,6 +47,13 @@ resource "alicloud_ram_policy" "agent_watcher" {
         ],
         "Effect": "Allow",
         "Resource": "acs:ecs:${local.region}:${local.account}:instance/*"
+      },
+      {
+        "Action": [
+          "ess:DescribeScalingGroups"
+        ],
+        "Effect": "Allow",
+        "Resource": "acs:ecs:${local.region}:${local.account}:scalinggroup/*"
       },
       {
         "Action": [
