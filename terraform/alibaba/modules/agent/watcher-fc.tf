@@ -123,7 +123,7 @@ resource "alicloud_fcv3_trigger" "scheduler" {
 
 # FC Trigger - Debug (development/debug)
 resource "alicloud_fcv3_trigger" "debug" {
-  count = local.watcher_create && true ? 1 : 0
+  count = local.watcher_create && false ? 1 : 0
 
   trigger_type   = "http"
   trigger_name   = "debug"
