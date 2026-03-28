@@ -11,7 +11,7 @@
  9. [Known issues](#known-issues)
 
 
-## [Description](#p2p-agents-on-gcp)
+## [Description](#p2p-agent-on-gcp)
 
  This code provides [Terraform](../readme.md) configuration for [Google Cloud Platform](https://cloud.google.com/) stack deployment for P2P content distribution.
  1. [Cloud Functions](https://cloud.google.com/functions) - Run a function which will act as watcher and orchestrate VM provisioning via autoscaler.
@@ -39,19 +39,19 @@
  4. Create an Autoscaling group using Instance group
 
 
-## [Considerations](#p2p-agents-on-gcp)
+## [Considerations](#p2p-agent-on-gcp)
 
  1. Check [Considerations](../readme.md#considerations).
  2. We use auto mode VPC network for easier management.
 
 
-## [Limitations](#p2p-agents-on-gcp)
+## [Limitations](#p2p-agent-on-gcp)
 
  1. Watcher is not implemented yet and we should set variable [`start_time`](../readme.md#agent) only as `now` or specify a custom time.
  2. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
-## [Regions](#p2p-agents-on-gcp)
+## [Regions](#p2p-agent-on-gcp)
 
  - [Global Locations - Regions & Zones](https://cloud.google.com/about/locations)
  - [Geography and regions](https://cloud.google.com/docs/geography-and-regions)
@@ -82,7 +82,7 @@
    ```
 
 
-## [Costs](#p2p-agents-on-gcp)
+## [Costs](#p2p-agent-on-gcp)
 
  [Google Cloud Pricing Calculator](https://cloud.google.com/products/calculator/)
 
@@ -106,14 +106,14 @@
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free allotment may not cover multiple instances running for a long period of time.
 
 
-## [Requirements](#p2p-agents-on-gcp)
+## [Requirements](#p2p-agent-on-gcp)
 
  In order to proceed with this deployment, we need
  1. Linux host with [Terraform](https://developer.hashicorp.com/terraform/install) and [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) installed.
  2. GCP user account with the administrative permissions.
 
 
-## [Deployment](#p2p-agents-on-gcp)
+## [Deployment](#p2p-agent-on-gcp)
 
  1. Get Terraform code from GitHub repository
     ```shell
@@ -176,7 +176,7 @@
  After some period of time all resources will be created and nodes will start. After the start, they will connect to the control center and will setup all configuration required to support P2P content distribution.
 
 
-### [Update configuration](#p2p-agents-on-gcp)
+### [Update configuration](#p2p-agent-on-gcp)
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
 
@@ -207,7 +207,7 @@
  ```
 
 
-#### [Update capacity](#p2p-agents-on-gcp)
+#### [Update capacity](#p2p-agent-on-gcp)
 
  1. Set `initial_deploy = false` and `autoscaling_policy_mode = "OFF"` in the *variables.auto.tfvars*.
  2. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
@@ -218,7 +218,7 @@
  7. Run `terraform apply`.
 
 
-#### [Add new region](#p2p-agents-on-gcp)
+#### [Add new region](#p2p-agent-on-gcp)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Add a configuration file for the new region.
@@ -231,7 +231,7 @@
  9. Run `terraform apply`.
 
 
-## [Cleanup](#p2p-agents-on-gcp)
+## [Cleanup](#p2p-agent-on-gcp)
 
  In order to cleanup all created resources we should use the following steps
  1. Cleanup resources created by Terraform
@@ -240,7 +240,7 @@
     ```
 
 
-## [Known issues](#p2p-agents-on-gcp)
+## [Known issues](#p2p-agent-on-gcp)
 
  1. VMs [machine-types](https://docs.cloud.google.com/sdk/gcloud/reference/compute/machine-types) vary by region and we have to take care about that when select region to deploy in.
 

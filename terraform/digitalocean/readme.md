@@ -11,7 +11,7 @@
  9. [Known issues](#known-issues)
 
 
-## [Description](#p2p-agents-on-digitalocean)
+## [Description](#p2p-agent-on-digitalocean)
 
  This code provides [Terraform](../readme.md) configuration for [DigitalOcean](https://www.digitalocean.com) stack deployment for P2P content distribution.
  1. [DigitalOcean VPC](https://docs.digitalocean.com/products/networking/vpc/) - Provides a network for the VM.
@@ -24,18 +24,18 @@
  2. Create and launch Droplets.
 
 
-## [Considerations](#p2p-agents-on-digitalocean)
+## [Considerations](#p2p-agent-on-digitalocean)
 
  1. Check [Considerations](../readme.md#considerations).
 
 
-## [Limitations](#p2p-agents-on-digitalocean)
+## [Limitations](#p2p-agent-on-digitalocean)
 
  1. DigitalOcean does not provide Autoscaling or other services to implement a [Watcher](../../architecture.md#watcher) or [Agent side watcher](../../architecture.md#agent-side-watcher) and instances will be started right during applying Terraform configuration.
  2. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
-## [Regions](#p2p-agents-on-digitalocean)
+## [Regions](#p2p-agent-on-digitalocean)
 
  - [Regional Availability](https://docs.digitalocean.com/platform/regional-availability/)
  - [Droplet Availability](https://docs.digitalocean.com/products/droplets/details/availability/)
@@ -55,7 +55,7 @@
    ```
 
 
-## [Costs](#p2p-agents-on-digitalocean)
+## [Costs](#p2p-agent-on-digitalocean)
 
  [DigitalOcean - Pricing Calculator](https://www.digitalocean.com/pricing/calculator)
 
@@ -75,7 +75,7 @@
  > Provided costs are very approximate because we use a highest instance price across all the regions.
 
 
-## [Requirements](#p2p-agents-on-digitalocean)
+## [Requirements](#p2p-agent-on-digitalocean)
 
  In order to proceed with this deployment, we need
  1. Linux host with [Terraform](https://developer.hashicorp.com/terraform/install) installed.
@@ -93,7 +93,7 @@
      - `vpc` - create, read, update, delete
 
 
-## [Deployment](#p2p-agents-on-digitalocean)
+## [Deployment](#p2p-agent-on-digitalocean)
 
  1. Get Terraform code from GitHub repository
     ```shell
@@ -152,21 +152,21 @@
  After some period of time all resources will be created and nodes will start. After the start, they will connect to the control center and will setup all configuration required to support P2P content distribution.
 
 
-### [Update configuration](#p2p-agents-on-digitalocean)
+### [Update configuration](#p2p-agent-on-digitalocean)
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions.
 
  Update is very transparent and we need just to set `desired_capacity` with the required number and run Terraform.
 
 
-#### [Update capacity](#p2p-agents-on-digitalocean)
+#### [Update capacity](#p2p-agent-on-digitalocean)
 
  1. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
  2. Run `terraform plan`.
  3. Run `terraform apply`.
 
 
-#### [Add new region](#p2p-agents-on-digitalocean)
+#### [Add new region](#p2p-agent-on-digitalocean)
 
  1. Add a configuration file for the new region.
  2. Run `terraform init`.
@@ -174,7 +174,7 @@
  4. Run `terraform apply`.
 
 
-## [Cleanup](#p2p-agents-on-digitalocean)
+## [Cleanup](#p2p-agent-on-digitalocean)
 
  In order to cleanup all created resources we should use the following steps
  1. Cleanup resources created by Terraform
@@ -183,7 +183,7 @@
     ```
 
 
-## [Known issues](#p2p-agents-on-digitalocean)
+## [Known issues](#p2p-agent-on-digitalocean)
 
  1. [DigitalOcean Droplet Availability](https://docs.digitalocean.com/products/droplets/details/availability/) might vary by regions and it might be required to adjust droplet size to every region.
 

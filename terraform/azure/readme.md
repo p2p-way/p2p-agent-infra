@@ -11,7 +11,7 @@
  9. [Known issues](#known-issues)
 
 
-## [Description](#p2p-agents-on-azure)
+## [Description](#p2p-agent-on-azure)
 
  This code provides [Terraform](../readme.md) configuration for [Microsoft Azure](https://azure.microsoft.com/) stack deployment for P2P content distribution.
  1. [Azure Functions](https://azure.microsoft.com/en-us/products/functions) - Run a function which will act as watcher and orchestrate VM provisioning via Azure Monitor.
@@ -37,19 +37,19 @@
  3. Create an Monitor to scale VMs.
 
 
-## [Considerations](#p2p-agents-on-azure)
+## [Considerations](#p2p-agent-on-azure)
 
  1. Check [Considerations](../readme.md#considerations).
 
 
-## [Limitations](#p2p-agents-on-azure)
+## [Limitations](#p2p-agent-on-azure)
 
  1. Most of the Azure Regions have 3 Availability Zones, but some of them haven't, for more information please read [Availability zone service and regional support](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-service-support).
  2. Watcher is not implemented yet and we should set variable [`start_time`](../readme.md#configuration) only as `now` or specify a custom time.
  3. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
-## [Regions](#p2p-agents-on-azure)
+## [Regions](#p2p-agent-on-azure)
 
  - [Azure geographies](https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/)
  - [Explore the core elements of Azure’s global infrastructure](https://infrastructuremap.microsoft.com/explore)
@@ -106,7 +106,7 @@
    ```
 
 
-## [Costs](#p2p-agents-on-azure)
+## [Costs](#p2p-agent-on-azure)
 
  [Pricing calculator](https://azure.microsoft.com/en-us/pricing/calculator/)
 
@@ -128,14 +128,14 @@
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free grants may not cover multiple instances running for a long period of time.
 
 
-## [Requirements](#p2p-agents-on-azure)
+## [Requirements](#p2p-agent-on-azure)
 
  In order to proceed with this deployment, we need
  1. Linux host with [Terraform](https://developer.hashicorp.com/terraform/install) and [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed.
  2. Azure user account with the administrative permissions.
 
 
-## [Deployment](#p2p-agents-on-azure)
+## [Deployment](#p2p-agent-on-azure)
 
  1. Get Terraform code from GitHub repository
     ```shell
@@ -196,7 +196,7 @@
  After some period of time all resources will be created and nodes will start. After the start, they will connect to the control center and will setup all configuration required to support P2P content distribution.
 
 
-### [Update configuration](#p2p-agents-on-azure)
+### [Update configuration](#p2p-agent-on-azure)
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
 
@@ -224,7 +224,7 @@
  ```
 
 
-#### [Update capacity](#p2p-agents-on-azure)
+#### [Update capacity](#p2p-agent-on-azure)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
@@ -232,7 +232,7 @@
  4. Run `terraform apply`.
 
 
-#### [Add new region](#p2p-agents-on-azure)
+#### [Add new region](#p2p-agent-on-azure)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Add a configuration file for the new region.
@@ -245,7 +245,7 @@
  9. Run `terraform apply`.
 
 
-## [Cleanup](#p2p-agents-on-azure)
+## [Cleanup](#p2p-agent-on-azure)
 
  In order to cleanup all created resources we should use the following steps
  1. Cleanup resources created by Terraform
@@ -254,7 +254,7 @@
     ```
 
 
-## [Known issues](#p2p-agents-on-azure)
+## [Known issues](#p2p-agent-on-azure)
 
  1. [Arm-based VM solutions](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview) are limited only to the some series, which are available only in select regions.
 

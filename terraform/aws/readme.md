@@ -11,7 +11,7 @@
  9. [Known issues](#known-issues)
 
 
-## [Description](#p2p-agents-on-aws)
+## [Description](#p2p-agent-on-aws)
 
  This code provides [Terraform](../readme.md) configuration for [Amazon Web Services](https://aws.amazon.com/) stack deployment for P2P content distribution.
  1. [Amazon CloudFront](https://aws.amazon.com/cloudfront/) - Control center which will return headers based on the CloudFront Functions.
@@ -48,7 +48,7 @@
  5. Create CloudWatch Log group.
 
 
-## [Considerations](#p2p-agents-on-aws)
+## [Considerations](#p2p-agent-on-aws)
 
 **Control center**
  1. WAF is disabled by default for costs optimisations and because control center hostname is known only by the agents.
@@ -60,14 +60,14 @@
  1. Check [Considerations](../readme.md#considerations).
 
 
-## [Limitations](#p2p-agents-on-aws)
+## [Limitations](#p2p-agent-on-aws)
 
  1. Almost all of the AWS Regions have 3 Availability Zones and some of them like *Northern California* and *São Paulo* may provide access just to two AZ's.
  2. Control center [alternate domain name](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-https-alternate-domain-names.html) is not implemented yet and a distribution default domain name will be used.
  3. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
-## [Regions](#p2p-agents-on-aws)
+## [Regions](#p2p-agent-on-aws)
 
  - [Regions and Availability Zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
  - [AWS Regional Services](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/)
@@ -117,7 +117,7 @@
    ```
 
 
-## [Costs](#p2p-agents-on-aws)
+## [Costs](#p2p-agent-on-aws)
 
  [AWS Pricing Calculator](https://calculator.aws/)
 
@@ -144,7 +144,7 @@
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free tier may not cover multiple instances running for a long period of time.
 
 
-## [Requirements](#p2p-agents-on-aws)
+## [Requirements](#p2p-agent-on-aws)
 
  In order to proceed with this deployment, we need
  1. Linux host with [Terraform](https://developer.hashicorp.com/terraform/install) installed.
@@ -160,7 +160,7 @@
       * `CloudWatchFullAccess`
 
 
-## [Deployment](#p2p-agents-on-aws)
+## [Deployment](#p2p-agent-on-aws)
 
  1. Get Terraform code from GitHub repository
     ```shell
@@ -222,7 +222,7 @@
  After some period of time all resources will be created and nodes will start. After the start, they will connect to the control center and will setup all configuration required to support P2P content distribution.
 
 
-### [Update configuration](#p2p-agents-on-aws)
+### [Update configuration](#p2p-agent-on-aws)
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions or even update control center configuration. And next steps mainly depends on the start time we set.
 
@@ -254,7 +254,7 @@
  ```
 
 
-#### [Update capacity](#p2p-agents-on-aws)
+#### [Update capacity](#p2p-agent-on-aws)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
@@ -262,7 +262,7 @@
  4. Run `terraform apply`.
 
 
-#### [Add new region](#p2p-agents-on-aws)
+#### [Add new region](#p2p-agent-on-aws)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Add a configuration file for the new region.
@@ -275,7 +275,7 @@
  9. Run `terraform apply`.
 
 
-## [Cleanup](#p2p-agents-on-aws)
+## [Cleanup](#p2p-agent-on-aws)
 
  In order to cleanup all created resources we should use the following steps
  1. Cleanup resources created by Terraform
@@ -289,7 +289,7 @@
     ```
 
 
-## [Known issues](#p2p-agents-on-aws)
+## [Known issues](#p2p-agent-on-aws)
 
  1. [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html) may not permit to run required number of instances, especialy on newly created accounts or accounts with the low expenses and we should contact AWS for [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html).
 
