@@ -23,7 +23,7 @@
 
 | # | Cloud                                  | Services                                            | Regions                                | AZ                 | Costs, $/d/i                           | Watcher            | Agent side watcher |
 | - | -------------------------------------- | --------------------------------------------------- | -------------------------------------- | ------------------ | -------------------------------------- | ------------------ | ------------------ |
-| 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12`  | [`1.08`](alibaba/readme.md#costs)      | :x:                | :white_check_mark: |
+| 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12`  | [`1.08`](alibaba/readme.md#costs)      | :white_check_mark: | :white_check_mark: |
 | 2 | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2/3/4/6`          | [`0.97`](aws/readme.md#costs)          | :white_check_mark: | :white_check_mark: |
 | 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`48`](azure/readme.md#regions)        | `1/3`              | [`1.11`](azure/readme.md#costs)        | :x:                | :white_check_mark: |
 | 4 | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3/4`              | [`0.85`](gcp/readme.md#costs)          | :x:                | :white_check_mark: |
@@ -78,7 +78,7 @@
   - When `public_keys = []`, we generate the keys for instances SSH access, we also can pass own list of keys or skip it (excluding Azure), by set value to `[""]`.
   - Variable `os_name` should be set to `ubuntu`, which defaults to ubuntu 24.04.
   - Set `desired_capacity` with the desired number of the nodes per region. We also can set value per specific region by passing value directly to the specific region module configuration.
-  - By default, `start_time = "now"` and it means that nodes will start right after `start_offset = "15 minutes"`, after Terraform apply run. We also can set a custom time in [RFC3339 format](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset#optional) - `YYYY-MM-DDTHH:MM:SSZ`, for example `2022-11-28T13:00:00Z`, and in that case `start_offset` will be ignored. For [AWS](aws/readme.md) only, we can set `start_time = "watcher"`.
+  - By default, `start_time = "now"` and it means that nodes will start right after `start_offset = "15 minutes"`, after Terraform apply run. We also can set a custom time in [RFC3339 format](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset#optional) - `YYYY-MM-DDTHH:MM:SSZ`, for example `2022-11-28T13:00:00Z`, and in that case `start_offset` will be ignored. For [AWS](aws/readme.md) and [Alibaba](alibaba/readme.md), we can set `start_time = "watcher"`.
 
     Cloud Providers resources creation in all the regions, using Terraform, vary and we should consider that when set a custom `start_offset`.
 
@@ -318,11 +318,11 @@
 
  4. Update variables in the [*ansible/readme.md*](../ansible/readme.md) and [*ansible/playbook.yml*](../ansible/playbook.yml) files
     ```yaml
-     ipfs_cid
-     radicle_rid
-     ton_bagid
-     torrent_magnet
-     ```
+    ipfs_cid
+    radicle_rid
+    ton_bagid
+    torrent_magnet
+    ```
 
  5. Push latest changes to Radicle and Git repository.
 
