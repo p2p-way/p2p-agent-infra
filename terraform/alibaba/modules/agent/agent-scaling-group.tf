@@ -16,7 +16,7 @@ resource "alicloud_ess_scaling_group" "agent" {
 
   vswitch_ids = [for vswitch in alicloud_vswitch.agent : vswitch.id]
 
-  tags = var.default_tags
+  tags = merge(var.default_tags, { "Cloud" = title(var.default_tags["Cloud"]) })
 
   removal_policies = ["OldestScalingConfiguration", "NewestInstance"]
 
