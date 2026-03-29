@@ -39,7 +39,7 @@ resource "alicloud_ram_policy" "agent_watcher" {
           "ess:DescribeScheduledTasks"
         ],
         "Effect": "Allow",
-        "Resource": "acs:ecs:${local.region}:${local.account}:scalinggroup/*"
+        "Resource": "*"
       },
       {
         "Action": [
@@ -53,7 +53,7 @@ resource "alicloud_ram_policy" "agent_watcher" {
           "ess:DescribeScalingGroups"
         ],
         "Effect": "Allow",
-        "Resource": "acs:ecs:${local.region}:${local.account}:scalinggroup/*"
+        "Resource": "*"
       },
       {
         "Action": [
