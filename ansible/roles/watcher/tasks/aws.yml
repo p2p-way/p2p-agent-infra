@@ -36,7 +36,7 @@
     set -o pipefail
 
     # Variables
-    desired_capacity={{ watcher_desired_capacity }}
+    desired_capacity_cc={{ watcher_desired_capacity }}
     stop_scheduler="initial-stop"
     diff_time_admissible=60
 
@@ -58,10 +58,10 @@
       --auto-scaling-group-name "${asg_name}" \
       --query 'AutoScalingGroups[0].DesiredCapacity')
 
-    scaling_drift="${desired_capacity_current} --> ${desired_capacity}"
+    scaling_drift="${desired_capacity_current} --> ${desired_capacity_cc}"
 
     if [[ -n "${desired_capacity_current}" ]]; then
-      if [[ ${desired_capacity_current} -eq ${desired_capacity} ]]; then
+      if [[ ${desired_capacity_current} -eq ${desired_capacity_cc} ]]; then
         echo "Skip scaling agent instances: ${scaling_drift}"
         exit 0
       fi
@@ -93,7 +93,7 @@
     aws autoscaling update-auto-scaling-group \
       --region "${region}" \
       --auto-scaling-group-name "${asg_name}" \
-      --desired-capacity "${desired_capacity}"
+      --desired-capacity "${desired_capacity_cc}"
 
     # Check scaling status
     if [[ $? -eq 0 ]]; then
