@@ -42,7 +42,7 @@ ess_endpoint = f"ess.{region}.aliyuncs.com"
 fc_endpoint = f"{os.environ['account']}.{region}.fc.aliyuncs.com"
 
 
-def handler(event, context):
+def main_handler(event, context):
 
     # Timing
     start_time = time.time()

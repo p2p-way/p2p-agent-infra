@@ -20,7 +20,7 @@ resource "alicloud_fcv3_function" "watcher" {
     checksum = data.alicloud_file_crc64_checksum.watcher[count.index].checksum
   }
 
-  handler = "${trimsuffix(var.watcher_file, format(".%s", element(split(".", var.watcher_file), -1)))}.handler"
+  handler = "${trimsuffix(var.watcher_file, format(".%s", element(split(".", var.watcher_file), -1)))}.main_handler"
   timeout = 5
 
   # Permissions
