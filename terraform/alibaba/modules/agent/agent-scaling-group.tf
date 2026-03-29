@@ -26,6 +26,7 @@ resource "alicloud_ess_scaling_group" "agent" {
 
   multi_az_policy = "COMPOSABLE"
   az_balance      = true
+  balance_mode    = "BalancedBestEffort"
 
   capacity_options_on_demand_percentage_above_base_capacity = 100
 
