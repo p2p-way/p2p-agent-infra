@@ -20,28 +20,28 @@ resource "alicloud_log_store_index" "agent" {
     token          = " #$^*\r\n\t"
   }
   field_search {
-    name             = "__hostname__"
+    name             = "__tag__:__hostname__"
     alias            = "hostname"
     enable_analytics = true
     type             = "text"
     token            = " #$^*\r\n\t"
   }
   field_search {
-    name             = "__path__"
+    name             = "__tag__:__path__"
     alias            = "path"
     enable_analytics = true
     type             = "text"
     token            = " #$^*\r\n\t"
   }
   field_search {
-    name             = "__raw_log__"
+    name             = "__tag__:__raw_log__"
     alias            = "log"
     enable_analytics = true
     type             = "text"
     token            = " #$^*\r\n\t"
   }
   field_search {
-    name             = "__source__"
+    name             = "__tag__:__source__"
     alias            = "source"
     enable_analytics = true
     type             = "text"
