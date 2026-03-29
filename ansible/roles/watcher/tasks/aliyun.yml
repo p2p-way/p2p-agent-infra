@@ -19,12 +19,12 @@
     set -o pipefail
 
     # Variables
-    desired_capacity={{ watcher_desired_capacity }}
+    desired_capacity_cc={{ watcher_desired_capacity }}
     stop_scheduler="initial-stop"
     diff_time_admissible=60
 
     # Get metadata
-    token=$(curl -X PUT -s http://100.100.100.200/latest/api/token -H "X-aliyun-ecs-metadata-token-ttl-seconds: 180")
+    token=$(curl -X PUT -s http://100.100.100.200/latest/api/token -H "X-aliyun-ecs-metadata-token-ttl-seconds: 1800")
     role=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/ram/security-credentials/)
     credentials=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/ram/security-credentials/$role)
     region=$(curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/region-id)
@@ -36,27 +36,70 @@
     export ALIBABA_CLOUD_SECURITY_TOKEN=$(jq -r '.SecurityToken' <<< "${credentials}")
     export ALIBABA_CLOUD_REGION_ID="${region}"
 
-    # Get instance scaling groups
+    # Get instance scaling group
     sg_id=$(aliyun ecs DescribeInstances --InstanceIds "['${instance_id}']" \
       | jq -r '.Instances.Instance[].Tags.Tag[] | select(.TagKey == "acs:autoscaling:scalingGroupId" ) | .TagValue')
 
-    # Get stop scheduler and current time diff
+    # Check if scaling is required
+    desired_capacity_current=$(aliyun ess DescribeScalingGroups \
+      --RegionId "${region}" \
+      --ScalingGroupId "${sg_id}" \
+      | jq -r '.ScalingGroups.ScalingGroup[].DesiredCapacity')
+
+    scaling_drift="${desired_capacity_current} --> ${desired_capacity_cc}"
+
+    if [[ -n "${desired_capacity_current}" ]]; then
+      if [[ ${desired_capacity_current} -eq ${desired_capacity_cc} ]]; then
+        echo "Skip scaling agent instances: ${scaling_drift}"
+        exit 0
+      fi
+    fi
+
+    # Get stop scheduler
     scheduler_time_sg=$(aliyun ess DescribeScheduledTasks \
       --RegionId "${region}" \
       --ScalingGroupId "${sg_id}" \
       | jq -r '.ScheduledTasks.ScheduledTask[] | select(.ScheduledTaskName | contains("'${stop_scheduler}'")) | .LaunchTime')
-    [[ -n "${scheduler_time_sg}" ]] && scheduler_time=$(date -d "${scheduler_time_sg}" "+%s") || scheduler_time=$(date "+%s")
-    current_time=$(date "+%s")
-    diff_time=$((scheduler_time - current_time))
 
-    # Skip update when near the stop
-    [[ "${diff_time}" -lt "${diff_time_admissible}" ]] && exit 0
+    # Check stop scheduler and current time diff
+    if [[ -n "${scheduler_time_sg}" ]]; then
+      scheduler_time=$(date -d "${scheduler_time_sg}" "+%s")
+      current_time=$(date "+%s")
+      diff_time=$((scheduler_time - current_time))
 
-    # Update Instance Scaling
+      # Skip update when near the stop
+      if [[ "${diff_time}" -lt "${diff_time_admissible}" ]]; then
+        echo "Skip scaling agent instances - stop diff_time ${diff_time} is lower than ${diff_time_admissible}"
+        exit 0
+      else
+        echo "Scaling agent instances will be performed - stop diff_time is $(date -d @${diff_time} +%T)"
+      fi
+    fi
+
+    # Update autoscaler
     aliyun ess ModifyScalingGroup \
+      --RegionId "${region}" \
       --ScalingGroupId "${sg_id}" \
-      --MinSize "${desired_capacity}" \
-      --MaxSize "${desired_capacity}"
+      --DesiredCapacity "${desired_capacity_cc}"
+
+    # Check scaling status
+    if [[ $? -eq 0 ]]; then
+      echo "Scaling agent instances successful: ${scaling_drift}"
+    else
+      echo "Scaling agent instances failed: ${scaling_drift}"
+    fi
   args:
     executable: bash
+  register: watcher_autoscaler
   changed_when: false
+
+- name: Show autoscaler output
+  ansible.builtin.debug:
+    msg: |
+      {{ item }}:
+      {% for out in item | extract(watcher_autoscaler) %}
+      {{ out }}
+      {% endfor %}
+  loop:
+    - stdout_lines
+    - stderr_lines
