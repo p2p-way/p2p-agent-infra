@@ -17,35 +17,63 @@ resource "alicloud_log_store_index" "agent" {
   logstore = alicloud_log_store.agent[count.index].logstore_name
   full_text {
     case_sensitive = true
-    token          = " #$^*\r\n\t"
+    token          = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
+  }
+  field_search {
+    name             = "__tag__:__receive_time__"
+    alias            = "receive_time"
+    enable_analytics = true
+    type             = "text"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
+  }
+  field_search {
+    name             = "__source__"
+    alias            = "source"
+    enable_analytics = true
+    type             = "text"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
   }
   field_search {
     name             = "__tag__:__hostname__"
     alias            = "hostname"
     enable_analytics = true
     type             = "text"
-    token            = " #$^*\r\n\t"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
   }
   field_search {
     name             = "__tag__:__path__"
     alias            = "path"
     enable_analytics = true
     type             = "text"
-    token            = " #$^*\r\n\t"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
   }
   field_search {
-    name             = "__tag__:__raw_log__"
+    name             = "__raw__"
+    alias            = "raw"
+    enable_analytics = true
+    type             = "text"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
+  }
+  field_search {
+    name             = "__raw_log__"
     alias            = "log"
     enable_analytics = true
     type             = "text"
-    token            = " #$^*\r\n\t"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
   }
   field_search {
-    name             = "__tag__:__source__"
-    alias            = "source"
+    name             = "__topic__"
+    alias            = "topic"
     enable_analytics = true
     type             = "text"
-    token            = " #$^*\r\n\t"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
+  }
+  field_search {
+    name             = "__tag__:__user_defined_id__"
+    alias            = "user_defined_id"
+    enable_analytics = true
+    type             = "text"
+    token            = ", '\";$#!=()[]{}?@&<>/:\n\t\r"
   }
 }
 
