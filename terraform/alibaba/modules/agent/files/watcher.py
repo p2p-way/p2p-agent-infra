@@ -130,68 +130,106 @@ def main_handler(event, context):
         )
         return service(config)
 
-    def update_agent_autoscaler(agent_commands):
-        # Check desired_capacity from CC
-        desired_capacity_cc = agent_commands.get(
-            "desired_capacity", "undefined")
-        desired_capacity_cc = desired_capacity_cc.replace("'", '"')
-        try:
-            desired_capacity_cc = json.loads(desired_capacity_cc)
+    def parse_desired_capacity(agent_commands):
+
+        def check_undefined():
+            desired_capacity_cc = agent_commands.get(
+                "desired_capacity", "undefined")
+            return desired_capacity_cc
+
+        def check_int(value):
             try:
-                # int from json
-                desired_capacity_cc = int(desired_capacity_cc)
-            except TypeError:
-                try:
-                    # json
-                    clouds = desired_capacity_cc.get("all", -1)
-                    cloud_all = desired_capacity_cc.get(
-                        cloud, {}).get("all", -1)
-                    cloud_region = desired_capacity_cc.get(
-                        cloud, {}).get(region, -1)
-                    desired_capacity_cc = cloud_region if (cloud_region >= 0) \
-                        else cloud_all if cloud_all >= 0 \
-                        else clouds
-                except AttributeError:
-                    log.info(
-                        "Please check json format - can't get values from %s", desired_capacity_cc)
-                    desired_capacity_cc = -1
-        except TypeError:
+                value = int(value)
+            except ValueError:
+                value = -1
+            return value
+
+        def check_dict(desired_capacity_cc):
+            try:
+                clouds = check_int(
+                    desired_capacity_cc.get("all", -1))
+                cloud_all = check_int(
+                    desired_capacity_cc.get(cloud, {}).get("all", -1))
+                cloud_region = check_int(
+                    desired_capacity_cc.get(cloud, {}).get(region, -1))
+                desired_capacity_cc = cloud_region if cloud_region >= 0 \
+                    else cloud_all if cloud_all >= 0 \
+                    else clouds
+            except AttributeError:
+                desired_capacity_cc = check_undefined()
+            return desired_capacity_cc
+
+        # Check desired_capacity from CC
+        desired_capacity_cc = check_undefined()
+
+        # Check type
+        if isinstance(desired_capacity_cc, int):
             # int
             desired_capacity_cc = int(desired_capacity_cc)
-        except json.decoder.JSONDecodeError:
-            # undefined
-            desired_capacity_cc = agent_commands.get("desired_capacity")
+        elif isinstance(desired_capacity_cc, dict):
+            # dict
+            desired_capacity_cc = check_dict(desired_capacity_cc)
+        elif isinstance(desired_capacity_cc, str):
+            # str
+            desired_capacity_cc = desired_capacity_cc.replace("'", '"')
+            try:
+                desired_capacity_cc = json.loads(desired_capacity_cc)
+                try:
+                    # int from json str
+                    desired_capacity_cc = int(desired_capacity_cc)
+                except TypeError:
+                    # dict from json str
+                    desired_capacity_cc = check_dict(desired_capacity_cc)
+                except ValueError:
+                    # undefined from json str
+                    desired_capacity_cc = check_undefined()
+            except json.decoder.JSONDecodeError:
+                # undefined from str
+                desired_capacity_cc = check_undefined()
+        else:
+            # undefined type
+            desired_capacity_cc = "undefined"
+
+        return desired_capacity_cc
+
+    def update_agent_autoscaler(agent_commands):
+
+        desired_capacity_cc = parse_desired_capacity(agent_commands)
 
         # Update autoscaler
-        if desired_capacity_cc not in ("", "-", "undefined") and desired_capacity_cc >= 0:
-            # Get autoscaler config
-            autoscaling = create_cloud_service_client(
-                Ess20220222Client, ess_endpoint)
-            describe_scaling_groups_request = ess_20220222_models.DescribeScalingGroupsRequest(
-                region_id=region,
-                scaling_group_name=agent_name
-            )
-
-            autoscaler_config = autoscaling.describe_scaling_groups_with_options(
-                describe_scaling_groups_request, runtime)
-            autoscaler_config = ast.literal_eval(str(autoscaler_config))
-
-            # Update autoscaler
-            desired_capacity_current = autoscaler_config["body"]["ScalingGroups"][0].get(
-                "DesiredCapacity", 0)
-            if desired_capacity_current != desired_capacity_cc:
-                log.info("Scaling agent instances: %s --> %s",
-                         desired_capacity_current, desired_capacity_cc)
-
-                modify_scaling_group_request = ess_20220222_models.ModifyScalingGroupRequest(
-                    scaling_group_id=autoscaler_config["body"]["ScalingGroups"][0]["ScalingGroupId"],
-                    desired_capacity=desired_capacity_cc
+        if desired_capacity_cc not in ("", "-", "undefined") and isinstance(desired_capacity_cc, int):
+            if desired_capacity_cc >= 0:
+                # Get autoscaler config
+                autoscaling = create_cloud_service_client(
+                    Ess20220222Client, ess_endpoint)
+                describe_scaling_groups_request = ess_20220222_models.DescribeScalingGroupsRequest(
+                    region_id=region,
+                    scaling_group_name=agent_name
                 )
-                autoscaling.modify_scaling_group_with_options(
-                    modify_scaling_group_request, runtime)
+
+                autoscaler_config = autoscaling.describe_scaling_groups_with_options(
+                    describe_scaling_groups_request, runtime)
+                autoscaler_config = ast.literal_eval(str(autoscaler_config))
+
+                # Update autoscaler
+                desired_capacity_current = autoscaler_config["body"]["ScalingGroups"][0].get(
+                    "DesiredCapacity", 0)
+                if desired_capacity_current != desired_capacity_cc:
+                    log.info("Scaling agent instances: %s --> %s",
+                             desired_capacity_current, desired_capacity_cc)
+
+                    modify_scaling_group_request = ess_20220222_models.ModifyScalingGroupRequest(
+                        scaling_group_id=autoscaler_config["body"]["ScalingGroups"][0]["ScalingGroupId"],
+                        desired_capacity=desired_capacity_cc
+                    )
+                    autoscaling.modify_scaling_group_with_options(
+                        modify_scaling_group_request, runtime)
+                else:
+                    log.info("Skip agent instances update: %s --> %s",
+                             desired_capacity_current, desired_capacity_cc)
             else:
-                log.info("Skip agent instances update: %s --> %s",
-                         desired_capacity_current, desired_capacity_cc)
+                log.info(
+                    "Skip agent instances scaling: '%s'", desired_capacity_cc)
         else:
             log.info(
                 "Skip agent instances scaling: '%s'", desired_capacity_cc)
@@ -271,14 +309,14 @@ def main_handler(event, context):
 
     update_scheduler(scheduler_commands)
 
+    request_id = context.request_id
+    now = time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime())
     duration = f"{(time.time() - start_time) * 1000:.3f} msec"
     log.info("Run duration: %s", duration)
 
     log_searator()
 
-    now = time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime())
-
     return {
         "statusCode": 200,
-        "body": f"{name} in {region} region - {context.request_id} - {now} - {duration}\n"
+        "body": f"{name} in {region} region - {request_id} - {now} - {duration}\n"
     }
