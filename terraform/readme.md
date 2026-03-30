@@ -78,7 +78,7 @@
   - When `public_keys = []`, we generate the keys for instances SSH access, we also can pass own list of keys or skip it (excluding Azure), by set value to `[""]`.
   - Variable `os_name` should be set to `ubuntu`, which defaults to ubuntu 24.04.
   - Set `desired_capacity` with the desired number of the nodes per region. We also can set value per specific region by passing value directly to the specific region module configuration.
-  - By default, `start_time = "now"` and it means that nodes will start right after `start_offset = "15 minutes"`, after Terraform apply run. We also can set a custom time in [RFC3339 format](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset#optional) - `YYYY-MM-DDTHH:MM:SSZ`, for example `2022-11-28T13:00:00Z`, and in that case `start_offset` will be ignored. For [AWS](aws/readme.md) and [Alibaba](alibaba/readme.md), we can set `start_time = "watcher"`.
+  - By default, `start_time = "now"` and it means that nodes will start right after `start_offset = "15 minutes"`, after Terraform apply run. We also can set a custom time in [RFC3339 format](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset#optional) - `YYYY-MM-DDTHH:MM:SSZ`, for example `2022-11-28T13:00:00Z`, and in that case `start_offset` will be ignored. For [AWS](aws/readme.md) and [Alibaba](alibaba/readme.md), we can set `start_time = "watcher"` and in that case, instances count will be mananaged by [Watcher](../architecture.md#watcher) and we need to make sure that values on [Control center](../architecture.md#control-center) side set corespondigly.
 
     Cloud Providers resources creation in all the regions, using Terraform, vary and we should consider that when set a custom `start_offset`.
 
