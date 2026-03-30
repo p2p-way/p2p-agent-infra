@@ -91,21 +91,13 @@ data "alicloud_file_crc64_checksum" "watcher" {
   filename = data.archive_file.watcher[count.index].output_path
 }
 
-# FC version - Watcher
-resource "alicloud_fcv3_function_version" "watcher" {
-  count = local.watcher_create ? 1 : 0
-
-  description   = "LATEST"
-  function_name = alicloud_fcv3_function.watcher[count.index].id
-}
-
 # FC alias - Watcher
 resource "alicloud_fcv3_alias" "watcher" {
   count = local.watcher_create ? 1 : 0
 
   alias_name    = "latest"
   description   = "Latest version of ${local.watcher_name} function"
-  version_id    = alicloud_fcv3_function_version.watcher[count.index].version_id
+  version_id    = "LATEST"
   function_name = alicloud_fcv3_function.watcher[count.index].id
 }
 
