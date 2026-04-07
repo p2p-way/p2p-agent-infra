@@ -52,6 +52,7 @@
    hcloud server-type list
    ```
 
+
 ## [Costs](#p2p-agent-on-hetzner)
 
  [Pricing](https://www.hetzner.com/cloud#pricing)
