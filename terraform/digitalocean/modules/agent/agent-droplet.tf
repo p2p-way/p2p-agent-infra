@@ -6,10 +6,10 @@ resource "digitalocean_droplet" "agent" {
   region = local.region
 
   # VPC
-  vpc_uuid = resource.digitalocean_vpc.agent[0].id
+  vpc_uuid = resource.digitalocean_vpc.agent[count.index].id
 
   # OS
-  image = data.digitalocean_image.agent[0].slug
+  image = data.digitalocean_image.agent[count.index].slug
 
   # Size
   size = var.droplet_size
@@ -21,13 +21,13 @@ resource "digitalocean_droplet" "agent" {
   ipv6 = var.enable_ipv6
 
   # Initialization scripts
-  user_data = data.cloudinit_config.agent[0].rendered
+  user_data = data.cloudinit_config.agent[count.index].rendered
 
   # Hostname
   name = "${local.resource_name}-${count.index + 1}"
 
   # Tags
-  tags = [resource.digitalocean_tag.agent[0].id]
+  tags = [resource.digitalocean_tag.agent[count.index].id]
 
   # Other
   resize_disk = false
