@@ -108,7 +108,7 @@
 
  4. Authenticate on Akamai
     ```shell
-    export LINODE_TOKEN="<API Token>"
+    export LINODE_TOKEN="<api token>"
     ```
 
  5. Run Terraform
