@@ -38,27 +38,70 @@
     set -o pipefail
 
     # Variables
-    desired_capacity={{ watcher_desired_capacity }}
+    desired_capacity_cc={{ watcher_desired_capacity }}
 
     # Get metadata
     project_id=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/project/project-id)
     region=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/zone | xargs basename | sed 's/-[a-z]$//')
     instance_group=$(curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/created-by | xargs basename)
 
+    # Check if scaling is required
+    desired_capacity_current=$(gcloud compute instance-groups managed \
+      describe "${instance_group}" \
+      --region="${region}" \
+      --format="get(autoscaler.autoscalingPolicy.maxNumReplicas)")
+
+    scaling_drift="${desired_capacity_current} --> ${desired_capacity_cc}"
+
+    if [[ -n "${desired_capacity_current}" ]]; then
+      if [[ ${desired_capacity_current} -eq ${desired_capacity_cc} ]]; then
+        echo "Skip scaling agent instances: ${scaling_drift}"
+        exit 0
+      fi
+    fi
+
+    # Check for schedule
+    schedule=$(gcloud compute instance-groups managed \
+      describe "${instance_group}" \
+      --region="${region}" \
+      --format="json" \
+      | jq -r '.autoscaler.autoscalingPolicy.scalingSchedules // [] | keys[]')
+
+    # Update schedule
+    if [[ -n "${schedule}" ]]; then
+      gcloud compute instance-groups managed \
+        update-autoscaling "${instance_group}" \
+        --region="${region}" \
+        --update-schedule="${schedule}" \
+        --schedule-min-required-replicas="${desired_capacity_cc}"
+    else
+      update_autoscaling_arg="--min-num-replicas=${desired_capacity_cc}"
+    fi
+
     # Update autoscaler
     gcloud compute instance-groups managed \
       update-autoscaling "${instance_group}" \
       --region="${region}" \
-      --max-num-replicas="${desired_capacity}"
+      --max-num-replicas="${desired_capacity_cc}" ${update_autoscaling_arg}
 
-    # Update Schedule
-    schedule=$(gcloud compute instance-groups managed list --filter="name=${instance_group}" --format="get(autoscaler.name)")
-
-    gcloud compute instance-groups managed \
-      update-autoscaling "${instance_group}" \
-      --region="${region}" \
-      --update-schedule="${schedule}" \
-      --schedule-min-required-replicas="${desired_capacity}"
+    # Check scaling status
+    if [[ $? -eq 0 ]]; then
+      echo "Scaling agent instances successful: ${scaling_drift}"
+    else
+      echo "Scaling agent instances failed: ${scaling_drift}"
+    fi
   args:
     executable: bash
+  register: watcher_autoscaler
   changed_when: false
+
+- name: Show autoscaler output
+  ansible.builtin.debug:
+    msg: |
+      {{ item }}:
+      {% for out in item | extract(watcher_autoscaler) %}
+      {{ out }}
+      {% endfor %}
+  loop:
+    - stdout_lines
+    - stderr_lines
