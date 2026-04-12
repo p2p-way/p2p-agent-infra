@@ -16,6 +16,7 @@ locals {
   watcher_create        = var.start_time == "watcher" && local.create
   watcher_name          = "${lower(replace(var.watcher_name, " ", "-"))}-${local.region}"
   watcher_description   = "${var.watcher_name} - ${local.region_description}"
+  watcher_debug         = false
   scheduler_create      = local.watcher_create
   scheduler_name        = "${lower(replace(var.scheduler_name, " ", "-"))}-${local.region}"
   scheduler_description = "${var.scheduler_name} - ${local.region_description}"
