@@ -1,10 +1,9 @@
 import os
-import ast
 import time
 import logging
 import urllib.request
 import json
-
+import ast
 from alibabacloud_ess20220222.client import Client as Ess20220222Client
 from alibabacloud_ess20220222 import models as ess_20220222_models
 from alibabacloud_fc20230330.client import Client as FC20230330Client
@@ -21,6 +20,7 @@ logging.basicConfig(
 )
 log = logging.getLogger()
 
+# Clients
 runtime = util_models.RuntimeOptions(
     autoretry=True,
     max_attempts=3,
@@ -122,14 +122,6 @@ def main_handler(event, context):
 
         return commands
 
-    def create_cloud_service_client(service, endpoint):
-        credential = CredentialClient()
-        config = open_api_models.Config(
-            credential=credential,
-            endpoint=endpoint
-        )
-        return service(config)
-
     def parse_desired_capacity(agent_commands):
 
         def check_undefined():
@@ -192,84 +184,148 @@ def main_handler(event, context):
 
         return desired_capacity_cc
 
-    def update_agent_autoscaler(agent_commands):
+    def create_cloud_service_client(service, endpoint):
+        credential = CredentialClient()
+        config = open_api_models.Config(
+            credential=credential,
+            endpoint=endpoint
+        )
+        return service(config)
+
+    def get_desired_capacity(autoscaler_name):
+        # Client
+        autoscaling_client = create_cloud_service_client(
+            Ess20220222Client, ess_endpoint)
+
+        # Request
+        describe_scaling_groups_request = ess_20220222_models.DescribeScalingGroupsRequest(
+            region_id=region,
+            scaling_group_name=autoscaler_name
+        )
+
+        # Get
+        autoscaler_config = autoscaling_client.describe_scaling_groups_with_options(
+            describe_scaling_groups_request, runtime)
+
+        # Compute
+        autoscaler_config = ast.literal_eval(str(autoscaler_config))
+        desired_capacity_current = autoscaler_config["body"]["ScalingGroups"][0].get(
+            "DesiredCapacity", 0)
+
+        # Return
+        return desired_capacity_current, autoscaler_config
+
+    def get_scheduler_expression(function, scheduler):
+        # Client
+        scheduler_client = create_cloud_service_client(
+            FC20230330Client, fc_endpoint)
+
+        # Get
+        scheduler_config = scheduler_client.get_trigger_with_options(
+            function, scheduler, {}, runtime)
+
+        # Compute
+        scheduler_config = ast.literal_eval(str(scheduler_config))
+        scheduler_expression_current = scheduler_config["body"]["triggerConfig"]
+        scheduler_expression_current = json.loads(
+            scheduler_expression_current)
+        scheduler_expression_current = scheduler_expression_current["cronExpression"]
+
+        # Return
+        return scheduler_expression_current
+
+    def compute_scheduler_expression(expression):
+       # Compute
+        value = int(
+            expression.split(" ")[0])
+        units = expression.split(" ")[
+            1]
+        multiplier = {
+            "minutes": 1,
+            "hours": 60,
+            "days": 1440
+        }
+        minutes = value * multiplier[units]
+        expression = f"@every {minutes}m"
+
+        # Return
+        return expression
+
+    def update_autoscaler_apply(config, desired_capacity):
+        # Client
+        autoscaling_client = create_cloud_service_client(
+            Ess20220222Client, ess_endpoint)
+
+        # Request
+        modify_scaling_group_request = ess_20220222_models.ModifyScalingGroupRequest(
+            scaling_group_id=config["body"]["ScalingGroups"][0]["ScalingGroupId"],
+            desired_capacity=desired_capacity
+        )
+
+        # Update
+        autoscaling_client.modify_scaling_group_with_options(
+            modify_scaling_group_request, runtime)
+
+    def update_scheduler_apply(function, scheduler, expression):
+        # Client
+        scheduler_client = create_cloud_service_client(
+            FC20230330Client, fc_endpoint)
+
+        # Compute
+        update_trigger_input = fc20230330_models.UpdateTriggerInput(
+            trigger_config=f'{{"payload": "", "cronExpression": "{expression}","enable": true}}'
+        )
+
+        # Request
+        update_trigger_request = fc20230330_models.UpdateTriggerRequest(
+            body=update_trigger_input
+        )
+
+        # Update
+        scheduler_client.update_trigger_with_options(
+            function, scheduler, update_trigger_request, {}, runtime)
+
+    def update_autoscaler(agent_commands):
 
         desired_capacity_cc = parse_desired_capacity(agent_commands)
 
         # Update autoscaler
-        if desired_capacity_cc not in ("", "-", "undefined") and isinstance(desired_capacity_cc, int):
+        if isinstance(desired_capacity_cc, int):
             if desired_capacity_cc >= 0:
-                # Get autoscaler config
-                autoscaling = create_cloud_service_client(
-                    Ess20220222Client, ess_endpoint)
-                describe_scaling_groups_request = ess_20220222_models.DescribeScalingGroupsRequest(
-                    region_id=region,
-                    scaling_group_name=agent_name
-                )
+                desired_capacity_current, autoscaler_config = get_desired_capacity(
+                    agent_name)
 
-                autoscaler_config = autoscaling.describe_scaling_groups_with_options(
-                    describe_scaling_groups_request, runtime)
-                autoscaler_config = ast.literal_eval(str(autoscaler_config))
-
-                # Update autoscaler
-                desired_capacity_current = autoscaler_config["body"]["ScalingGroups"][0].get(
-                    "DesiredCapacity", 0)
                 if desired_capacity_current != desired_capacity_cc:
                     log.info("Scaling agent instances: %s --> %s",
                              desired_capacity_current, desired_capacity_cc)
 
-                    modify_scaling_group_request = ess_20220222_models.ModifyScalingGroupRequest(
-                        scaling_group_id=autoscaler_config["body"]["ScalingGroups"][0]["ScalingGroupId"],
-                        desired_capacity=desired_capacity_cc
-                    )
-                    autoscaling.modify_scaling_group_with_options(
-                        modify_scaling_group_request, runtime)
+                    # Update
+                    update_autoscaler_apply(
+                        autoscaler_config, desired_capacity_cc)
                 else:
                     log.info("Skip agent instances update: %s --> %s",
                              desired_capacity_current, desired_capacity_cc)
             else:
-                log.info(
-                    "Skip agent instances scaling: '%s'", desired_capacity_cc)
+                log.info("Skip agent instances scaling: '%s'",
+                         desired_capacity_cc)
         else:
-            log.info(
-                "Skip agent instances scaling: '%s'", desired_capacity_cc)
+            log.info("Skip agent instances scaling: '%s'",
+                     desired_capacity_cc)
 
         log_searator()
 
     def update_scheduler(scheduler_commands):
-        # Check scheduler expression from CC
         scheduler_expression_cc = scheduler_commands.get(
             "expression", "undefined")
 
+        # Update scheduler
         if scheduler_expression_cc not in ("", "-", "undefined"):
-            # Get scheduler config
-            scheduler = create_cloud_service_client(
-                FC20230330Client, fc_endpoint)
 
-            scheduler_config = scheduler.get_trigger_with_options(
-                name, scheduler_name, {}, runtime)
-            scheduler_config = ast.literal_eval(str(scheduler_config))
-            scheduler_expression_current = scheduler_config["body"]["triggerConfig"]
-            scheduler_expression_current = json.loads(
-                scheduler_expression_current)
-            scheduler_expression_current = scheduler_expression_current["cronExpression"]
+            scheduler_expression_cc = compute_scheduler_expression(
+                scheduler_expression_cc)
+            scheduler_expression_current = get_scheduler_expression(
+                name, scheduler_name)
 
-            # Compute scheduler expression
-            value = int(
-                scheduler_expression_cc.split(" ")[0])
-            units = scheduler_expression_cc.split(" ")[
-                1]
-            multiplier = {
-                "minutes": 1,
-                "hours": 60,
-                "days": 1440
-            }
-            minutes = value * \
-                multiplier[units]
-
-            scheduler_expression_cc = f"@every {minutes}m"
-
-            # Update scheduler
             if scheduler_expression_current == scheduler_expression_cc:
                 log.info("Skip scheduler expression update: %s --> %s",
                          scheduler_expression_current, scheduler_expression_cc)
@@ -277,19 +333,9 @@ def main_handler(event, context):
                 log.info("Update scheduler expression: %s --> %s",
                          scheduler_expression_current, scheduler_expression_cc)
 
-                # input
-                update_trigger_input = fc20230330_models.UpdateTriggerInput(
-                    trigger_config=f'{{"payload": "", "cronExpression": "{scheduler_expression_cc}","enable": true}}'
-                )
-
-                # request
-                update_trigger_request = fc20230330_models.UpdateTriggerRequest(
-                    body=update_trigger_input
-                )
-
-                # update
-                scheduler.update_trigger_with_options(
-                    name, scheduler_name, update_trigger_request, {}, runtime)
+                # Update
+                update_scheduler_apply(
+                    name, scheduler_name, scheduler_expression_cc)
         else:
             log.info(
                 "Skip scheduler expression update: '%s'", scheduler_expression_cc)
@@ -305,7 +351,7 @@ def main_handler(event, context):
 
     scheduler_commands = rename_headers(scheduler_commands, scheduler_prefix)
 
-    update_agent_autoscaler(agent_commands)
+    update_autoscaler(agent_commands)
 
     update_scheduler(scheduler_commands)
 
