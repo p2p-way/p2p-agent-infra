@@ -2,8 +2,8 @@ import os
 import time
 import logging
 import urllib.request
-import boto3
 import json
+import boto3
 
 logging.basicConfig(
     level=logging.INFO,
@@ -12,8 +12,9 @@ logging.basicConfig(
 )
 log = logging.getLogger()
 
-autoscaling = boto3.client("autoscaling")
-events_scheduler = boto3.client("scheduler")
+# Clients
+autoscaling_client = boto3.client("autoscaling")
+events_scheduler_client = boto3.client("scheduler")
 
 # Variables
 timeout = 3
@@ -170,54 +171,102 @@ def main_handler(event, context):
 
         return desired_capacity_cc
 
-    def update_agent_autoscaler(agent_commands):
+    def get_desired_capacity(autoscaler_name):
+        # Get
+        autoscaler_config = autoscaling_client.describe_auto_scaling_groups(
+            AutoScalingGroupNames=[
+                autoscaler_name
+            ]
+        )
+
+        # Compute
+        desired_capacity_current = autoscaler_config["AutoScalingGroups"][0]["DesiredCapacity"]
+
+        # Return
+        return desired_capacity_current
+
+    def get_scheduler_expression(scheduler, scheduler_group):
+        # Get
+        scheduler_config = events_scheduler_client.get_schedule(
+            GroupName=scheduler_group,
+            Name=scheduler
+        )
+
+        # Compute
+        scheduler_expression_current = scheduler_config["ScheduleExpression"]
+
+        # Return
+        return scheduler_expression_current, scheduler_config
+
+    def compute_scheduler_expression(expression):
+       # Compute
+        expression = f"rate({expression})"
+
+        # Return
+        return expression
+
+    def update_autoscaler_apply(autoscaler_name, desired_capacity):
+        # Update
+        autoscaling_client.update_auto_scaling_group(
+            AutoScalingGroupName=autoscaler_name,
+            DesiredCapacity=desired_capacity
+        )
+
+    def update_scheduler_apply(scheduler, config, expression):
+        # Update
+        events_scheduler_client.update_schedule(
+            GroupName=scheduler,
+            Name=scheduler,
+            ScheduleExpression=expression,
+            Description=config["Description"],
+            ActionAfterCompletion=config["ActionAfterCompletion"],
+            ScheduleExpressionTimezone=config[
+                "ScheduleExpressionTimezone"
+            ],
+            State=config["State"],
+            FlexibleTimeWindow=config["FlexibleTimeWindow"],
+            Target=config["Target"],
+        )
+
+    def update_autoscaler(agent_commands):
 
         desired_capacity_cc = parse_desired_capacity(agent_commands)
 
         # Update autoscaler
-        if desired_capacity_cc not in ("", "-", "undefined") and isinstance(desired_capacity_cc, int):
+        if isinstance(desired_capacity_cc, int):
             if desired_capacity_cc >= 0:
-                # Get autoscaler config
-                autoscaler_config = autoscaling.describe_auto_scaling_groups(
-                    AutoScalingGroupNames=[
-                        agent_name
-                    ]
-                )
+                desired_capacity_current = get_desired_capacity(agent_name)
 
-                # Update autoscaler
-                desired_capacity_current = autoscaler_config["AutoScalingGroups"][0]["DesiredCapacity"]
                 if desired_capacity_current != desired_capacity_cc:
                     log.info("Scaling agent instances: %s --> %s",
                              desired_capacity_current, desired_capacity_cc)
-                    autoscaling.update_auto_scaling_group(
-                        AutoScalingGroupName=agent_name,
-                        DesiredCapacity=desired_capacity_cc
-                    )
+
+                    # Update
+                    update_autoscaler_apply(agent_name, desired_capacity_cc)
                 else:
                     log.info("Skip agent instances update: %s --> %s",
                              desired_capacity_current, desired_capacity_cc)
+            else:
+                log.info("Skip agent instances scaling: '%s'",
+                         desired_capacity_cc)
         else:
-            log.info(
-                "Skip agent instances scaling: '%s'", desired_capacity_cc)
+            log.info("Skip agent instances scaling: '%s'",
+                     desired_capacity_cc)
 
         log_searator()
 
     def update_scheduler(scheduler_commands):
-        # Check scheduler expression from CC
         scheduler_expression_cc = scheduler_commands.get(
             "expression", "undefined")
 
+        # Update scheduler
         if scheduler_expression_cc not in ("", "-", "undefined"):
-            # Get scheduler config
-            scheduler_config = events_scheduler.get_schedule(
-                GroupName=scheduler_group_name,
-                Name=scheduler_name
-            )
 
-            scheduler_expression_cc = f"rate({scheduler_expression_cc})"
-            scheduler_expression_current = scheduler_config["ScheduleExpression"]
+            scheduler_expression_cc = compute_scheduler_expression(
+                scheduler_expression_cc)
+            scheduler_expression_current, scheduler_config = get_scheduler_expression(
+                scheduler_name, scheduler_group_name)
 
-            # Update scheduler
             if scheduler_expression_current == scheduler_expression_cc:
                 log.info("Skip scheduler expression update: %s --> %s",
                          scheduler_expression_current, scheduler_expression_cc)
@@ -225,19 +274,9 @@ def main_handler(event, context):
                 log.info("Update scheduler expression: %s --> %s",
                          scheduler_expression_current, scheduler_expression_cc)
 
-                events_scheduler.update_schedule(
-                    GroupName=scheduler_name,
-                    Name=scheduler_name,
-                    ScheduleExpression=scheduler_expression_cc,
-                    Description=scheduler_config["Description"],
-                    ActionAfterCompletion=scheduler_config["ActionAfterCompletion"],
-                    ScheduleExpressionTimezone=scheduler_config[
-                        "ScheduleExpressionTimezone"
-                    ],
-                    State=scheduler_config["State"],
-                    FlexibleTimeWindow=scheduler_config["FlexibleTimeWindow"],
-                    Target=scheduler_config["Target"],
-                )
+                # Update
+                update_scheduler_apply(
+                    scheduler_name, scheduler_config, scheduler_expression_cc)
         else:
             log.info(
                 "Skip scheduler expression update: '%s'", scheduler_expression_cc)
@@ -253,7 +292,7 @@ def main_handler(event, context):
 
     scheduler_commands = rename_headers(scheduler_commands, scheduler_prefix)
 
-    update_agent_autoscaler(agent_commands)
+    update_autoscaler(agent_commands)
 
     update_scheduler(scheduler_commands)
 
