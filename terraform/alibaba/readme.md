@@ -228,7 +228,7 @@
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
 
- We also should keep in mind that when we set `start_time = "watcher"`, we assume to manage `scheduler_expression` via control center `cc-w-s-expression` variable. If control center is managed outside of this code, we might get a configuration drift which can be solved by sync code variable with the value from a control center.
+ We also should keep in mind that, when we use autoscaling with a control center which is managed outside of this code, we might get a configuration drift which can be solved by sync variables with the values from a control center.
 
  **Nodes not started yet**
 
@@ -285,7 +285,7 @@
 
  2. Cleanup created zip archives when `start_time = "watcher"`
     ```shell
-    rm -rf *.zip
+    rm -f *.zip
     ```
 
 
