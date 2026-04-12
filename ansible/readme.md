@@ -245,7 +245,7 @@
     desired_capacity: '{"aws": {"all": 2, "eu-central-1": 3}}'
 
     # Clouds and selected regions
-    desired_capacity: '{"all": "-", "aliyun": {"all": 2, "eu-central-1": 3}, "aws": {"all": 2, "eu-central-1": 3}, "azure": {"all": 2, "GermanyWestCentral": 3}, "gce": {"all": 2, "europe-central2": 3}}'
+    desired_capacity: '{"all": "-", "aliyun": {"all": 2, "eu-central-1": 3}, "aws": {"all": 2, "eu-central-1": 3}, "azure": {"all": 2, "GermanyWestCentral": 3}, "gcp": {"all": 2, "europe-central2": 3}}'
     ```
 
 
