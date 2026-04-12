@@ -7,18 +7,31 @@ resource "google_compute_region_autoscaler" "agent" {
   target = google_compute_region_instance_group_manager.agent[count.index].id
 
   autoscaling_policy {
-    max_replicas    = var.desired_capacity
-    min_replicas    = 0
-    cooldown_period = 15
-    mode            = var.autoscaling_policy_mode
+    min_replicas    = var.start_time == "watcher" && var.initial_deploy || var.start_time != "watcher" ? 0 : var.desired_capacity
+    max_replicas    = var.start_time == "watcher" && var.initial_deploy ? 0 : var.desired_capacity
+    cooldown_period = 30
+    mode            = "ON"
 
-    scaling_schedules {
-      name                  = local.autoscaler_name
-      description           = title(replace(local.autoscaler_name, "-", " "))
-      min_required_replicas = var.desired_capacity
-      schedule              = local.start_time
-      time_zone             = "Etc/UTC"
-      duration_sec          = time_offset.duration[count.index].unix - time_offset.start_now[count.index].unix
+    # At least one scaling signal is auto created - adjust defaults
+    dynamic "cpu_utilization" {
+      for_each = var.start_time == "watcher" ? [1] : []
+
+      content {
+        target = 1
+      }
+    }
+
+    dynamic "scaling_schedules" {
+      for_each = var.start_time == "watcher" ? [] : [1]
+
+      content {
+        name                  = local.autoscaler_name
+        description           = title(replace(local.autoscaler_name, "-", " "))
+        min_required_replicas = var.desired_capacity
+        schedule              = local.start_time
+        time_zone             = "Etc/UTC"
+        duration_sec          = try(time_offset.duration[count.index].unix, 0) - try(time_offset.start_now[count.index].unix, 0)
+      }
     }
   }
 }

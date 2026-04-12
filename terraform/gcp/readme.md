@@ -14,41 +14,42 @@
 ## [Description](#p2p-agent-on-gcp)
 
  This code provides [Terraform](../readme.md) configuration for [Google Cloud Platform](https://cloud.google.com/) stack deployment for P2P content distribution.
- 1. [Cloud Functions](https://cloud.google.com/functions) - Run a function which will act as watcher and orchestrate VM provisioning via autoscaler.
- 2. [Cloud Scheduler](https://cloud.google.com/scheduler) - Provides a scheduler to invoke the function.
- 3. [Cloud VPC](https://cloud.google.com/vpc) - Provides a network for the VM instances.
- 4. [Cloud Instance groups](https://cloud.google.com/compute/docs/instance-groups/) - Manage VM instances.
- 5. [Cloud Autoscaling groups](https://cloud.google.com/compute/docs/autoscaler/) - Scale and manage VM instances.
- 6. [Cloud Compute Engine](https://cloud.google.com/compute/) - VM provisioning.
- 7. [Cloud Logging](https://cloud.google.com/logging/) - Logs.
- 8. [Cloud Monitoring](https://cloud.google.com/monitoring/) - Metrics.
-
+ 1. [Identity and Access Management](https://cloud.google.com/iam) - Provides access for Cloud Run function and VM instances to update Instance group autoscaler.
+ 2. [Cloud Storage](https://cloud.google.com/storage) - Store Cloud Run function code.
+ 3. [Cloud Run functions](https://cloud.google.com/functions) - Run a function which will act as watcher and orchestrate VM provisioning via Instance group autoscaler.
+ 4. [Cloud Scheduler](https://cloud.google.com/scheduler) - Provides a scheduler to invoke the Cloud Run function.
+ 5. [Cloud VPC](https://cloud.google.com/vpc) - Provides a network for the VM instances.
+ 6. [Cloud Instance groups](https://cloud.google.com/compute/docs/instance-groups/) - Manage VM instances.
+ 7. [Cloud Autoscaling groups](https://cloud.google.com/compute/docs/autoscaler/) - Scale and manage Instance group VM instances.
+ 8. [Cloud Compute Engine](https://cloud.google.com/compute/) - VM provisioning.
+ 9. [Cloud Logging](https://cloud.google.com/logging/) - Logs.
+ 10. [Cloud Monitoring](https://cloud.google.com/monitoring/) - Metrics.
 
  Generally, this configuration will do the following
 
 **Watcher and scheduler**
- > [!NOTE]
- > Watcher and scheduler is not implemented yet
- 1. Create a function.
- 2. Create a scheduler.
+ 1. Create IAM service accounts and roles with policies.
+ 2. Create Cloud Storage bucket and upload Cloud Run function code into it.
+ 3. Create a Cloud Run function from the code located on Cloud Storage.
+ 4. Create a Cloud Scheduler job which will invoke Cloud Run function.
 
 **Agent**
  1. Create a VPC for VM instances.
  2. Create an Instance template for the instances.
  3. Create an Instance group using Instance template.
- 4. Create an Autoscaling group using Instance group
+ 4. Create an Autoscaling group to the the Instance group.
 
 
 ## [Considerations](#p2p-agent-on-gcp)
 
+**Agent**
  1. Check [Considerations](../readme.md#considerations).
  2. We use auto mode VPC network for easier management.
 
 
 ## [Limitations](#p2p-agent-on-gcp)
 
- 1. Watcher is not implemented yet and we should set variable [`start_time`](../readme.md#agent) only as `now` or specify a custom time.
- 2. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
+ 1. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
 ## [Regions](#p2p-agent-on-gcp)
@@ -111,6 +112,13 @@
  In order to proceed with this deployment, we need
  1. Linux host with [Terraform](https://developer.hashicorp.com/terraform/install) and [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) installed.
  2. GCP user account with the administrative permissions.
+ 3. When we set `start_time = "watcher"`, we have to follow [Enabling an API in your Google Cloud project](https://docs.cloud.google.com/endpoints/docs/openapi/enable-api) and enable the following API
+    - Compute Engine API
+    - Cloud Scheduler API
+    - Cloud Run Admin API
+    - Cloud Functions API
+    - Cloud Build API
+    - Identity and Access Management (IAM) API
 
 
 ## [Deployment](#p2p-agent-on-gcp)
@@ -180,6 +188,8 @@
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
 
+ We also should keep in mind that, when we use autoscaling with a control center which is managed outside of this code, we might get a configuration drift which can be solved by sync variables with the values from a control center.
+
  **Nodes not started yet**
 
  Update is very transparent and we need just to set `desired_capacity` with the required number and run Terraform.
@@ -189,46 +199,34 @@
 
  **Nodes already started**
 
- When nodes already started, following things are happened
- - Capacity of the Instance groups was changed by the autoscaler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new autoscaler start and it will lead to the down-time.
- - We should also note that `"Resizing of autoscaled regional managed instance groups is not allowed."`.
+ When nodes already started when `start_time=watcher`, following things are happened
+ - Capacity of the Instance group was changed by the autoscaler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new autoscaler start and it will lead to the down-time.
 
- To overcome this, we should set `initial_deploy = false` and `autoscaling_policy_mode = "OFF"` and Terraform will change it's behavior in the following way
+ To overcome these cases, we should set `initial_deploy = false` and Terraform will change it's behavior in the following way
  - Capacity for autoscaler, which is initially set to 0, will use value from `desired_capacity`.
- - We will be able to update instance group settings.
 
- Update variables in the *variables.auto.tfvars* file
+ Update variable in the *variables.auto.tfvars* file
  ```shell
  vi variables.auto.tfvars
  ```
  ```
- initial_deploy          = false
- autoscaling_policy_mode = "OFF"
+ initial_deploy = false
  ```
 
 
 #### [Update capacity](#p2p-agent-on-gcp)
 
- 1. Set `initial_deploy = false` and `autoscaling_policy_mode = "OFF"` in the *variables.auto.tfvars*.
- 2. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
- 3. Run `terraform plan`.
- 4. Run `terraform apply`.
- 5. Set `autoscaling_policy_mode = "ON"` in the *variables.auto.tfvars*.
- 6. Run `terraform plan`.
- 7. Run `terraform apply`.
+ 1. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
+ 2. Run `terraform plan`.
+ 3. Run `terraform apply`.
 
 
 #### [Add new region](#p2p-agent-on-gcp)
 
- 1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
- 2. Add a configuration file for the new region.
- 3. Set `initial_deploy = true` in the module configuration, for this new region only.
- 4. Run `terraform init`.
- 5. Run `terraform plan`.
- 6. Run `terraform apply`.
- 7. Set back `initial_deploy = var.initial_deploy` in the module configuration, for this new region, and it will imply usage of the globaly defined value in the *variables.auto.tfvars*.
- 8. Run `terraform plan`.
- 9. Run `terraform apply`.
+ 1. Add a configuration file for the new region.
+ 2. Run `terraform init`.
+ 3. Run `terraform plan`.
+ 4. Run `terraform apply`.
 
 
 ## [Cleanup](#p2p-agent-on-gcp)
@@ -239,12 +237,17 @@
     terraform destroy
     ```
 
+ 2. Cleanup created zip archives when `start_time = "watcher"`
+    ```shell
+    rm -f *.zip
+    ```
+
 
 ## [Known issues](#p2p-agent-on-gcp)
 
  1. VMs [machine-types](https://docs.cloud.google.com/sdk/gcloud/reference/compute/machine-types) vary by region and we have to take care about that when select region to deploy in.
 
- 2. [Arm VMs on Compute](https://cloud.google.com/compute/docs/instances/arm-on-compute) is limited only to the [Tau T2A machine series](https://cloud.google.com/compute/docs/general-purpose-machines#t2a_machines) which is available only in select [regions and zones](https://cloud.google.com/compute/docs/regions-zones#available).
+ 2. [Arm VMs on Compute](https://cloud.google.com/compute/docs/instances/arm-on-compute) is limited to the several machine series which are available only in select [regions and zones](https://cloud.google.com/compute/docs/regions-zones#available).
 
  3. When we depoy regional network `global_network["create": false]` and health check - `global_health_check["create": false]` in all the regions, it will be required to [increase default service quota](https://cloud.google.com/docs/quotas/view-manage) for Compute Engine API Networks/Firewall rules and a whole deployment will take much longer.
 

@@ -7,8 +7,9 @@ locals {
   agent_log_files              = ["/var/log/cloud-init.log", "/var/log/cloud-init-output.log", "/var/log/syslog", "${dirname(var.agent_base_folder)}/${var.agent_log_file}"]
   agent_metrics                = local.create && var.agent_metrics
   agent_iam_create             = local.agent_watcher || local.agent_logs || local.agent_metrics
+  agent_account_id             = "${local.agent_name}-${substr(local.region, -(30 - (length(local.agent_name) + 1)), 0)}"
   agent_role_name              = "${title(replace(var.agent_name, " ", ""))}${replace(title(replace(local.region, "-", " ")), " ", "")}"
-  agent_role_suffix            = var.unique_iam_roles ? title(try(random_string.agent[0].result, "")) : ""
+  agent_role_suffix            = var.unique_iam_roles ? title(try(random_string.common[0].result, "")) : ""
   regional_network_create      = local.create && !lookup(var.global_network, "create")
   regional_health_check_create = local.create && !lookup(var.global_health_check, "create")
   agent_open_tcp_ports         = try(element(var.agent_open_ports, 0), null)
@@ -16,8 +17,20 @@ locals {
   create_health_check          = local.create
   create_network               = local.create
   allow_ssh                    = local.regional_network_create ? var.allow_ssh : []
+  watcher_create               = var.start_time == "watcher" && local.create
+  watcher_name                 = "${lower(replace(var.watcher_name, " ", "-"))}-${local.region}"
+  watcher_description          = "${var.watcher_name} - ${local.region}"
+  watcher_account_id           = "${lower(replace(var.watcher_name, " ", "-"))}-${substr(local.region, -(30 - (length(var.watcher_name) + 1)), 0)}"
+  watcher_role_name            = "${title(replace(var.watcher_name, " ", ""))}${replace(title(replace(local.region, "-", " ")), " ", "")}"
+  watcher_role_suffix          = var.unique_iam_roles ? title(try(random_string.common[0].result, "")) : ""
+  watcher_debug                = false
+  scheduler_create             = local.watcher_create
+  scheduler_name               = "${lower(replace(var.scheduler_name, " ", "-"))}-${local.region}"
+  scheduler_description        = "${var.scheduler_name} - ${local.region}"
+  scheduler_account_id         = "${lower(replace(var.scheduler_name, " ", "-"))}-${substr(local.region, -(30 - (length(var.scheduler_name) + 1)), 0)}"
+  scheduler_role_name          = "${title(replace(var.scheduler_name, " ", ""))}${replace(title(replace(local.region, "-", " ")), " ", "")}"
+  scheduler_role_suffix        = var.unique_iam_roles ? title(try(random_string.common[0].result, "")) : ""
   autoscaler_name              = "initial-start-stop"
-  account_id                   = "${local.agent_name}-${substr(local.region, -(30 - (length(local.agent_name) + 1)), 0)}"
   resource_name                = "${local.agent_name}-${local.region}"
   resource_description         = "${var.agent_name} - ${local.region}"
   region                       = var.region
@@ -28,12 +41,12 @@ locals {
 }
 
 # Get project
-data "google_project" "agent" {
+data "google_project" "common" {
   count = local.create || local.agent_iam_create ? 1 : 0
 }
 
 # IAM Role
-resource "random_string" "agent" {
+resource "random_string" "common" {
   count = local.agent_iam_create ? 1 : 0
 
   length  = 10

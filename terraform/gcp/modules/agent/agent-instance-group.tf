@@ -7,7 +7,6 @@ resource "google_compute_region_instance_group_manager" "agent" {
   base_instance_name        = local.resource_name
   region                    = local.region
   distribution_policy_zones = data.google_compute_zones.available[count.index].names
-  target_size               = var.initial_deploy ? 0 : var.desired_capacity
 
   version {
     instance_template = google_compute_instance_template.agent[count.index].id

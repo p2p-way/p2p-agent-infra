@@ -128,12 +128,6 @@ variable "initial_deploy" {
 }
 
 # Autoscaler
-variable "autoscaling_policy_mode" {
-  description = "Defines operating mode for this policy."
-  type        = string
-  default     = "ON"
-}
-
 variable "desired_capacity" {
   description = "The number of instances that are available for scaling."
   type        = number
@@ -144,11 +138,6 @@ variable "start_time" {
   description = "Time for this action to start. Can be `watcher`, `now`or `custom` in `YYYY-MM-DDThh:mm:ssZ` format in UTC/GMT only (for example, 2014-06-01T00:00:00Z )."
   type        = string
   default     = "now"
-
-  validation {
-    condition     = var.start_time != "watcher"
-    error_message = "Watcher is not implemented yet, please set value to \"now\" or custom \"YYYY-MM-DDThh:mm:ssZ\" format."
-  }
 }
 
 variable "start_offset" {
@@ -224,4 +213,48 @@ variable "agent_repository_ssh_key" {
   description = "Agent repository SSH private key."
   type        = string
   default     = null
+}
+
+# Watcher
+variable "watcher_name" {
+  description = "Name to be used for watcher resources."
+  type        = string
+  default     = "P2P watcher"
+}
+
+variable "watcher_folder" {
+  description = "Name of the function folder."
+  type        = string
+  default     = "watcher.py"
+}
+
+variable "watcher_runtime" {
+  description = "Name of the function runtime."
+  type        = string
+  default     = "python3.14"
+}
+
+variable "watcher_cc_agent_prefix" {
+  description = "Control center agent prefix for the watcher."
+  type        = string
+  default     = "cc-w-a"
+}
+
+variable "watcher_cc_scheduler_prefix" {
+  description = "Control center scheduler prefix for the watcher."
+  type        = string
+  default     = "cc-w-s"
+}
+
+# Scheduler
+variable "scheduler_name" {
+  description = "Name to be used for scheduler resources."
+  type        = string
+  default     = "P2P scheduler"
+}
+
+variable "scheduler_expression" {
+  description = "Scheduler expression."
+  type        = string
+  default     = "15 minutes"
 }

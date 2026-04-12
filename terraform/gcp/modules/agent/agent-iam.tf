@@ -2,7 +2,7 @@
 resource "google_service_account" "agent" {
   count = local.agent_iam_create ? 1 : 0
 
-  account_id   = local.account_id
+  account_id   = local.agent_account_id
   display_name = local.resource_name
 }
 
@@ -67,14 +67,14 @@ resource "google_project_iam_custom_role" "agent_metrics" {
 resource "google_project_iam_member" "agent_watcher_list" {
   count = local.agent_iam_create ? 1 : 0
 
-  project = data.google_project.agent[count.index].number
+  project = data.google_project.common[count.index].number
   role    = google_project_iam_custom_role.agent_watcher_list[count.index].name
   member  = "serviceAccount:${google_service_account.agent[count.index].email}"
 
   condition {
     title       = "watcher-list-all"
     description = "List all autoscalers and instance groups"
-    expression  = "resource.name == '${data.google_project.agent[count.index].id}'"
+    expression  = "resource.name == '${data.google_project.common[count.index].id}'"
   }
 }
 
@@ -82,7 +82,7 @@ resource "google_project_iam_member" "agent_watcher_list" {
 resource "google_project_iam_member" "agent_watcher_update" {
   count = local.agent_watcher ? 1 : 0
 
-  project = data.google_project.agent[count.index].number
+  project = data.google_project.common[count.index].number
   role    = google_project_iam_custom_role.agent_watcher_update[count.index].name
   member  = "serviceAccount:${google_service_account.agent[count.index].email}"
 
@@ -97,14 +97,14 @@ resource "google_project_iam_member" "agent_watcher_update" {
 resource "google_project_iam_member" "agent_logs" {
   count = local.agent_logs ? 1 : 0
 
-  project = data.google_project.agent[count.index].number
+  project = data.google_project.common[count.index].number
   role    = google_project_iam_custom_role.agent_logs[count.index].name
   member  = "serviceAccount:${google_service_account.agent[count.index].email}"
 
   condition {
     title       = "logs-${local.resource_name}"
     description = "Logs ${local.resource_name}"
-    expression  = "resource.name.startsWith ('${data.google_project.agent[count.index].id}/logs/')"
+    expression  = "resource.name.startsWith ('${data.google_project.common[count.index].id}/logs/')"
   }
 }
 
@@ -113,7 +113,7 @@ resource "google_project_iam_member" "agent_metrics" {
   # Agent metrics can't be totally disabled
   count = local.agent_metrics || local.agent_logs ? 1 : 0
 
-  project = data.google_project.agent[count.index].number
+  project = data.google_project.common[count.index].number
   role    = google_project_iam_custom_role.agent_metrics[count.index].name
   member  = "serviceAccount:${google_service_account.agent[count.index].email}"
 }
