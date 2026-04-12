@@ -70,7 +70,7 @@ resource "aws_lambda_permission" "watcher_scheduler_alias" {
 
 # Lambda URL - Watcher (development/debug)
 resource "aws_lambda_function_url" "watcher" {
-  count = local.watcher_create && false ? 1 : 0
+  count = local.watcher_create && local.watcher_debug ? 1 : 0
 
   function_name      = aws_lambda_function.watcher[count.index].function_name
   authorization_type = "NONE"
