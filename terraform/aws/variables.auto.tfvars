@@ -6,8 +6,10 @@ default_tags = {
 }
 
 # Control center
-cc_create = false
-cc_name   = "P2P control center"
+cc_create      = false
+cc_name        = "P2P control center"
+cc_uri         = true
+cc_uri_version = 1
 cc_commands = {
   cc-w-s-expression       = "15 minutes"
   cc-w-a-desired-capacity = 1

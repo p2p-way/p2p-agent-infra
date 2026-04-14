@@ -20,3 +20,11 @@ resource "random_string" "cc_suffix" {
   special = false
   keepers = { version = var.cc_suffix_version }
 }
+
+# Random URI - Control center
+resource "random_id" "cc_uri" {
+  count = local.create && var.cc_uri ? 1 : 0
+
+  byte_length = 15
+  keepers     = { version = var.cc_uri_version }
+}

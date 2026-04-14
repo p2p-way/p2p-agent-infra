@@ -1,7 +1,7 @@
-# CloudFront CC URL
-output "cloudfront_cc_url" {
-  description = "CloudFront CC URL"
-  value       = length(module.control-center.url) > 0 ? module.control-center.url : null
+# Control center URLs
+output "control_center_urls" {
+  description = "Control center URLs"
+  value       = (var.cc_create || var.agent_create) && length(local.agent_cc_hosts) > 0 ? local.agent_cc_hosts : null
 }
 
 # SSH private key - Agent

@@ -39,21 +39,38 @@ resource "aws_cloudfront_distribution" "cc" {
     cached_methods  = ["GET", "HEAD"]
     cache_policy_id = aws_cloudfront_cache_policy.cc[count.index].id
 
-    function_association {
-      event_type   = "viewer-request"
-      function_arn = aws_cloudfront_function.cc[count.index].arn
+    # We can't remove policy dynamically - let's keep it all the time
+    # https://github.com/hashicorp/terraform-provider-aws/issues/21730
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.cc[count.index].id
+
+    dynamic "function_association" {
+      for_each = var.cc_uri ? [] : [1]
+
+      content {
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.cc[count.index].arn
+      }
     }
   }
 
-  # Error pages
-  dynamic "custom_error_response" {
-    for_each = [400, 403, 404, 405, 414, 416, 500, 501, 502, 503, 504]
+  dynamic "ordered_cache_behavior" {
+    for_each = var.cc_uri ? [1] : []
 
     content {
-      error_code            = custom_error_response.value
-      error_caching_min_ttl = 600
-      response_code         = 200
-      response_page_path    = "/"
+      target_origin_id = "s3-bucket"
+      compress         = true
+
+      viewer_protocol_policy = "redirect-to-https"
+      allowed_methods        = ["GET", "HEAD"]
+
+      path_pattern    = "/${random_id.cc_uri[count.index].hex}"
+      cached_methods  = ["GET", "HEAD"]
+      cache_policy_id = aws_cloudfront_cache_policy.cc[count.index].id
+
+      function_association {
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.cc[count.index].arn
+      }
     }
   }
 }
@@ -79,6 +96,36 @@ resource "aws_cloudfront_cache_policy" "cc" {
 
     query_strings_config {
       query_string_behavior = "none"
+    }
+  }
+}
+
+# CloudFront response headers policy - Control center
+resource "aws_cloudfront_response_headers_policy" "cc" {
+  count = local.create ? 1 : 0
+
+  name    = local.policy_name
+  comment = local.description
+
+  custom_headers_config {
+    dynamic "items" {
+      for_each = tomap({ server = "CloudFront" })
+
+      content {
+        header   = items.key
+        override = true
+        value    = items.value
+      }
+    }
+  }
+
+  remove_headers_config {
+    dynamic "items" {
+      for_each = ["x-amz-bucket-region", "content-type"]
+
+      content {
+        header = items.value
+      }
     }
   }
 }

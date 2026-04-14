@@ -20,6 +20,18 @@ variable "cc_name" {
 }
 
 # CloudFront
+variable "cc_uri" {
+  description = "Whether to create a random URI for control center."
+  type        = bool
+  default     = true
+}
+
+variable "cc_uri_version" {
+  description = "Version of the cc_uri, when changed triggers new value generation."
+  type        = number
+  default     = 1
+}
+
 variable "cc_commands" {
   description = "Map of the control center commands."
   type        = map(any)
