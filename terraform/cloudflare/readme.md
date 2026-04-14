@@ -81,7 +81,8 @@
     - `account_name` - should be set when user has a ccess to multple Cloudflare accounts
     - `domain_name` - is the zone name you would like to use for control center
     - `cc_prefix` - set a custom prefix to not rely on a generated one
-    - `cc_name` - transform rule name
+    - `cc_name` - name used for control center resources
+    - `cc_uri` - where to add a random URI the the control center
     - `cc_commands` - commands returned by control center
 
  3. Authenticate on Cloudflare

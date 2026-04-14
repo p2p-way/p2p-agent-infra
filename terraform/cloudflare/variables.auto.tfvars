@@ -1,10 +1,12 @@
 # Control center
 cc_create         = true
 account_name      = null
-domain_name       = "<domain tld>"
+domain_name       = "<domain.tld>"
 cc_prefix         = null
 cc_prefix_version = 1
 cc_name           = "P2P control center"
+cc_uri            = true
+cc_uri_version    = 1
 cc_commands = {
   cc-w-s-expression       = "15 minutes"
   cc-w-a-desired-capacity = 1

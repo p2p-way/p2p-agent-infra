@@ -51,3 +51,11 @@ resource "random_string" "cc_prefix" {
   special = false
   keepers = { version = var.cc_prefix_version }
 }
+
+# Random URI
+resource "random_id" "cc_uri" {
+  count = local.create && var.cc_uri ? 1 : 0
+
+  byte_length = 15
+  keepers     = { version = var.cc_uri_version }
+}

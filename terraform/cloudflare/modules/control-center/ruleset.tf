@@ -12,7 +12,7 @@ resource "cloudflare_ruleset" "cc" {
     ref         = "control_center_headers_${local.custom_suffix}"
     enabled     = true
     description = local.name
-    expression  = "(http.host eq \"${local.custom_domain}\")"
+    expression  = var.cc_uri ? "(http.host eq \"${local.custom_domain}\" and http.request.uri.path eq \"/${random_id.cc_uri[count.index].hex}\")" : "(http.host eq \"${local.custom_domain}\")"
     action      = "rewrite"
     action_parameters = {
       headers = local.headers

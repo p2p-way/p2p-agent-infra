@@ -8,6 +8,8 @@ module "control-center" {
   cc_prefix             = var.cc_prefix
   cc_prefix_version     = var.cc_prefix_version
   cc_name               = var.cc_name
+  cc_uri                = var.cc_uri
+  cc_uri_version        = var.cc_uri_version
   cc_commands           = var.cc_commands
   bucket_jurisdiction   = var.bucket_jurisdiction
   bucket_location       = var.bucket_location
