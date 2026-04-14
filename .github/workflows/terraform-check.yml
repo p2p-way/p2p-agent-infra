@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Terraform - Install
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.terraform-version }}
 
@@ -75,7 +75,7 @@ jobs:
           echo "GOOGLE_OAUTH_ACCESS_TOKEN=$(openssl rand -hex 5)" >> $GITHUB_ENV
 
       - name: Terraform - Install
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.terraform-version }}
 
