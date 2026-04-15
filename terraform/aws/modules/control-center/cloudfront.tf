@@ -16,10 +16,11 @@ resource "aws_cloudfront_distribution" "cc" {
     cloudfront_default_certificate = true
   }
 
-  http_version    = "http2and3"
-  is_ipv6_enabled = true
-  comment         = local.description
-  enabled         = true
+  http_version        = "http2and3"
+  is_ipv6_enabled     = true
+  comment             = local.description
+  enabled             = true
+  default_root_object = aws_s3_object.cc[count.index].key
 
   # Origins
   origin {
@@ -81,9 +82,9 @@ resource "aws_cloudfront_cache_policy" "cc" {
 
   name        = local.policy_name
   comment     = local.description
-  min_ttl     = 0
-  default_ttl = 0
-  max_ttl     = 0
+  min_ttl     = 86400
+  default_ttl = 86400
+  max_ttl     = 86400
 
   parameters_in_cache_key_and_forwarded_to_origin {
     headers_config {

@@ -9,6 +9,7 @@ locals {
   waf_logs_enable    = local.waf_create && var.waf_logs_enable
   cc_commands_indent = max([for k, v in var.cc_commands : length(format("'%s'", k))]...)
   cc_commands        = { for k, v in var.cc_commands : format("'%s'%${local.cc_commands_indent - length(format("'%s'", k))}s", k, "") => format("{ value: '%s' }", v) }
+  region             = try(data.aws_region.current[0].region, null)
 }
 
 # Random suffix - Control center
@@ -27,4 +28,8 @@ resource "random_id" "cc_uri" {
 
   byte_length = 15
   keepers     = { version = var.cc_uri_version }
+}
+
+data "aws_region" "current" {
+  count = local.create ? 1 : 0
 }
