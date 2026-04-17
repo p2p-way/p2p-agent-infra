@@ -8,6 +8,7 @@
  6. [Autoscaler](#autoscaler)
  7. [Agent](#agent)
  8. [Agent side watcher](#agent-side-watcher)
+ 9. [Radar](#radar)
 
 
 ## [Description](#architecture)
@@ -22,12 +23,13 @@
 ## [Architecture](#architecture)
 
 ```
-                        ---- Autoscaler ----       ---------------         IPFS
-                      /                      \   /                 \     /
+                        ---- Autoscaler --   Radar   -------------        IPFS
+                      /                    \   /   /               \     /
 Scheduler --- Watcher --- Control center     Agent     Setup ------- P2P - TON
                                        \        \      /   \       /     \
                                          ----- Scheduler   Repository      Torrent
 ```
+
 
  General workflow might be the following
  1. [Scheduler](#scheduler) run a [Watcher](#watcher).
@@ -49,9 +51,7 @@ Scheduler --- Watcher --- Control center     Agent     Setup ------- P2P - TON
  11. Agent will execute code specified in the `cc-a-main-run` variable based on the executor type from `cc-a-type` variable.
  12. Also, agent can run commands specified in the `cc-a-pre-run` and `cc-a-post-run` variables.
  13. We also might consider to implement [Agent side watcher](#agent-side-watcher), which is run on VM, only after it was started and it will use values from `cc-a` variables to manage autoscaler.
-
- > [!NOTE]
- > We also, might consider to use P2P protocols instead of the centralised platforms control centers.
+ 14. Agent could send basic data to the [Radar](#radar) in order to provide a brief P2P agents overview.
 
 
 ## [Scheduler](#architecture)
@@ -138,3 +138,15 @@ Scheduler --- Watcher --- Control center     Agent     Setup ------- P2P - TON
  - On Azure we use [Managed identities](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) to provide access to the Monitor and Virtual machine scale set configuration using Azure CLI. We manage number of instances by updating scheduler profile.
 
  - On GCP we use [Authenticate workloads using service accounts](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances) to provide access to the autoscaler configuration using Google Cloud CLI. We manage number of instances by updating Instance Group max instances count and scheduler minimum count.
+
+
+## Radar
+
+ Agents are running in an automatic way and they are spread across the globe. They could work in a fully distributed and independent way and we have no brief visibility about their count and locations.
+
+ It could be useful to have a distributed service to collect data from agents and put it to a radar.
+
+ At the moment, we could consider the following centralised serverless services
+ - [Cloudflare Workers Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/)
+
+ Agents will call a remote URL and pass basic data and it will be pushed and stored in a database. We can analyse it in real time or later.
