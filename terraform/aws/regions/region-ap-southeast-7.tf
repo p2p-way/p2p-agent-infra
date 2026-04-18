@@ -42,4 +42,6 @@ module "ap-southeast-7" {
   watcher_cc_scheduler_prefix = var.watcher_cc_scheduler_prefix
   scheduler_name              = var.scheduler_name
   scheduler_expression        = local.scheduler_expression
+  radar_url                   = var.radar_url
+  radar_url_file              = var.radar_url_file
 }

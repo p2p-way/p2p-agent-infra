@@ -83,3 +83,5 @@ watcher_cc_agent_prefix     = "cc-w-a"
 watcher_cc_scheduler_prefix = "cc-w-s"
 scheduler_name              = "P2P scheduler"
 scheduler_expression        = "15 minutes"
+radar_url                   = []
+radar_url_file              = "p2p-radar.url"

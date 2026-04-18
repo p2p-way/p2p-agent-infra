@@ -58,4 +58,9 @@
     bash p2p-agent-infra/ansible/roles/agent/files/init.sh
     ```
 
+ 7. If you plan to use a radar, add a file with URLs
+    ```shell
+    echo "<URL> [AUTH]" > /opt/p2p-radar.url
+    ```
+
  After all the steps execution we will have all required software installed and P2P agent script will be triggered by the cron task.

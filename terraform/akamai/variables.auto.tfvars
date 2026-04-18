@@ -29,3 +29,5 @@ agent_cc_hosts           = ["https://d2d0z7lax5amc3.cloudfront.net"]
 agent_cc_commands        = "delay desired-capacity force-run main-run post-run pre-run repository type"
 agent_cc_commands_prefix = "cc-a"
 agent_repository_ssh_key = null
+radar_url                = []
+radar_url_file           = "p2p-radar.url"

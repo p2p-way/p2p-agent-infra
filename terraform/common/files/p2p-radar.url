@@ -1,0 +1,3 @@
+%{ for url in radar_url ~}
+${url}
+%{ endfor ~}

@@ -35,4 +35,6 @@ module "south-central-us" {
   agent_cc_commands        = var.agent_cc_commands
   agent_cc_commands_prefix = var.agent_cc_commands_prefix
   agent_repository_ssh_key = local.agent_repository_ssh_key
+  radar_url                = var.radar_url
+  radar_url_file           = var.radar_url_file
 }

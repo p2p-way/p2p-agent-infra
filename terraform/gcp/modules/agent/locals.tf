@@ -1,4 +1,4 @@
-# Locals
+# Locals - Main
 locals {
   create                       = var.agent_create
   agent_name                   = lower(replace(var.agent_name, " ", "-"))

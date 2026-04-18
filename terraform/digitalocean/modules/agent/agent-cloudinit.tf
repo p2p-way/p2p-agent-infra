@@ -28,23 +28,7 @@ data "cloudinit_config" "agent" {
   part {
     content_type = "text/cloud-config"
     content = yamlencode({
-      write_files = [
-        {
-          encoding = "b64"
-          content = base64encode(templatefile("${path.root}/../common/files/${var.agent_file}", {
-            base_folder        = var.agent_base_folder,
-            log_file           = var.agent_log_file,
-            commands           = var.agent_commands,
-            commands_defaults  = var.agent_commands_defaults,
-            cc_hosts           = var.agent_cc_hosts,
-            cc_commands        = var.agent_cc_commands,
-            cc_commands_prefix = var.agent_cc_commands_prefix
-          }))
-          path        = "${dirname(var.agent_base_folder)}/${var.agent_file}"
-          owner       = "root:root"
-          permissions = "0755"
-        }
-      ]
+      write_files = concat(local.agent_file_cloudinit, local.radar_url_file_cloudinit)
     })
   }
 }

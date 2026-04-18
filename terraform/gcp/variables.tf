@@ -258,3 +258,16 @@ variable "scheduler_expression" {
   type        = string
   default     = "15 minutes"
 }
+
+# Radar
+variable "radar_url" {
+  description = "Radar URL."
+  type        = list(any)
+  default     = []
+}
+
+variable "radar_url_file" {
+  description = "Radar URL file."
+  type        = string
+  default     = "p2p-radar.url"
+}
