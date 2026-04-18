@@ -16,10 +16,11 @@
 | 1 | [common](#common-role)   | Common tasks                              |
 | 2 | [agent](#agent-role)     | Update agent script and scheduler         |
 | 3 | [watcher](#watcher-role) | Act as a watcher and configure autoscaler |
-| 4 | [ipfs](#ipfs-role)       | Install IPFS support - P2P                |
-| 5 | [radicle](#radicle-role) | Install Radicle support - P2P             |
-| 6 | [ton](#ton-role)         | Install TON support - P2P                 |
-| 7 | [torrent](#torrent-role) | Install Torrent support - P2P             |
+| 4 | [ipfs](#ipfs-role)       | P2P agent - Install IPFS support          |
+| 5 | [radicle](#radicle-role) | P2P agent - Install Radicle support       |
+| 6 | [ton](#ton-role)         | P2P agent - Install TON support           |
+| 7 | [torrent](#torrent-role) | P2P agent - Install Torrent support       |
+| 8 | [radar](#radar-role)     | Send data to radar                        |
 
  Ansible roles are located in a Git repository and agent will download and run them. We also may update agent itself in case of need via [Agent role](#agent-role).
 
@@ -63,9 +64,14 @@
  Some of the site content is spread using [BitTorrent protocol](https://en.wikipedia.org/wiki/BitTorrent) and [qBittorrent](https://www.qbittorrent.org/) supports [WebUI API](https://github.com/qbittorrent/qBittorrent/wiki#webui-api) for torrents management.
 
 
+### Radar role
+
+ P2P agent send basic information to a Radar which can be used for brief nodes overview.
+
+
 ## Conisderations
 
- 1. Roles are named by the protocols instead of the applications.
+ 1. Applications roles are named by the protocols instead of the applications.
  2. By default, application installation is done only when app check is not passed and that minimize run duration up to 50-100% on slow instances.
  3. Some linting rules are not followed for readability reasons.
 

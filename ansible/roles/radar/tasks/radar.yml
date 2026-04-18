@@ -1,0 +1,36 @@
+# Radar - Management
+- name: Push data
+  ansible.builtin.uri:
+    url: '{{ url }}{{ data }}{{ auth }}'
+  until: radar_url_result.status == 200
+  retries: 3
+  delay: 2
+  timeout: 15
+  register: radar_url_result
+  vars:
+    url: "{{ item.split(' ')[0] }}"
+    auth: >-
+      {{ (item.split(' ')[1] | default('') != '') | ternary('&auth=' + item.split(' ')[1] | default(''), '') }}
+    services: >-
+      {% set app_roles = [] -%}
+      {% set app_prefix = '_bin' -%}
+      {% for role in ansible_role_names %}{% if lookup('ansible.builtin.vars', role + app_prefix, default='') != '' -%}
+        {{ app_roles.append(role) }}
+      {%- endif %}{% endfor -%}
+      {{ app_roles | sort | unique | join(' ') | urlencode }}
+    data: >-
+      ?cloud={{ common_cloud -}}
+      &region={{ watcher_region -}}
+      &autoscaler={{ watcher_enabled | lower -}}
+      &capacity={{ watcher_desired_capacity -}}
+      &services={{ services -}}
+      &uptime={{ ansible_uptime_seconds }}
+  loop: "{{ lookup('ansible.builtin.file', base_folder | dirname + '/' + radar_url_file, lstrip=true).split('\n') | select() }}"
+  ignore_errors: true
+
+- name: Show push result
+  ansible.builtin.debug:
+    msg: |
+      {% for item in radar_url_result.results | json_query('[*]') %}
+      {{ item.status }} - {{ item.json.radar | default('{}') }}
+      {% endfor %}

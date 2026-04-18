@@ -1,0 +1,14 @@
+# Radar - Check
+- name: Check radar url
+  ansible.builtin.stat:
+    path: '{{ base_folder | dirname }}/{{ radar_url_file }}'
+  register: radar_url_file_stat
+
+# Radar - Push
+- name: Push data to radar
+  ansible.builtin.include_tasks:
+    file: radar.yml
+  when:
+    - radar_url_file_stat.stat.exists
+    - radar_url_file_stat.stat.isreg
+    - radar_url_file_stat.stat.size > 0
