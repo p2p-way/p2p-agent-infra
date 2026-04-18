@@ -7,7 +7,8 @@
  5. [Deployment scenarios](#deployment-scenarios)
  6. [Before deployment](#before-deployment)
  7. [Run control centers](#run-control-centers)
- 8. [Run agents](#run-agents)
+ 8. [Run radars](#run-radars)
+ 9. [Run agents](#run-agents)
 
 
 ## [Description](#peer-to-peer-agent-terraform)
@@ -106,6 +107,7 @@
   - Variable `agent_cc_commands` define commands whose values from control center will be used to override `agent_commands_defaults` configuration.
   - Variable `agent_cc_commands_prefix` define commands prefix returned by control center for agent configuration.
   - Variable `agent_repository_ssh_key` is used to configure access to private repository via SSH. We are generating by default a private key and pass it to the instance. In that way, we could switch node to use a private repository via SSH. For that it is requred to set appropriate value in `agent_commands_defaults["DEFAULT_REPOSITORY"]` and/or control center, like `git@github.com:<username>/<repository>` for GitHub.
+  - Variable `radar_url` is used to enable a node basic information collecting and sending to a Radar, we can pass multiple URLs with an optional auth - `["<url 1> [aurh 1]", "<url 2> [aurh 2]"]`
   - Check [Considerations](#considerations) for additional details.
 
 
@@ -306,17 +308,18 @@
 
 ## [Before deployment](#peer-to-peer-agent-terraform)
 
- 1. Check control center settings
+ 1. [Run control centers](#run-control-centers) and check their settings
     ```shell
     curl -sI https://d2d0z7lax5amc3.cloudfront.net | grep cc- --color
     ```
-    Or, consider to [Run control centers](#run-control-centers).
 
- 2. Check [Cloud Providers](#cloud-providers) for new regions.
+ 2. [Run radars](#run-radars).
 
- 3. Check [Ansible roles](../ansible/readme.md) for the latest software versions and update the mirror.
+ 3. Check [Cloud Providers](#cloud-providers) for new regions.
 
- 4. Update variables in the [*ansible/readme.md*](../ansible/readme.md) and [*ansible/playbook.yml*](../ansible/playbook.yml) files
+ 4. Check [Ansible roles](../ansible/readme.md) for the latest software versions and update the mirror.
+
+ 5. Update variables in the [*ansible/readme.md*](../ansible/readme.md) and [*ansible/playbook.yml*](../ansible/playbook.yml) files
     ```yaml
     ipfs_cid
     radicle_rid
@@ -324,13 +327,18 @@
     torrent_magnet
     ```
 
- 5. Push latest changes to Radicle and Git repository.
+ 6. Push latest changes to Radicle and Git repository.
 
 
 ## [Run control centers](#peer-to-peer-agent-terraform)
 
  1. [Control center on AWS](aws/readme.md)
  2. [Control center on Cloudflare](cloudflare/readme.md)
+
+
+## [Run radars](#peer-to-peer-agent-terraform)
+
+ 1. [Radar on Cloudflare](cloudflare/readme.md)
 
 
 ## [Run agents](#peer-to-peer-agent-terraform)
