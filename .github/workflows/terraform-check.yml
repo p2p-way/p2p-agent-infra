@@ -93,7 +93,7 @@ jobs:
       - name: Terraform Plan
         run: |
           if [[ ${{ matrix.cloud }} == "cloudflare" ]]; then
-            terraform plan -var="cc_create=false"
+            terraform plan -var="cc_create=false" -var="radar_create=false"
           else
             terraform plan -var="agent_create=false"
           fi

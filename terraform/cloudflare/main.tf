@@ -4,7 +4,7 @@ module "control-center" {
 
   cc_create             = var.cc_create
   account_name          = var.account_name
-  domain_name           = var.domain_name
+  cc_domain_name        = var.cc_domain_name
   cc_prefix             = var.cc_prefix
   cc_prefix_version     = var.cc_prefix_version
   cc_name               = var.cc_name
@@ -14,4 +14,18 @@ module "control-center" {
   bucket_jurisdiction   = var.bucket_jurisdiction
   bucket_location       = var.bucket_location
   bucket_suffix_version = var.bucket_suffix_version
+}
+
+# Radar
+module "radar" {
+  source = "./modules/radar"
+
+  radar_create         = var.radar_create
+  radar_name           = var.radar_name
+  radar_domain_name    = var.radar_domain_name
+  radar_prefix         = var.radar_prefix
+  radar_prefix_version = var.radar_prefix_version
+  radar_auth           = var.radar_auth
+  radar_auth_version   = var.radar_auth_version
+  radar_file           = var.radar_file
 }

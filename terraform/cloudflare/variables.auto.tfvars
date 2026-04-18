@@ -1,10 +1,12 @@
+# Account
+account_name = null
+
 # Control center
 cc_create         = true
-account_name      = null
-domain_name       = "<domain.tld>"
+cc_domain_name    = "<domain.tld>"
+cc_name           = "P2P control center"
 cc_prefix         = null
 cc_prefix_version = 1
-cc_name           = "P2P control center"
 cc_uri            = true
 cc_uri_version    = 1
 cc_commands = {
@@ -25,3 +27,13 @@ cc_commands = {
 bucket_jurisdiction   = "default"
 bucket_location       = null
 bucket_suffix_version = 1
+
+# Radar
+radar_create         = true
+radar_domain_name    = null
+radar_name           = "P2P radar"
+radar_prefix         = null
+radar_prefix_version = 1
+radar_auth           = true
+radar_auth_version   = 1
+radar_file           = "radar.js"

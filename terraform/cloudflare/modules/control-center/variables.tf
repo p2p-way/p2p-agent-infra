@@ -1,28 +1,38 @@
-# Main
+# Account
+variable "account_name" {
+  description = "Name of the account. Should be used when user has access to multple Cloudflare accounts."
+  type        = string
+  default     = null
+}
+
+# Control center
 variable "cc_create" {
   description = "Whether to create control center."
   type        = bool
   default     = true
 }
 
-# Account
-variable "account_name" {
-  description = "Name of the account. Should be used when user has a ccess to multple Cloudflare accounts."
-  type        = string
-  default     = null
-}
-
-# DNS
-variable "domain_name" {
-  description = "Cloudflare domain name."
+variable "cc_domain_name" {
+  description = "Cloudflare control center domain name."
   type        = string
 }
 
-# Control center
 variable "cc_name" {
   description = "Name to be used for control center resources."
   type        = string
   default     = "P2P control center"
+}
+
+variable "cc_prefix" {
+  description = "Control center name prefix. By default a random one will be generated."
+  type        = string
+  default     = null
+}
+
+variable "cc_prefix_version" {
+  description = "Version of the cc_prefix, when changed triggers new value generation."
+  type        = number
+  default     = 1
 }
 
 variable "cc_uri" {
@@ -55,18 +65,6 @@ variable "cc_commands" {
     cc-a-repository         = "https://github.com/p2p-way/p2p-agent-infra"
     cc-a-type               = "ansible"
   }
-}
-
-variable "cc_prefix" {
-  description = "Control center name prefix. By default a random one will be generated."
-  type        = string
-  default     = null
-}
-
-variable "cc_prefix_version" {
-  description = "Version of the cc_prefix, when changed triggers new value generation."
-  type        = number
-  default     = 1
 }
 
 # R2

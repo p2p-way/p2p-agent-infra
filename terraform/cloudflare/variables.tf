@@ -1,28 +1,38 @@
-# Main
+# Account
+variable "account_name" {
+  description = "Name of the account. Should be used when user has access to multple Cloudflare accounts."
+  type        = string
+  default     = null
+}
+
+# Control center
 variable "cc_create" {
   description = "Whether to create control center."
   type        = bool
   default     = true
 }
 
-# Account
-variable "account_name" {
-  description = "Name of the account. Should be used when user has a ccess to multple Cloudflare accounts."
-  type        = string
-  default     = null
-}
-
-# DNS
-variable "domain_name" {
-  description = "Cloudflare domain name."
+variable "cc_domain_name" {
+  description = "Cloudflare control center domain name."
   type        = string
 }
 
-# Control center
 variable "cc_name" {
   description = "Name to be used for control center resources."
   type        = string
   default     = "P2P control center"
+}
+
+variable "cc_prefix" {
+  description = "Control center name prefix. By default a random one will be generated."
+  type        = string
+  default     = null
+}
+
+variable "cc_prefix_version" {
+  description = "Version of the cc_prefix, when changed triggers new value generation."
+  type        = number
+  default     = 1
 }
 
 variable "cc_uri" {
@@ -57,18 +67,6 @@ variable "cc_commands" {
   }
 }
 
-variable "cc_prefix" {
-  description = "Control center name prefix. By default a random one will be generated."
-  type        = string
-  default     = null
-}
-
-variable "cc_prefix_version" {
-  description = "Version of the cc_prefix, when changed triggers new value generation."
-  type        = number
-  default     = 1
-}
-
 # R2
 variable "bucket_jurisdiction" {
   description = "Jurisdiction where objects in this bucket are guaranteed to be stored. Available values: 'default', 'eu', 'fedramp'."
@@ -86,4 +84,53 @@ variable "bucket_suffix_version" {
   description = "Version of the bucket suffix, when changed triggers new value generation."
   type        = number
   default     = 1
+}
+
+# Radar
+variable "radar_create" {
+  description = "Whether to create radar."
+  type        = bool
+  default     = true
+}
+
+variable "radar_domain_name" {
+  description = "Cloudflare domain name for radar."
+  type        = string
+  default     = null
+}
+
+variable "radar_name" {
+  description = "Name to be used for radar resources."
+  type        = string
+  default     = "P2P radar"
+}
+
+variable "radar_prefix" {
+  description = "Radar name prefix. By default a random value be generated."
+  type        = string
+  default     = null
+}
+
+variable "radar_prefix_version" {
+  description = "Version of the radar_prefix, when changed triggers new value generation."
+  type        = number
+  default     = 1
+}
+
+variable "radar_auth" {
+  description = "Where to enable authentication on radar."
+  type        = bool
+  default     = true
+}
+
+variable "radar_auth_version" {
+  description = "Version of the radar_auth, when changed triggers new value generation."
+  type        = number
+  default     = 1
+}
+
+variable "radar_file" {
+  description = "The name of the main module in the modules array."
+  type        = string
+  default     = "radar.js"
 }
