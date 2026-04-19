@@ -2,14 +2,20 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  # All the regions
-  for_each = data.aws_regions.all-regions[0].names
+  # Exclude non operational regions
+  for_each = setsubtract(data.aws_regions.all_regions[0].names, ["me-central-1", "me-south-1"])
+
+  # All regions
+  # for_each = data.aws_regions.all_regions[0].names
 
   # Specific regions
   # for_each = toset(["eu-central-1", "eu-south-1"])
 
-  # Exclude affected regions
-  # for_each = setsubtract(sort(data.aws_regions.all-regions[0].names), ["me-central-1", "me-south-1"])
+  # EU regions
+  # for_each = toset(compact([ for region in data.aws_regions.all_regions[0].names: startswith(region, "eu") ? region: null ]))
+
+  # First 5 regions
+  # for_each = toset(slice(sort(data.aws_regions.all_regions[0].names), 0, 5))
 
   region                      = each.key
   agent_create                = var.agent_create
@@ -56,6 +62,13 @@ module "multi-regions" {
 }
 
 # All regions
-data "aws_regions" "all-regions" {
+data "aws_regions" "all_regions" {
   count = var.agent_create ? 1 : 0
+
+  # all_regions = true
+
+  # filter {
+  #   name   = "opt-in-status"
+  #   values = ["opt-in-not-required"] # ["opted-in"]
+  # }
 }
