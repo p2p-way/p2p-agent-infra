@@ -8,6 +8,7 @@ on:
     paths: &paths
       - terraform/**
       - '!**.md'
+      - '!cloudflare/dashboard/**'
       - .github/workflows/terraform-check.yml
   pull_request:
     paths: *paths
