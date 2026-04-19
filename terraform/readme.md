@@ -153,7 +153,9 @@
     }
     ```
 
- 4. Add a public key *id_ed25519.pub* content on repository side
+ 4. When control center is used, update `cc-a-repository` header - [Agent uses control center](#agent-uses-control-center).
+
+ 5. Add a public key *id_ed25519.pub* content on repository side
     - On GitHub: Repository --> Settings --> Security --> Deploy keys
 
 
