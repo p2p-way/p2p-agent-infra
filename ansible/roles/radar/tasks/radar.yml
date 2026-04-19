@@ -24,7 +24,10 @@
       &autoscaler={{ watcher_enabled | lower -}}
       &capacity={{ watcher_desired_capacity -}}
       &services={{ services -}}
+      &duration={{ duration -}}
       &uptime={{ ansible_uptime_seconds }}
+    duration: >-
+      {{ (now().timestamp() - (start_time | int)) | round | int }}
   loop: "{{ lookup('ansible.builtin.file', base_folder | dirname + '/' + radar_url_file, lstrip=true).split('\n') | select() }}"
   ignore_errors: true
 

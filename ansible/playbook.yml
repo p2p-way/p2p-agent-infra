@@ -5,6 +5,8 @@
   pre_tasks:
     - name: Set global variables
       ansible.builtin.set_fact:
+        # Perf
+        start_time:       '{{ now().timestamp() }}'
         # Common
         base_folder:      /opt/p2p
         temp_folder:      /tmp

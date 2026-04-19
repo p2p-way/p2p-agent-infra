@@ -38,8 +38,9 @@ export default {
       const CloudRegion = url.searchParams.get("region") || "unknown";
       const Autoscaler = url.searchParams.get("autoscaler") || "unknown";
       const Services = url.searchParams.get("services") || "unknown";
-      const Capacity = url.searchParams.get("capacity") || 0;
-      const Uptime = url.searchParams.get("uptime") || 0;
+      const Capacity = url.searchParams.get("capacity") || -1;
+      const Uptime = url.searchParams.get("uptime") || -1;
+      const Duration = url.searchParams.get("duration") || -1;
 
       // Agent data - Doubles
       const Count = 1;
@@ -55,6 +56,7 @@ export default {
       data.radar.Region = CloudRegion
       data.radar.Autoscaler = Autoscaler
       data.radar.Services = Services
+      data.radar.Duration = Duration
       data.radar.Uptime = Uptime
       data.radar.PublicIp = PublicIp
 
@@ -76,7 +78,7 @@ export default {
           Latitude,
           Longitude
         ],
-        doubles: [Count,Capacity,Uptime],
+        doubles: [Count, Capacity, Duration, Uptime],
         indexes: [PublicIp],
       });
     }
