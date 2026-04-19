@@ -294,3 +294,7 @@
  1. [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html) may not permit to run required number of instances, especialy on newly created accounts or accounts with the low expenses and we should contact AWS for [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html).
 
  2. Please make sure you did [Enable or disable AWS Regions in your account](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html) before deployment.
+
+ 3. Some regions might be non operational
+    - `1-region-me-central-1.tf`
+    - `1-region-me-south-1.tf`
