@@ -1,0 +1,1153 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "g62crn",
+    "namespace": "default",
+    "uid": "80c927ac-b012-4d54-8752-11ab30de9037",
+    "resourceVersion": "1776611291007998",
+    "generation": 4,
+    "creationTimestamp": "2026-04-19T14:54:27Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "1244468447379456"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "access-policy:service",
+      "grafana.app/folder": "",
+      "grafana.app/managedBy": "classic-file-provisioning",
+      "grafana.app/managerAllowsEdits": "true",
+      "grafana.app/managerId": "Radar",
+      "grafana.app/saved-from-ui": "Grafana v13.1.0-24511255357 (9cca5685)",
+      "grafana.app/sourceChecksum": "d74d5b327a3ff2f1fd6bd3da3d4c15b8",
+      "grafana.app/sourcePath": "/etc/grafana/dashboards/cloudflare.json",
+      "grafana.app/sourceTimestamp": "1776610445000",
+      "grafana.app/updatedBy": "anonymous:0",
+      "grafana.app/updatedTimestamp": "2026-04-19T15:08:11Z"
+    }
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "description": "P2P agent radar on Cloudfalre",
+    "editable": true,
+    "elements": {
+      "panel-1": {
+        "kind": "Panel",
+        "spec": {
+          "id": 1,
+          "title": "Data",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "vertamedia-clickhouse-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "adHocFilters": [],
+                        "adHocValuesQuery": "",
+                        "add_metadata": true,
+                        "contextWindowSize": "10",
+                        "dateTimeColDataType": "timestamp",
+                        "editorMode": "sql",
+                        "extrapolate": true,
+                        "format": "table",
+                        "interval": "",
+                        "intervalFactor": 1,
+                        "nullifySparse": false,
+                        "query": "SELECT\n    timestamp AS Time,\n    index1 as Agent,\n    blob1 AS Cloud,\n    blob2 AS CloudRegion,\n    blob3 AS Autoscaler,\n    blob4 AS Services,\n    double1 AS Count,\n    double2 AS Capacity,\n    double3 AS Duration,\n    double4 AS Uptime,\n    blob5 AS CloudflareColo,\n    blob6 AS Asn,\n    blob7 AS AsOrganization,\n    blob8 AS Continent,\n    blob9 AS Country,\n    blob10 AS RegionCode,\n    blob11 AS Region,\n    blob12 AS City,\n    blob13 AS Latitude,\n    blob14 AS Longitude\nFROM \"$dataset\"\nWHERE $timeFilter\n",
+                        "round": "0s",
+                        "skip_comments": true,
+                        "useWindowFuncForMacros": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.0-24511255357",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "Longitude"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob11"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 157
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob12"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 136
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob13"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 78
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob14"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 78
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob15"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 57
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob16"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 57
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob17"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 56
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Services"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 162
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Autoscaler"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 86
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Cloud"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 64
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Agent"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 115
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CloudRegion"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 100
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Count"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 54
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Capacity"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 73
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Duration"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 71
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Uptime"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 61
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CloudflareColo"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 115
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Asn"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 57
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "AsOrganization"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 249
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Continent"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 79
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Country"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 68
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "RegionCode"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 96
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Region"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 157
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "City"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 136
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Latitude"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 78
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Time"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 160
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "Raw data",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "vertamedia-clickhouse-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "adHocFilters": [],
+                        "adHocValuesQuery": "",
+                        "add_metadata": true,
+                        "contextWindowSize": "10",
+                        "dateColDataType": "timestamp",
+                        "dateTimeColDataType": "timestamp",
+                        "editorMode": "sql",
+                        "extrapolate": true,
+                        "format": "table",
+                        "interval": "",
+                        "intervalFactor": 1,
+                        "nullifySparse": false,
+                        "query": "SELECT *\nFROM \"$dataset\"",
+                        "round": "0s",
+                        "skip_comments": true,
+                        "useWindowFuncForMacros": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.0-24511255357",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "blob13"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob11"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 157
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob12"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 136
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob13"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 78
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob14"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 78
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob15"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 57
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob16"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 57
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "blob17"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 56
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 3,
+          "title": "Clouds",
+          "description": "P2P agent nodes by Clouds",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "vertamedia-clickhouse-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "P738E22F0ACAB814C"
+                      },
+                      "spec": {
+                        "adHocFilters": [],
+                        "adHocValuesQuery": "",
+                        "add_metadata": true,
+                        "contextWindowSize": "10",
+                        "dateTimeColDataType": "timestamp",
+                        "editorMode": "sql",
+                        "extrapolate": true,
+                        "format": "time_series",
+                        "interval": "",
+                        "intervalFactor": 1,
+                        "nullifySparse": false,
+                        "query": "SELECT\n    index1 as Agent,\n    blob1 AS Cloud,\n    sum(double1) AS Count\nFROM \"$dataset\"\nWHERE $timeFilter\nGROUP BY\n    Agent, Cloud\nORDER BY Count DESC\n",
+                        "round": "0s",
+                        "skip_comments": true,
+                        "useWindowFuncForMacros": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "piechart",
+            "version": "13.1.0-24511255357",
+            "spec": {
+              "options": {
+                "displayLabels": [
+                  "name"
+                ],
+                "legend": {
+                  "displayMode": "table",
+                  "placement": "right",
+                  "showLegend": true,
+                  "values": [
+                    "value",
+                    "percent"
+                  ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "sort": "desc",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "asc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic",
+                    "fixedColor": "#73BF69"
+                  },
+                  "custom": {
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    }
+                  },
+                  "fieldMinMax": false
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-4": {
+        "kind": "Panel",
+        "spec": {
+          "id": 4,
+          "title": "Countries",
+          "description": "P2P agent nodes by Countries",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "vertamedia-clickhouse-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "P738E22F0ACAB814C"
+                      },
+                      "spec": {
+                        "adHocFilters": [],
+                        "adHocValuesQuery": "",
+                        "add_metadata": true,
+                        "contextWindowSize": "10",
+                        "dateTimeColDataType": "timestamp",
+                        "editorMode": "sql",
+                        "extrapolate": true,
+                        "format": "time_series",
+                        "interval": "",
+                        "intervalFactor": 1,
+                        "nullifySparse": false,
+                        "query": "SELECT\n    index1 as Agent,\n    blob9 AS Country,\n    sum(double1) AS Count\nFROM \"$dataset\"\nWHERE $timeFilter\nGROUP BY\n    Agent, Country\nORDER BY Count DESC\n",
+                        "round": "0s",
+                        "skip_comments": true,
+                        "useWindowFuncForMacros": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "piechart",
+            "version": "13.1.0-24511255357",
+            "spec": {
+              "options": {
+                "displayLabels": [
+                  "name"
+                ],
+                "legend": {
+                  "displayMode": "table",
+                  "placement": "right",
+                  "showLegend": true,
+                  "values": [
+                    "value",
+                    "percent"
+                  ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "sort": "desc",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic",
+                    "fixedColor": "#73BF69"
+                  },
+                  "custom": {
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-6": {
+        "kind": "Panel",
+        "spec": {
+          "id": 6,
+          "title": "Continents",
+          "description": "P2P agent nodes by Continents",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "vertamedia-clickhouse-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "P738E22F0ACAB814C"
+                      },
+                      "spec": {
+                        "adHocFilters": [],
+                        "adHocValuesQuery": "",
+                        "add_metadata": true,
+                        "contextWindowSize": "10",
+                        "dateTimeColDataType": "timestamp",
+                        "editorMode": "sql",
+                        "extrapolate": true,
+                        "format": "time_series",
+                        "interval": "",
+                        "intervalFactor": 1,
+                        "nullifySparse": false,
+                        "query": "SELECT\n    index1 as Agent,\n    blob8 AS Continent,\n    sum(double1) AS Count\nFROM \"$dataset\"\nWHERE $timeFilter\nGROUP BY\n    Agent, Continent\nORDER BY Count DESC\n",
+                        "round": "0s",
+                        "skip_comments": true,
+                        "useWindowFuncForMacros": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "piechart",
+            "version": "13.1.0-24511255357",
+            "spec": {
+              "options": {
+                "displayLabels": [
+                  "name"
+                ],
+                "legend": {
+                  "displayMode": "table",
+                  "placement": "right",
+                  "showLegend": true,
+                  "values": [
+                    "value",
+                    "percent"
+                  ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "sort": "desc",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic",
+                    "fixedColor": "#73BF69"
+                  },
+                  "custom": {
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "TabsLayout",
+      "spec": {
+        "tabs": [
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Charts",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-3"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 0,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-6"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 8,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-4"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Data",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 24,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-1"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 9,
+                        "width": 24,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-2"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-12h",
+      "to": "now",
+      "autoRefresh": "",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "Radar on Cloudflare",
+    "variables": [
+      {
+        "kind": "DatasourceVariable",
+        "spec": {
+          "name": "datasource",
+          "pluginId": "vertamedia-clickhouse-datasource",
+          "refresh": "onDashboardLoad",
+          "regex": "/cloudflare/",
+          "current": {
+            "text": "cloudflare",
+            "value": "P738E22F0ACAB814C"
+          },
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "label": "datasource",
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "description": "Cloudflare Workers Analytics Engine",
+          "allowCustomValue": false
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "dataset",
+          "label": "dataset",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "description": "Analytics Engine dataset",
+          "query": {
+            "kind": "DataQuery",
+            "group": "vertamedia-clickhouse-datasource",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "adHocFilters": [],
+              "adHocValuesQuery": "",
+              "add_metadata": true,
+              "contextWindowSize": "10",
+              "datasourceMode": "Variable",
+              "editorMode": "sql",
+              "extrapolate": true,
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 1,
+              "nullifySparse": false,
+              "query": "SHOW DATASETS;",
+              "round": "0s",
+              "skip_comments": true,
+              "useWindowFuncForMacros": true
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "SHOW DATASETS;",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allowCustomValue": true
+        }
+      }
+    ],
+    "preferences": {
+      "layout": {
+        "kind": "GridLayout",
+        "spec": {
+          "items": []
+        }
+      }
+    }
+  }
+}

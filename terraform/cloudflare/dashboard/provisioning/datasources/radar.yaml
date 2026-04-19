@@ -1,0 +1,14 @@
+# https://grafana.com/docs/grafana/latest/administration/provisioning/
+
+apiVersion: 1
+
+datasources:
+  - name: cloudflare
+    type: vertamedia-clickhouse-datasource
+    url: $CLOUDFLARE_ANALYTICS_ENGINE_URL
+    isDefault: true
+    jsonData:
+      httpHeaderName1: Authorization
+    secureJsonData:
+      httpHeaderValue1: Bearer $CLOUDFLARE_API_TOKEN
+    editable: true

@@ -1,0 +1,30 @@
+# https://grafana.com/docs/grafana/latest/setup-grafana/configure-docker
+# https://github.com/grafana/grafana/blob/main/conf/sample.ini
+# https://github.com/grafana/grafana/blob/main/conf/defaults.ini
+# https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana
+
+services:
+  grafana:
+    image: grafana/grafana:main
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      GF_PLUGINS_PREINSTALL: vertamedia-clickhouse-datasource
+      GF_PATHS_CONFIG: /etc/grafana/grafana.ini
+      GF_USERS_DEFAULT_THEME: system
+      GF_USERS_HOME_PAGE: /dashboards
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_LOG_CONSOLE_LEVEL: warn
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      # GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/dashboards/cloudflare.json
+      CLOUDFLARE_API_TOKEN: $CLOUDFLARE_API_TOKEN
+      CLOUDFLARE_ANALYTICS_ENGINE_URL: $CLOUDFLARE_ANALYTICS_ENGINE_URL
+    ports:
+      - 3000:3000
+    volumes:
+      - '$PWD/grafana_data:/var/lib/grafana'
+      - '$PWD/dashboards:/etc/grafana/dashboards'
+      - '$PWD/provisioning:/etc/grafana/provisioning'
