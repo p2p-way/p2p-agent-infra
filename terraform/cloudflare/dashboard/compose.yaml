@@ -5,7 +5,8 @@
 
 services:
   grafana:
-    image: grafana/grafana:main
+    image: grafana/grafana:latest
+    pull_policy: always
     container_name: grafana
     restart: unless-stopped
     environment:
