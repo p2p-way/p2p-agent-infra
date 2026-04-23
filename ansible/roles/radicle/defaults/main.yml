@@ -15,7 +15,7 @@ radicle_tcp_port:       8776
 radicle_config_file:    config.json
 radicle_service_name:   '{{ radicle_name }}'
 radicle_node_alias:     '' # seeder
-radicle_seed_timeout:   300
+radicle_seed_timeout:   300s
 radicle_rid:            ''
 radicle_enabled:        true
 radicle_update:         false
