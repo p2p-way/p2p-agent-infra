@@ -160,7 +160,7 @@ install_radicle() {
     WAIT=300
     SECONDS=0
     while (( SECONDS < WAIT )); do
-      if (curl -m 30 -sSf https://radicle.xyz/install | sh -s -- --prefix=/usr/local); then break; fi
+      if (curl -m 30 -sSf https://radicle.dev/install | sh -s -- --prefix=/usr/local); then break; fi
       sleep 5
     done
 

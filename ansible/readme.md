@@ -51,7 +51,7 @@
 
 ### Radicle role
 
- P2P agent code is shared using [Radicle](https://radicle.xyz).
+ P2P agent code is shared using [Radicle](https://radicle.dev).
 
 
 ### TON role
