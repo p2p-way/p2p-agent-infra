@@ -23,13 +23,12 @@
 ## [Architecture](#architecture)
 
 ```
-                        ---- Autoscaler --   Radar   -------------        IPFS
+                        ---- Autoscaler --   Radar   -------------         IPFS
                       /                    \   /   /               \     /
 Scheduler --- Watcher --- Control center     Agent     Setup ------- P2P - TON
                                        \        \      /   \       /     \
                                          ----- Scheduler   Repository      Torrent
 ```
-
 
  General workflow might be the following
  1. [Scheduler](#scheduler) run a [Watcher](#watcher).
