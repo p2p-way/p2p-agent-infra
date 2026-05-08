@@ -1,6 +1,5 @@
 name: Ansible
 
-
 on:
   push:
     branches:
@@ -13,15 +12,15 @@ on:
     paths: *paths
   workflow_dispatch:
 
-
 env:
   ansible-directory: ansible
 
+permissions:
+  contents: read
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 
 jobs:
   ansible-lint:

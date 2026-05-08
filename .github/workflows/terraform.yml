@@ -1,5 +1,4 @@
-name: Terraform check
-
+name: Terraform
 
 on:
   push:
@@ -9,22 +8,22 @@ on:
       - terraform/**
       - '!**.md'
       - '!terraform/cloudflare/dashboard/**'
-      - .github/workflows/terraform-check.yml
+      - .github/workflows/terraform.yml
   pull_request:
     paths: *paths
   workflow_dispatch:
-
 
 env:
   terraform-version: "~> 1"
   terraform-directory: terraform
   cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "gcp", "hetzner"]'
 
+permissions:
+  contents: read
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 
 jobs:
   terraform-format:
