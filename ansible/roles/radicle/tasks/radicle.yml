@@ -18,13 +18,13 @@
   changed_when: false
   when: item not in radicle_existing_rid.stdout
 
-- name: Get seed rid
-  ansible.builtin.command: rad seed
+- name: Get seeded rid
+  ansible.builtin.command: rad ls --seeded
   environment:
     RAD_HOME: '{{ radicle_folder }}'
   register: radicle_existing_rid_latest
   changed_when: false
 
-- name: Show seed
+- name: Show seeded
   ansible.builtin.debug:
     msg: '{{ radicle_existing_rid_latest.stdout }}'
