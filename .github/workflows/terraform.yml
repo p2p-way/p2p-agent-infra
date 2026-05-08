@@ -90,7 +90,7 @@ jobs:
         run: terraform validate
         working-directory: ${{ env.terraform-directory }}/${{ matrix.cloud }}
 
-      - name: Terraform Plan
+      - name: Terraform - Plan
         run: |
           if [[ ${{ matrix.cloud }} == "cloudflare" ]]; then
             terraform plan -var="cc_create=false" -var="radar_create=false"

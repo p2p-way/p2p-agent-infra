@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Run ansible-lint
+      - name: Ansible - Lint
         uses: ansible/ansible-lint@main
         with:
           working_directory: ${{ env.ansible-directory }}
@@ -41,12 +41,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install Ansible
+      - name: Ansible - Install
         run: |
           python3 -m pip install --user ansible jmespath
           ansible --version
 
-      - name: Run ansible-playbook
+      - name: Ansible - Playbook
         run: |
           ansible-playbook \
             --become \
