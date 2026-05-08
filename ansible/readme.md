@@ -175,7 +175,7 @@
     rad seed
 
     # Check repositories files
-    find "${RAD_HOME}/storage" -maxdepth 2
+    find "$(rad self --home)/storage" -maxdepth 2
     ```
 
  4. **TON**
