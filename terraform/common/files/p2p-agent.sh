@@ -311,9 +311,9 @@ get_repository() {
       # Sync repository
       cd "$${repository_folder}" || exit
       if [[ "$${radicle_is_service}" == "true" ]]; then
-        sudo -u "$${radicle_user}" bash -c "export RAD_HOME=""$${RAD_HOME}""; rad sync ""$${repository}"" --timeout 30"
+        sudo -u "$${radicle_user}" bash -c "export RAD_HOME=""$${RAD_HOME}""; rad sync ""$${repository}"" --timeout 30s"
       else
-        rad sync "$${repository}" --timeout 30
+        rad sync "$${repository}" --timeout 30s
       fi
 
       cd ..
@@ -363,9 +363,9 @@ get_repository() {
     # Radicle
     if [[ "$${repository_mode}" == "radicle" ]]; then
       if [[ "$${radicle_is_service}" == "true" ]]; then
-        if (sudo -u "$${radicle_user}" bash -c "export RAD_HOME=""$${RAD_HOME}""; rad clone ""$${repository}"" ""$${repository_folder}"" --timeout 60"); then cloned_successfully=true; fi
+        if (sudo -u "$${radicle_user}" bash -c "export RAD_HOME=""$${RAD_HOME}""; rad clone ""$${repository}"" ""$${repository_folder}"" --timeout 60s"); then cloned_successfully=true; fi
       else
-        if (rad clone "$${repository}" "$${repository_folder}" --timeout 60); then cloned_successfully=true; fi
+        if (rad clone "$${repository}" "$${repository_folder}" --timeout 60s); then cloned_successfully=true; fi
       fi
     # Client-Server
     else
