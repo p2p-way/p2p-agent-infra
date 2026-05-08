@@ -171,8 +171,11 @@
     # Check profile
     rad self
 
-    # Check seeding repositories
+    # Check seeding policies
     rad seed
+
+    # Check seeding repositories
+    rad ls --seeded
 
     # Check repositories files
     find "$(rad self --home)/storage" -maxdepth 2
