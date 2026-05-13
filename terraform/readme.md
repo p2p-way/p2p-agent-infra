@@ -187,7 +187,7 @@
      DEFAULT_REPOSITORY_MODE    = "radicle"
      DEFAULT_REPOSITORY_RADICLE = "rad:z3yXqAJjHXxqJ8ChJezGZRdkvU27"
    }
-    ```
+   ```
 
 
 ### Agent uses hardcoded commands and centralised repository
