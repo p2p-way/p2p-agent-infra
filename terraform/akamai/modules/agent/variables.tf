@@ -101,7 +101,7 @@ variable "agent_commands_defaults" {
     DEFAULT_PRE_RUN            = "echo \"Start: $(date)\""
     DEFAULT_REPOSITORY         = "https://github.com/p2p-way/p2p-agent-infra"
     DEFAULT_REPOSITORY_MODE    = "client-server"
-    DEFAULT_REPOSITORY_RADICLE = "rad:z3gqcJUoA1n9HaHKufZs5FCSGazv5"
+    DEFAULT_REPOSITORY_RADICLE = "rad:z3yXqAJjHXxqJ8ChJezGZRdkvU27"
     DEFAULT_TYPE               = "ansible"
   }
 }

@@ -185,7 +185,7 @@
    ```terraform
    agent_commands_defaults = {
      DEFAULT_REPOSITORY_MODE    = "radicle"
-     DEFAULT_REPOSITORY_RADICLE = "rad:..."
+     DEFAULT_REPOSITORY_RADICLE = "rad:z3yXqAJjHXxqJ8ChJezGZRdkvU27"
    }
     ```
 

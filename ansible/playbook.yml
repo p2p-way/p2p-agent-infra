@@ -29,7 +29,7 @@
         enable_radar:     true
         # P2P
         ipfs_cid:         bafybeicjxk7fb3btcabn36rpyooao36ixbfdw6iwy6fvksvpvuo3iyscxm
-        radicle_rid:      rad:z3gqcJUoA1n9HaHKufZs5FCSGazv5
+        radicle_rid:      rad:z3yXqAJjHXxqJ8ChJezGZRdkvU27
         ton_bagid:        12432C1BEE1BF12FE294CB63694EFFED189B1041F4E88D51E3E65CCB2A64D8B4
         torrent_magnet:   'magnet:?xt=urn:btih:c7245061816ebf134d2a9be87be600acc9b1f7c6&xt=urn:btmh:1220f759b072884c48e1c9d9e6f99aa507f982ab22e75b36aab097d198140490ed14&dn=site' # noqa: yaml[line-length]
         torrent_tracker:  udp://tracker.opentrackr.org:1337/announce

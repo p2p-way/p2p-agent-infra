@@ -105,7 +105,7 @@
     # IPFS
     export ipfs_cid="bafybeicjxk7fb3btcabn36rpyooao36ixbfdw6iwy6fvksvpvuo3iyscxm"
     # Radicle
-    export radicle_rid="rad:z3gqcJUoA1n9HaHKufZs5FCSGazv5"
+    export radicle_rid="rad:z3yXqAJjHXxqJ8ChJezGZRdkvU27"
     # TON
     export ton_bagid="12432C1BEE1BF12FE294CB63694EFFED189B1041F4E88D51E3E65CCB2A64D8B4"
     # Torrent
