@@ -233,14 +233,14 @@
 
 ### Update agent
 
- We can update agent via [Agent role](#agent-role) and to peform this task we should
+ We can update agent via [Agent role](#agent-role) and to perform this task we should
  1. Update [*roles/agent/files/p2p-agent.sh*](roles/agent/files/p2p-agent.sh) file if required.
  2. Update `agent_file` and `cron_minute` variables and then set `update_agent` or `update_cron` variables to `true` in [*playbook.yml*](playbook.yml).
 
 
 ### Update watcher
 
- We can update watcher via [Watcher role](#watcher-role) and to peform this task we should
+ We can update watcher via [Watcher role](#watcher-role) and to perform this task we should
  1. Update `desired_capacity` in [*playbook.yml*](playbook.yml)
     ```yaml
     # No changes
@@ -260,25 +260,25 @@
 
 ### Update IPFS CID
 
- We can update IPFS CID via [IPFS role](#ipfs-role) and to peform this task we should
+ We can update IPFS CID via [IPFS role](#ipfs-role) and to perform this task we should
  1. Update `ipfs_cid` in [*playbook.yml*](playbook.yml).
 
 
 ### Update Radicle RID
 
- We can update Radicle RID via [Radicle role](#radicle-role) and to peform this task we should
+ We can update Radicle RID via [Radicle role](#radicle-role) and to perform this task we should
  1. Update `radicle_rid` in [*playbook.yml*](playbook.yml).
 
 
 ### Update TON BagID
 
- We can update TON BagID via [TON role](#ton-role) and to peform this task we should
+ We can update TON BagID via [TON role](#ton-role) and to perform this task we should
  1. Update `ton_bagid` in [*playbook.yml*](playbook.yml).
 
 
 ### Update Torrent magnet
 
- We can update Torrent magnet via [Torrent role](#torrent-role) and to peform this task we should
+ We can update Torrent magnet via [Torrent role](#torrent-role) and to perform this task we should
  1. Update `torrent_magnet` in [*playbook.yml*](playbook.yml).
 
 > [!NOTE]
