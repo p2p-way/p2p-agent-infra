@@ -23,8 +23,8 @@
   ignore_errors: true
   when:
     - common_listening_check == 'port'
-    - (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length) or
-      (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length)
+    - (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length | bool) or
+      (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length | bool)
 
 - name: '{{ common_app_name }}: Check app endpoint' # noqa: name[template]
   ansible.builtin.uri:
@@ -39,15 +39,15 @@
   ignore_errors: true
   when:
     - common_listening_check == 'endpoint'
-    - (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length) or
-      (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length)
+    - (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length | bool) or
+      (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length | bool)
 
 - name: '{{ common_app_name }}: Compute check variables' # noqa: name[template]
   ansible.builtin.set_fact:
     '{{ common_app_name }}_is_installed': >-
-       {% if (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length)
+       {% if (common_app_check == 'binary' and common_check_app_installed.files | default([]) | length | bool)
          or
-         (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length) -%}
+         (common_app_check == 'package' and ansible_facts['packages'][package] | default([]) | length | bool) -%}
          {{ true | bool }}
        {%- else -%}
          {{ false | bool }}

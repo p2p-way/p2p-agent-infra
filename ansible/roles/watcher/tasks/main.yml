@@ -44,7 +44,7 @@
 - name: Set watcher variables
   ansible.builtin.set_fact:
     watcher_region: '{{ watcher_region.stdout }}'
-    watcher_enabled: '{{ watcher_enabled.stdout }}'
+    watcher_enabled: '{{ watcher_enabled.stdout | bool }}'
 
 - name: Set desired capacity variable
   ansible.builtin.set_fact:
