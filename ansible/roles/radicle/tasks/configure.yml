@@ -5,37 +5,57 @@
   when: common_public_ipv4 != ''
 
 - name: Get configured external address
-  ansible.builtin.command: rad config get node.externalAddresses
+  ansible.builtin.command: rad config
   environment:
     RAD_HOME: '{{ radicle_folder }}'
   register: radicle_configured_external_address
   changed_when: false
   when: common_public_ipv4 != ''
 
+- name: Get config file
+  ansible.builtin.command: rad self --config
+  environment:
+    RAD_HOME: '{{ radicle_folder }}'
+  register: radicle_config_file
+  changed_when: false
+  when: common_public_ipv4 != ''
+
 - name: Compute address variables
   ansible.builtin.set_fact:
+    radicle_config_file: '{{ radicle_config_file.stdout }}'
+    radicle_current_external_address: '{{ radicle_current_external_address }}'
+    radicle_configured_external_address: '{{ radicle_configured_external_address }}'
+    radicle_update_external_address: >-
+      {% if common_public_ipv4 != '' and radicle_current_external_address not in radicle_configured_external_address -%}
+        {{ true | bool }}
+      {%- endif %}
+  vars:
     radicle_current_external_address: '{{ common_public_ipv4 }}:{{ radicle_tcp_port }}'
-    radicle_configured_external_address: '{{ radicle_configured_external_address.stdout }}'
+    radicle_configured_external_address: >-
+      {{ (radicle_configured_external_address.stdout | from_json).node.externalAddresses }}
   when: common_public_ipv4 != ''
 
-- name: Set external address
-  ansible.builtin.command: rad config push node.externalAddresses '{{ common_public_ipv4 }}:{{ radicle_tcp_port }}'
-  environment:
-    RAD_HOME: '{{ radicle_folder }}'
-  changed_when: false
-  notify:
-    - 'Restart service {{ radicle_service_name }}'
-  when: common_public_ipv4 != '' and radicle_current_external_address not in radicle_configured_external_address
+- name: Load config file
+  ansible.builtin.slurp:
+    src: '{{ radicle_config_file }}'
+  register: radicle_config_file_imported
+  when: radicle_update_external_address
 
-- name: Remove old external addresses
-  ansible.builtin.command: rad config remove node.externalAddresses '{{ item }}'
-  loop: "{{ radicle_configured_external_address | string | split('\n') | unique | reject('equalto', common_public_ipv4 + ':' + radicle_tcp_port | string) }}"
-  environment:
-    RAD_HOME: '{{ radicle_folder }}'
-  changed_when: false
+- name: Set external address to the loaded config
+  ansible.builtin.set_fact:
+    radicle_config_file_imported: "{{ radicle_config_file_imported.content | b64decode | from_json | default([])
+      | combine({'node': {'externalAddresses': [radicle_current_external_address]}}, recursive=true) }}"
+
+- name: Save loaded config to a file
+  ansible.builtin.copy:
+    content: '{{ radicle_config_file_imported | to_nice_json(indent=2, sort_keys=False) }}'
+    dest: '{{ radicle_config_file }}'
+    owner: '{{ radicle_user }}'
+    group: '{{ radicle_user }}'
+    mode: '644'
   notify:
     - 'Restart service {{ radicle_service_name }}'
-  when: common_public_ipv4 != ''
+  when: radicle_update_external_address
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers

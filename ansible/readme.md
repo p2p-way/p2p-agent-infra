@@ -166,7 +166,7 @@
     export RAD_HOME=/opt/p2p/radicle
 
     # Check config
-    rad config get node.externalAddresses
+    rad config | jq -r '.node.externalAddresses[]'
 
     # Check profile
     rad self
