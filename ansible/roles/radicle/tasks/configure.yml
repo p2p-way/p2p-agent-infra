@@ -4,52 +4,49 @@
     file: wait.yml
   when: common_public_ipv4 != ''
 
-- name: Get configured external address
+- name: Load config file
   ansible.builtin.command: rad config
   environment:
     RAD_HOME: '{{ radicle_folder }}'
-  register: radicle_configured_external_address
+  register: radicle_config_file_loaded
   changed_when: false
   when: common_public_ipv4 != ''
 
-- name: Get config file
+- name: Get config file path
   ansible.builtin.command: rad self --config
   environment:
     RAD_HOME: '{{ radicle_folder }}'
-  register: radicle_config_file
+  register: radicle_config_file_path
   changed_when: false
   when: common_public_ipv4 != ''
 
-- name: Compute address variables
+- name: Compute config variables
   ansible.builtin.set_fact:
-    radicle_config_file: '{{ radicle_config_file.stdout }}'
+    radicle_config_file_path: '{{ radicle_config_file_path.stdout }}'
     radicle_current_external_address: '{{ radicle_current_external_address }}'
     radicle_configured_external_address: '{{ radicle_configured_external_address }}'
     radicle_update_external_address: >-
       {% if common_public_ipv4 != '' and radicle_current_external_address not in radicle_configured_external_address -%}
         {{ true | bool }}
+      {%- else -%}
+        {{ false | bool }}
       {%- endif %}
   vars:
     radicle_current_external_address: '{{ common_public_ipv4 }}:{{ radicle_tcp_port }}'
     radicle_configured_external_address: >-
-      {{ (radicle_configured_external_address.stdout | from_json).node.externalAddresses }}
+      {{ (radicle_config_file_loaded.stdout | from_json).node.externalAddresses }}
   when: common_public_ipv4 != ''
-
-- name: Load config file
-  ansible.builtin.slurp:
-    src: '{{ radicle_config_file }}'
-  register: radicle_config_file_imported
-  when: radicle_update_external_address
 
 - name: Set external address to the loaded config
   ansible.builtin.set_fact:
-    radicle_config_file_imported: "{{ radicle_config_file_imported.content | b64decode | from_json | default([])
+    radicle_config_file_updated: "{{ radicle_config_file_loaded.stdout | from_json | default([])
       | combine({'node': {'externalAddresses': [radicle_current_external_address]}}, recursive=true) }}"
+  when: radicle_update_external_address
 
 - name: Save loaded config to a file
   ansible.builtin.copy:
-    content: '{{ radicle_config_file_imported | to_nice_json(indent=2, sort_keys=False) }}'
-    dest: '{{ radicle_config_file }}'
+    content: '{{ radicle_config_file_updated | to_nice_json(indent=2, sort_keys=False) }}'
+    dest: '{{ radicle_config_file_path }}'
     owner: '{{ radicle_user }}'
     group: '{{ radicle_user }}'
     mode: '644'
