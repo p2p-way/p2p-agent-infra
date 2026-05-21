@@ -22,15 +22,15 @@
 
  **Criterias:** `Services availability --> Area/`[`Connections`](https://en.wikipedia.org/wiki/Submarine_communications_cable)` --> Costs`
 
-| # | Cloud                                  | Services                                            | Regions                                | AZ                 | Costs, $/d/i                           | Watcher            | Agent side watcher |
-| - | -------------------------------------- | --------------------------------------------------- | -------------------------------------- | ------------------ | -------------------------------------- | ------------------ | ------------------ |
-| 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12`  | [`1.08`](alibaba/readme.md#costs)      | :white_check_mark: | :white_check_mark: |
-| 2 | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2/3/4/6`          | [`0.97`](aws/readme.md#costs)          | :white_check_mark: | :white_check_mark: |
-| 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1/3`              | [`1.11`](azure/readme.md#costs)        | :x:                | :white_check_mark: |
-| 4 | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3/4`              | [`0.85`](gcp/readme.md#costs)          | :white_check_mark: | :white_check_mark: |
-| 5 | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       | :x:                | :x:                |
-| 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`13`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) | :x:                | :x:                |
-| 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.36`](hetzner/readme.md#costs)      | :x:                | :x:                |
+| # | Cloud                                  | Services                                            | Regions                                | AZ                 | Costs, $/d/i                           | Watcher  | Agent side watcher |
+| - | -------------------------------------- | --------------------------------------------------- | -------------------------------------- | ------------------ | -------------------------------------- | -------- | ------------------ |
+| 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12`  | [`1.08`](alibaba/readme.md#costs)      | &#9989;  | &#9989;            |
+| 2 | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2/3/4/6`          | [`0.97`](aws/readme.md#costs)          | &#9989;  | &#9989;            |
+| 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1/3`              | [`1.11`](azure/readme.md#costs)        | &#10060; | &#9989;            |
+| 4 | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3/4`              | [`0.85`](gcp/readme.md#costs)          | &#9989;  | &#9989;            |
+| 5 | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       | &#10060; | &#10060;           |
+| 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`13`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) | &#10060; | &#10060;           |
+| 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.36`](hetzner/readme.md#costs)      | &#10060; | &#10060;           |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)
