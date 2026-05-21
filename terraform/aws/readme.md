@@ -216,7 +216,7 @@
     terraform output repository_public_key
     ```
 
- 7. Add value of the `repository_public_key` output to the Git repository
+ 7. Add value of the `repository_public_key` output to the Git repository, only when we [Use a private centralised repository](../readme.md#use-a-private-centralised-repository)
     - GitHub: Repository --> Settings --> Security --> Deploy keys
 
  After some period of time all resources will be created and nodes will start. After the start, they will connect to the control center and will setup all configuration required to support P2P content distribution.
