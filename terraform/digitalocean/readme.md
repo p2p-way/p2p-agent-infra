@@ -84,10 +84,9 @@
      - `droplet` - create, read, update, delete
      - `firewall` - create, read, update, delete
      - `image` - read
-     - `kubernetes` - read
-     - `load_balancer` - read
      - `regions` - read
      - `sizes` - read
+     - `snapshot` - read
      - `ssh_key` - create, read, update, delete
      - `tag` - create, read, delete
      - `vpc` - create, read, update, delete
