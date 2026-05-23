@@ -22,27 +22,27 @@
 
  **Criterias:** `Services availability --> Area/`[`Connections`](https://en.wikipedia.org/wiki/Submarine_communications_cable)` --> Costs`
 
-| # | Cloud                                  | Services                                            | Regions                                | AZ                 | Costs, $/d/i                           | Watcher  | Agent side watcher |
-| - | -------------------------------------- | --------------------------------------------------- | -------------------------------------- | ------------------ | -------------------------------------- | -------- | ------------------ |
-| 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12`  | [`1.08`](alibaba/readme.md#costs)      | &#9989;  | &#9989;            |
-| 2 | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2/3/4/6`          | [`0.97`](aws/readme.md#costs)          | &#9989;  | &#9989;            |
-| 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1/3`              | [`1.11`](azure/readme.md#costs)        | &#10060; | &#9989;            |
-| 4 | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3/4`              | [`0.85`](gcp/readme.md#costs)          | &#9989;  | &#9989;            |
-| 5 | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       | &#10060; | &#10060;           |
-| 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`13`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) | &#10060; | &#10060;           |
-| 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.36`](hetzner/readme.md#costs)      | &#10060; | &#10060;           |
+| # | Cloud                                  | Services                                            | Regions                                | AZ                 | Costs, $/d/i                           | [Watcher](../architecture.md#watcher)  | [Agent side watcher](../architecture.md#agent-side-watcher) |
+| - | -------------------------------------- | --------------------------------------------------- | -------------------------------------- | ------------------ | -------------------------------------- | -------------------------------------- | ----------------------------------------------------------- |
+| 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12`  | [`1.08`](alibaba/readme.md#costs)      | &#9989;                                | &#9989;                                                     |
+| 2 | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2/3/4/6`          | [`0.97`](aws/readme.md#costs)          | &#9989;                                | &#9989;                                                     |
+| 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1/3`              | [`1.11`](azure/readme.md#costs)        | &#10060;                               | &#9989;                                                     |
+| 4 | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3/4`              | [`0.85`](gcp/readme.md#costs)          | &#9989;                                | &#9989;                                                     |
+| 5 | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       | &#10060;                               | &#10060;                                                    |
+| 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`13`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) | &#10060;                               | &#10060;                                                    |
+| 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.36`](hetzner/readme.md#costs)      | &#10060;                               | &#10060;                                                    |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)
 
- 1. We use `x86_64` instead of `arm64` instances architecture, by default, because not all the software may be accessible on `arm64` and not all Cloud Providers may have such instances support in general or across all the regions.
+ 1. We use `x86_64` instead of `arm64` instances architecture, by default, because not all the software may be available on `arm64` and not all Cloud Providers may have such instances support in general or across all the regions.
  2. We generate SSH key pairs, by default, for the instances, but we can pass a custom public key or disable it (excluding Azure) and then access the nodes using
     - Alibaba - [Connect to an instance through Workbench](https://www.alibabacloud.com/help/en/ecs/user-guide/workbench-overview)
     - AWS - [EC2 Instance Connect](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-methods.html)
     - GCP - [Connect to Linux VMs](https://cloud.google.com/compute/docs/connect/standard-ssh)
     - Akamai - [Access your system console using Lish](https://techdocs.akamai.com/cloud-computing/docs/access-your-system-console-using-lish)
  3. We don't create SSH access rule, by default, for the instances as they are managed by the code in the Git repository and in case of need we may add rule manually.
- 4. We generate and pass SSH private key by default to the instances, which can be used to access private repository, because it is not so easy to do it when instance was already run.
+ 4. We generate and pass SSH private key, by default, to the instances, which can be used to access private repository, because it is not so easy to do it when instance was already run.
  5. We use Ubuntu OS because it is cloud agnostic and provides great software support.
  6. For Cloud Providers, which support logging and monitoring, both options are disabled by default to minimize the costs and decrease instances load.
  6. For Cloud Providers, which support [Agent side watcher](../architecture.md#agent-side-watcher), that option is enabled by default to have a way to manage instances count.
@@ -113,7 +113,7 @@
 
 ### [Use a private centralised repository](#peer-to-peer-agent-terraform)
 
-#### Use auto generated key
+#### With auto generated key
 
  1. Update *variables.auto.tfvars*
     ```terraform
@@ -131,7 +131,7 @@
     - GitHub: Repository --> Settings --> Security --> Deploy keys
 
 
-#### Use own key
+#### With own key
 
  1. Generate SSH key pair
     ```shell
@@ -174,7 +174,7 @@
  We could use several autoscaling mechanisms at the same time and just need to kep in mind that
  - *Watcher* is a serverless service which works outside of the VM and that permits to scale instances from 0, while *agent side watcher* works only when at least one instance is running in the region
  - *Watcher* require a running control center which could be a weak point, while it is not a limitation for the *agent side watcher* when it uses Radicle or centralised repository
- - When we use *watcher* and *agent side watcher*, we should set `desired_capacity` to the same value or could set value to `-` to one of them, othervise last received value will be applied
+ - When we use *watcher* and *agent side watcher* at the same time, we should set `desired_capacity` to the same value or could set value to `-` to one of them, otherwise last applied value will win
 
 
 ### Agent uses hardcoded commands and Radicle repository
@@ -205,7 +205,7 @@
    }
 
    agent_commands_defaults = {
-     DEFAULT_REPOSITORY = "https://..."
+     DEFAULT_REPOSITORY = "centralised-repository-url"
    }
    ```
 
@@ -226,7 +226,7 @@
      DEFAULT_REPOSITORY_MODE = "client-server"
    }
 
-   agent_cc_hosts = ["cc-url-1", "..."]
+   agent_cc_hosts = ["control-center-url-1", "..."]
 
    agent_cc_commands = "delay desired-capacity force-run main-run post-run pre-run repository type"
    ```
@@ -252,7 +252,7 @@
    ```terraform
    start_time = "watcher"
 
-   agent_cc_hosts = ["cc-url-1", "..."]
+   agent_cc_hosts = ["control-center-url-1", "..."]
    ```
 
  - Add headers on control center side, with a prefix from the `watcher_cc_agent_prefix` and `watcher_cc_scheduler_prefix` variables
