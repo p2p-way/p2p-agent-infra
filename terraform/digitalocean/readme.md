@@ -66,10 +66,10 @@
 
 ```
 6.64 $/m/i / 31 d = 0.21 $/d/i   # 1 day / 1 instance / 1 region
-0.21 $/d/i x 13 r = 2.73 $/d/i/r # 1 day / 1 instance / all regions
+0.21 $/d/i x 14 r = 2.94 $/d/i/r # 1 day / 1 instance / all regions
 ```
 
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **2.73 $**
+ Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **2.94 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.
