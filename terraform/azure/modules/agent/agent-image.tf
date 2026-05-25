@@ -1,14 +1,14 @@
 # Locals
 locals {
   os_name_map = {
-    ubuntu-22-04 = {
-      offer        = "0001-com-ubuntu-server-jammy"
-      sku_prefix   = "22_04-lts"
-      amd64_suffix = "-gen2"
+    "ubuntu-24.04" = {
+      offer        = "ubuntu-24_04-lts"
+      sku_prefix   = "server"
+      amd64_suffix = ""
       arm64_suffix = "-arm64"
     },
-    ubuntu-24-04 = {
-      offer        = "ubuntu-24_04-lts"
+    "ubuntu-26.04" = {
+      offer        = "ubuntu-26_04-lts"
       sku_prefix   = "server"
       amd64_suffix = ""
       arm64_suffix = "-arm64"
@@ -35,10 +35,9 @@ locals {
   # Dpldsv5-series, Dpldsv6-series
   # Epsv5-series, Epdsv5-series
 
-  os_name        = replace(var.os_name, ".", "-")
   os_arch_suffix = contains(local.arm_series, try(replace(var.sku, "/[[:alnum:]]+_([A-Za-z]+)[0-9]+([A-Za-z]+)_v([0-9]+)$/", "$1$2"), "")) ? "arm64_suffix" : "amd64_suffix"
   os_publisher   = lookup(local.os_publisher_map, element(split("-", var.os_name), 0))
-  os_offer       = lookup(local.os_name_map, local.os_name)["offer"]
-  os_sku         = "${lookup(local.os_name_map, local.os_name)["sku_prefix"]}${lookup(local.os_name_map, local.os_name)[local.os_arch_suffix]}"
+  os_offer       = lookup(local.os_name_map, var.os_name)["offer"]
+  os_sku         = "${lookup(local.os_name_map, var.os_name)["sku_prefix"]}${lookup(local.os_name_map, var.os_name)[local.os_arch_suffix]}"
   os_version     = "latest"
 }
