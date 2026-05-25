@@ -6,8 +6,8 @@ locals {
   }
 
   os_name_map = {
-    "ubuntu-22.04" = "ubuntu/images/hvm-ssd*/ubuntu-*-22.04-${local.architecture}-server-*"
     "ubuntu-24.04" = "ubuntu/images/hvm-ssd*/ubuntu-*-24.04-${local.architecture}-server-*"
+    "ubuntu-26.04" = "ubuntu/images/hvm-ssd*/ubuntu-*-26.04-${local.architecture}-server-*"
     ubuntu         = "ubuntu/images/hvm-ssd*/ubuntu-*-24.04-${local.architecture}-server-*"
   }
 
