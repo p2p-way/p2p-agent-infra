@@ -13,8 +13,8 @@ locals {
   # gcloud compute machine-types describe --zone=europe-west4-b t2a-standard-1
 
   os_family_map = {
-    ubuntu-22-04 = local.architecture == "amd64" ? "ubuntu-2204-lts" : "ubuntu-2204-lts-${local.architecture}"
     ubuntu-24-04 = "ubuntu-2404-lts-${local.architecture}"
+    ubuntu-26-04 = "ubuntu-2604-lts-${local.architecture}"
     ubuntu       = "ubuntu-2404-lts-${local.architecture}"
   }
 
