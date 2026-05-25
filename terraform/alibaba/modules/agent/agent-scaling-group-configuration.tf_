@@ -37,7 +37,7 @@ resource "alicloud_ess_scaling_configuration" "agent" {
   host_name     = local.resource_name
 
   # Advanced Options (Instance RAM Role and User Data)
-  role_name = local.agent_ram_create ? alicloud_ram_role.agent[count.index].name : null
+  role_name = local.agent_ram_create ? alicloud_ram_role.agent[count.index].role_name : null
   user_data = data.cloudinit_config.agent[count.index].rendered
 
   # Tag

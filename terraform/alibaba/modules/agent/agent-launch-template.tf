@@ -40,7 +40,7 @@ resource "alicloud_ecs_launch_template" "agent" {
   host_name     = local.resource_name
 
   # Advanced Options (Instance RAM Role and User Data)
-  ram_role_name = local.agent_ram_create ? alicloud_ram_role.agent[count.index].name : null
+  ram_role_name = local.agent_ram_create ? alicloud_ram_role.agent[count.index].role_name : null
 
   http_endpoint               = "enabled"
   http_tokens                 = "required"

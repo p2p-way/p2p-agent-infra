@@ -74,5 +74,5 @@ resource "alicloud_ram_role_policy_attachment" "agent_watcher" {
 
   policy_name = alicloud_ram_policy.agent_watcher[count.index].policy_name
   policy_type = alicloud_ram_policy.agent_watcher[count.index].type
-  role_name   = alicloud_ram_role.agent[count.index].name
+  role_name   = alicloud_ram_role.agent[count.index].role_name
 }
