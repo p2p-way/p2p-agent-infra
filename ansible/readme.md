@@ -56,7 +56,7 @@
 
 ### TON role
 
- P2P site is shared using [TON sites](https://docs.ton.org/v3/guidelines/web3/ton-proxy-sites/how-to-run-ton-site) via [TON Storage](https://docs.ton.org/v3/guidelines/web3/ton-storage/storage-daemon). For name service we use native [TON DNS](https://docs.ton.org/v3/guidelines/web3/ton-dns/dns).
+ P2P site is shared using [TON Sites](https://docs.ton.org/v3/guidelines/web3/ton-proxy-sites/how-to-run-ton-site) via [TON Storage](https://docs.ton.org/v3/guidelines/web3/ton-storage/storage-daemon). For name service we use native [TON DNS](https://docs.ton.org/v3/guidelines/web3/ton-dns/dns).
 
 
 ### Torrent role
