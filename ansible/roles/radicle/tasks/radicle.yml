@@ -31,6 +31,8 @@
 
 - name: Get list rid
   ansible.builtin.command: rad ls --seeded
+  become: true
+  become_user: '{{ radicle_user }}'
   environment:
     RAD_HOME: '{{ radicle_folder }}'
   register: radicle_ls_rid

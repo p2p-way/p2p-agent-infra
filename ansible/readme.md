@@ -175,7 +175,7 @@
     rad seed
 
     # Check seeding repositories
-    rad ls --seeded
+    sudo -u radicle bash -c "export RAD_HOME=/opt/p2p/radicle; rad ls --seeded"
 
     # Check repositories files
     find "$(rad self --home)/storage" -maxdepth 2
