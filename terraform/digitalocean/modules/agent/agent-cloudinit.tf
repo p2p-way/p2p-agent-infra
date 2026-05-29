@@ -28,7 +28,10 @@ data "cloudinit_config" "agent" {
   part {
     content_type = "text/cloud-config"
     content = yamlencode({
-      write_files = concat(local.agent_file_cloudinit, local.radar_url_file_cloudinit)
+      write_files = concat(
+        local.agent_file_cloudinit,
+        local.radar_url_file_cloudinit
+      )
     })
   }
 }
