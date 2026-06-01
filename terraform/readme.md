@@ -23,7 +23,7 @@
  **Criterias:** `Services availability --> Area/`[`Connections`](https://en.wikipedia.org/wiki/Submarine_communications_cable)` --> Costs`
 
 | # | Cloud                                  | Services                                            | Regions                                | AZ                | Costs, $/d/i                           | [Watcher](../architecture.md#watcher) | [Agent side watcher](../architecture.md#agent-side-watcher) |
-| - | -------------------------------------- | --------------------------------------------------- | -------------------------------------- | ----------------- | -------------------------------------- | ------------------------------------- | ----------------------------------------------------------- |
+| - | :------------------------------------- | :-------------------------------------------------: | :------------------------------------: | :---------------: | :------------------------------------: | :-----------------------------------: | :---------------------------------------------------------: |
 | 1 | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1/2/3/6/8/11/12` | [`1.08`](alibaba/readme.md#costs)      | &#9989;                               | &#9989;                                                     |
 | 2 | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2/3/4/6`         | [`0.97`](aws/readme.md#costs)          | &#9989;                               | &#9989;                                                     |
 | 3 | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1/3`             | [`1.11`](azure/readme.md#costs)        | &#10060;                              | &#9989;                                                     |
@@ -57,17 +57,17 @@
 
     <details><summary><b>Ansible roles execution duration</b></summary>
 
-    | Cloud        | First run, m | Second run, m | Instance           | Resources       | Watcher | Logs/Metrics |
-    | ------------ | ------------ | ------------- | ------------------ | --------------- | ------- | ------------ |
-    | Alibaba      | `01:31.106`  | `00:24.716`   | `ecs.e-c1m1.large` | `2 vCPU / 2 GB` | `true`  | `false`      |
-    | AWS          | `02:23.360`  | `00:35.495`   | `t3.micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | Azure        | `03:22.027`  | `00:53.851`   | `Standard_B1s`     | `1 vCPU / 1 GB` | `true`  | `false`      |
-    | GCP          | `19:01.057`  | `06:46.945`   | `e2-micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | Akamai       | `03:55.760`  | `00:32.801`   | `g6-nanode-1`      | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Hetzner      | `02:24.137`  | `00:50.155`   | `cx23`             | `2 vCPU / 4 GB` | `-`     | `-`          |
-    | DigitalOcean | `05:28.838`  | `01:11.635`   | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Upcloud      | `02:01.326`  | `00:20.199`   | `1xCPU-1GB`        | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Vultr        | `02:55.041`  | `00:58.432`   | `vc2-1c-1gb`       | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Cloud        | First run, `m` | Second run, `m`   | Instance           | Resources       | Watcher | Logs/Metrics |
+    | ------------ | :------------: | :---------------: | :----------------: | :-------------: | :-----: | :----------: |
+    | Alibaba      | `01:31.106`    | `00:24.716`       | `ecs.e-c1m1.large` | `2 vCPU / 2 GB` | `true`  | `false`      |
+    | AWS          | `02:23.360`    | `00:35.495`       | `t3.micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Azure        | `03:22.027`    | `00:53.851`       | `Standard_B1s`     | `1 vCPU / 1 GB` | `true`  | `false`      |
+    | GCP          | `19:01.057`    | `06:46.945`       | `e2-micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Akamai       | `03:55.760`    | `00:32.801`       | `g6-nanode-1`      | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Hetzner      | `02:24.137`    | `00:50.155`       | `cx23`             | `2 vCPU / 4 GB` | `-`     | `-`          |
+    | DigitalOcean | `05:28.838`    | `01:11.635`       | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | UpCloud      | `02:01.326`    | `00:20.199`       | `1xCPU-1GB`        | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Vultr        | `02:55.041`    | `00:58.432`       | `vc2-1c-1gb`       | `1 vCPU / 1 GB` | `-`     | `-`          |
 
     > Provided timing is approximate and might be influenced by the time when crontab is executed after instance bootstrap.
 
@@ -89,17 +89,17 @@
 
     <details><summary><b>Terraform execution duration</b></summary>
 
-    | Cloud        | `init`, s | `apply`, m | `destroy`, m | Regions | Watcher | Logs/Metrics | Comment |
-    | ------------ | --------- | ---------- | ------------ | ------- | ------- | ------------ | ------- |
-    | Alibaba      | `13.975`  | `4:00.81`  | `3:44.88`    | `22`    | `true`  | `false`      |         |
-    | AWS          | `20.235`  | `3:24.92`  | `3:30.48`    | `34`    | `true`  | `false`      |         |
-    | Azure        | `15.444`  | `7:08.80`  | `55:52.37`   | `42`    | `true`  | `false`      |         |
-    | GCP          | `10.063`  | `11:31.22` | `14:05.22`   | `41`    | `true`  | `false`      |         |
-    | Akamai       | `6.694`   | `4:20.57`  | `2:39.64`    | `27`    | `-`     | `-`          |         |
-    | DigitalOcean | `6.196`   | `1:00.09`  | `1:30.80`    | `13`    | `-`     | `-`          | wait    |
-    | Hetzner      | `4.552`   | `0:18.720` | `0:35.692`   | `6`     | `-`     | `-`          |         |
-    | Upcloud      | `8.011`   | `2:52.24`  | `3:24.17`    | `15`    | `-`     | `-`          |         |
-    | Vultr        | `8.754`   | `3:14.15`  | `0:41.898`   | `20`    | `-`     | `-`          |         |
+    | Cloud        | `init`, `s` | `apply`, `m` | `destroy`, `m` | Regions | Watcher | Logs/Metrics | Comment |
+    | ------------ | :---------: | :----------: | :------------: | :-----: | :-----: | :----------: | ------- |
+    | Alibaba      | `13.975`    | `04:00.81`   | `03:44.88`     | `22`    | `true`  | `false`      |         |
+    | AWS          | `20.235`    | `03:24.92`   | `03:30.48`     | `34`    | `true`  | `false`      |         |
+    | Azure        | `15.444`    | `07:08.80`   | `55:52.37`     | `42`    | `true`  | `false`      |         |
+    | GCP          | `10.063`    | `11:31.22`   | `14:05.22`     | `41`    | `true`  | `false`      |         |
+    | Akamai       | `06.694`    | `04:20.57`   | `02:39.64`     | `27`    | `-`     | `-`          |         |
+    | DigitalOcean | `06.196`    | `01:00.09`   | `01:30.80`     | `13`    | `-`     | `-`          | wait    |
+    | Hetzner      | `04.552`    | `00:18.720`  | `00:35.692`    | `6`     | `-`     | `-`          |         |
+    | UpCloud      | `08.011`    | `02:52.24`   | `03:24.17`     | `15`    | `-`     | `-`          |         |
+    | Vultr        | `08.754`    | `03:14.15`   | `00:41.898`    | `20`    | `-`     | `-`          |         |
 
     > Thu Jul 24 08:00:00 UTC 2025
     </details>
