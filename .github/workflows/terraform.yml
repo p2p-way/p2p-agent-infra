@@ -16,7 +16,7 @@ on:
 env:
   terraform-version: "~> 1"
   terraform-directory: terraform
-  cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "gcp", "hetzner", "upcloud"]'
+  cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "gcp", "hetzner", "upcloud", "vultr"]'
 
 permissions:
   contents: read
@@ -73,6 +73,7 @@ jobs:
           echo "HCLOUD_TOKEN=$(openssl rand -hex 32)" >> $GITHUB_ENV
           echo "GCLOUD_PROJECT=$(openssl rand -hex 5)" >> $GITHUB_ENV
           echo "GOOGLE_OAUTH_ACCESS_TOKEN=$(openssl rand -hex 5)" >> $GITHUB_ENV
+          echo VULTR_API_KEY=$(openssl rand -hex 18) >> $GITHUB_ENV
 
       - name: Terraform - Install
         uses: hashicorp/setup-terraform@v4

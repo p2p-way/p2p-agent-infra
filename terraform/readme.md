@@ -32,6 +32,7 @@
 | 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`14`](digitalocean/readme.md#regions) | `1`               | [`0.21`](digitalocean/readme.md#costs) | &#10060;                              | &#10060;                                                    |
 | 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`               | [`0.36`](hetzner/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
 | 8 | [UpCloud](upcloud/readme.md)           | [used services](upcloud/readme.md#description)      | [`15`](upcloud/readme.md#regions)      | `1`               | [`0.29`](upcloud/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
+| 9 | [Vultr](vultr/readme.md)               | [used services](vultr/readme.md#description)        | [`33`](vultr/readme.md#regions)        | `1`               | [`0.17`](vultr/readme.md#costs)        | &#10060;                              | &#10060;                                                    |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)
@@ -66,6 +67,7 @@
     | Hetzner      | `02:24.137`  | `00:50.155`   | `cx23`             | `2 vCPU / 4 GB` | `-`     | `-`          |
     | DigitalOcean | `05:28.838`  | `01:11.635`   | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
     | Upcloud      | `02:01.326`  | `00:20.199`   | `1xCPU-1GB`        | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Vultr        | `02:55.041`  | `00:58.432`   | `vc2-1c-1gb`       | `1 vCPU / 1 GB` | `-`     | `-`          |
 
     > Provided timing is approximate and might be influenced by the time when crontab is executed after instance bootstrap.
 
@@ -97,6 +99,7 @@
     | DigitalOcean | `6.196`   | `1:00.09`  | `1:30.80`    | `13`    | `-`     | `-`          | wait    |
     | Hetzner      | `4.552`   | `0:18.720` | `0:35.692`   | `6`     | `-`     | `-`          |         |
     | Upcloud      | `8.011`   | `2:52.24`  | `3:24.17`    | `15`    | `-`     | `-`          |         |
+    | Vultr        | `8.754`   | `3:14.15`  | `0:41.898`   | `20`    | `-`     | `-`          |         |
 
     > Thu Jul 24 08:00:00 UTC 2025
     </details>
@@ -357,4 +360,5 @@
  6. [P2P agent on DigitalOcean](digitalocean/readme.md)
  7. [P2P agent on Hetzner](hetzner/readme.md)
  8. [P2P agent on UpCloud](upcloud/readme.md)
- 9. [P2P agent on generic installation](generic/readme.md)
+ 9. [P2P agent on Vultr](vultr/readme.md)
+ 10. [P2P agent on generic installation](generic/readme.md)

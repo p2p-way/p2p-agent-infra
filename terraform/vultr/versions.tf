@@ -1,0 +1,22 @@
+# Terraform settings
+terraform {
+  required_providers {
+    vultr = {
+      source  = "vultr/vultr"
+      version = "~> 2.0"
+    }
+    cloudinit = {
+      source  = "hashicorp/cloudinit"
+      version = "~> 2.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.0"
+    }
+  }
+  required_version = "~> 1.0"
+}
