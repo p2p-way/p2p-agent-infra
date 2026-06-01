@@ -113,7 +113,7 @@
   - Variable `agent_cc_commands` define commands whose values from control center will be used to override `agent_commands_defaults` configuration.
   - Variable `agent_cc_commands_prefix` define commands prefix returned by control center for agent configuration.
   - Variable `agent_repository_ssh_key` is used to configure access to private repository via SSH. We are generating by default a private key and pass it to the instance. In that way, we could switch node to use a private repository via SSH. For that it is requred to set appropriate value in `agent_commands_defaults["DEFAULT_REPOSITORY"]` and/or control center, like `git@github.com:<username>/<repository>` for GitHub.
-  - Variable `radar_url` is used to enable a node basic information collecting and sending to a Radar, we can pass multiple URLs with an optional auth - `["<url 1> [aurh 1]", "<url 2> [aurh 2]"]`
+  - Variable `radar_url` is used to enable a node basic information collection and sending it to a Radar, we can pass multiple URLs with an optional auth - `["<url 1> [auth 1]", "<url 2> [auth 2]"]`
   - Check [Considerations](#considerations) for additional details.
 
 
