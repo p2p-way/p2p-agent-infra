@@ -31,6 +31,7 @@
 | 5 | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`               | [`0.25`](akamai/readme.md#costs)       | &#10060;                              | &#10060;                                                    |
 | 6 | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`14`](digitalocean/readme.md#regions) | `1`               | [`0.21`](digitalocean/readme.md#costs) | &#10060;                              | &#10060;                                                    |
 | 7 | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`               | [`0.36`](hetzner/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
+| 8 | [UpCloud](upcloud/readme.md)           | [used services](upcloud/readme.md#description)      | [`15`](upcloud/readme.md#regions)      | `1`               | [`0.29`](upcloud/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)
@@ -64,6 +65,7 @@
     | Akamai       | `03:55.760`  | `00:32.801`   | `g6-nanode-1`      | `1 vCPU / 1 GB` | `-`     | `-`          |
     | Hetzner      | `02:24.137`  | `00:50.155`   | `cx23`             | `2 vCPU / 4 GB` | `-`     | `-`          |
     | DigitalOcean | `05:28.838`  | `01:11.635`   | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Upcloud      | `02:01.326`  | `00:20.199`   | `1xCPU-1GB`        | `1 vCPU / 1 GB` | `-`     | `-`          |
 
     > Provided timing is approximate and might be influenced by the time when crontab is executed after instance bootstrap.
 
@@ -94,6 +96,7 @@
     | Akamai       | `6.694`   | `4:20.57`  | `2:39.64`    | `27`    | `-`     | `-`          |         |
     | DigitalOcean | `6.196`   | `1:00.09`  | `1:30.80`    | `13`    | `-`     | `-`          | wait    |
     | Hetzner      | `4.552`   | `0:18.720` | `0:35.692`   | `6`     | `-`     | `-`          |         |
+    | Upcloud      | `8.011`   | `2:52.24`  | `3:24.17`    | `15`    | `-`     | `-`          |         |
 
     > Thu Jul 24 08:00:00 UTC 2025
     </details>
@@ -353,4 +356,5 @@
  5. [P2P agent on Akamai](akamai/readme.md)
  6. [P2P agent on DigitalOcean](digitalocean/readme.md)
  7. [P2P agent on Hetzner](hetzner/readme.md)
- 8. [P2P agent on generic installation](generic/readme.md)
+ 8. [P2P agent on UpCloud](upcloud/readme.md)
+ 9. [P2P agent on generic installation](generic/readme.md)
