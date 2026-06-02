@@ -54,7 +54,7 @@ resource "upcloud_server" "agent" {
   }
 
   # Initialization script
-  user_data = data.cloudinit_config.agent[count.index].rendered
+  user_data = data.cloudinit_config.agent[0].rendered
 
   # Server configuration
   hostname = "${local.resource_name}-${count.index + 1}"
