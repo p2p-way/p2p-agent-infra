@@ -14,7 +14,7 @@ resource "hcloud_server" "agent" {
   location = var.location
 
   # Image
-  image = data.hcloud_image.agent[count.index].id
+  image = data.hcloud_image.agent[0].id
 
   # Type
   server_type = var.server_type
@@ -29,13 +29,13 @@ resource "hcloud_server" "agent" {
   ssh_keys = var.ssh_keys
 
   # Placement groups
-  placement_group_id = hcloud_placement_group.agent[count.index].id
+  placement_group_id = hcloud_placement_group.agent[0].id
 
   # Labels
   labels = local.default_labels
 
   # Cloud config
-  user_data = data.cloudinit_config.agent[count.index].rendered
+  user_data = data.cloudinit_config.agent[0].rendered
 
   # Name
   name = "${local.resource_name}-${count.index + 1}"
