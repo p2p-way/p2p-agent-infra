@@ -1,6 +1,6 @@
 # Server group
 resource "upcloud_server_group" "agent" {
-  count = local.create ? var.desired_capacity : 0
+  count = local.create ? 1 : 0
 
   title                = local.resource_name
   anti_affinity_policy = "yes"
@@ -45,7 +45,7 @@ resource "upcloud_server" "agent" {
 
   # Optionals
   metadata     = true
-  server_group = upcloud_server_group.agent[count.index].id
+  server_group = upcloud_server_group.agent[0].id
 
   # Login Method
   login {
