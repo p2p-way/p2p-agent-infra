@@ -24,7 +24,7 @@ resource "linode_instance" "agent" {
   label = "${local.resource_name}-${count.index + 1}"
   tags  = local.tags
   placement_group {
-    id = linode_placement_group.agent[count.index].id
+    id = linode_placement_group.agent[0].id
   }
 
   # Security
@@ -34,11 +34,11 @@ resource "linode_instance" "agent" {
   authorized_keys = var.authorized_keys
 
   # Firewall
-  firewall_id = linode_firewall.agent[count.index].id
+  firewall_id = linode_firewall.agent[0].id
 
   # Add User Data
   metadata {
-    user_data = data.cloudinit_config.agent[count.index].rendered
+    user_data = data.cloudinit_config.agent[0].rendered
   }
 
   # swap_size  = 0
