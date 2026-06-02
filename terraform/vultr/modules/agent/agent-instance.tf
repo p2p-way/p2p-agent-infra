@@ -13,7 +13,7 @@ resource "vultr_instance" "agent" {
 
   # Server Settings
   ssh_key_ids       = var.ssh_key_ids
-  firewall_group_id = vultr_firewall_group.agent[count.index].id
+  firewall_group_id = vultr_firewall_group.agent[0].id
 
   # Server Hostname and Label
   hostname = "${local.resource_name}-${count.index + 1}"
@@ -22,5 +22,5 @@ resource "vultr_instance" "agent" {
   # Additional Features
   enable_ipv6 = var.enable_ipv6
   backups     = "disabled"
-  user_data   = data.cloudinit_config.agent[count.index].rendered
+  user_data   = data.cloudinit_config.agent[0].rendered
 }
