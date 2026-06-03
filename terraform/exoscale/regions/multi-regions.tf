@@ -1,0 +1,38 @@
+# Multiple regions
+module "multi-regions" {
+  source = "./modules/agent"
+
+  for_each = toset(sort(data.exoscale_zones.all-regions[0].zones))
+
+  region                   = each.key
+  agent_create             = var.agent_create
+  agent_name               = var.agent_name
+  agent_open_ports         = var.agent_open_ports
+  default_labels           = var.default_labels
+  allow_ssh                = var.allow_ssh
+  ssh_keys                 = local.ssh_keys
+  os_name                  = var.os_name
+  type                     = var.type
+  disk_size                = var.disk_size
+  desired_capacity         = var.desired_capacity
+  ipv6                     = var.ipv6
+  agent_cron_schedule      = var.agent_cron_schedule
+  agent_commands           = var.agent_commands
+  agent_commands_defaults  = var.agent_commands_defaults
+  agent_cc_hosts           = var.agent_cc_hosts
+  agent_cc_commands        = var.agent_cc_commands
+  agent_cc_commands_prefix = var.agent_cc_commands_prefix
+  agent_repository_ssh_key = local.agent_repository_ssh_key
+  radar_url                = var.radar_url
+  radar_url_file           = var.radar_url_file
+}
+
+# All regions
+data "exoscale_zones" "all-regions" {
+  count = var.agent_create ? 1 : 0
+}
+
+# Agent instances
+output "agent_instances_all" {
+  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+}

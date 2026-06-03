@@ -1,0 +1,16 @@
+terraform {
+  backend "s3" {
+    bucket = "p2p-agent-infra-terraform"
+    key    = "terraform.tfstate"
+    region = "de-fra-1"
+
+    endpoints = {
+      s3 = "https://sos-de-fra-1.exo.io"
+    }
+
+    # Disable AWS-specific features
+    skip_credentials_validation = true
+    skip_region_validation      = true
+    skip_requesting_account_id  = true
+  }
+}

@@ -4,6 +4,7 @@
     case {{ common_cloud }} in
       aliyun)      cloud-init query ds.meta-data.region-id                              ;;
       configdrive) curl -s http://169.254.169.254/metadata/v1/region                    ;;
+      exoscale)    curl -s http://169.254.169.254/1.0/meta-data/availability-zone       ;;
       hetzner)     curl -s http://169.254.169.254/hetzner/v1/metadata/availability-zone ;;
       upcloud)     curl -s http://169.254.169.254/metadata/v1/region                    ;;
       *)           cloud-init query region                                              ;;
