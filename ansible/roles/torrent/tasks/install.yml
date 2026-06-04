@@ -28,7 +28,7 @@
       split_lines=False) }}
   when: torrent_binary_path.stdout == ''
 
-- name: Install qBittorrent
+- name: Install
   ansible.builtin.apt:
     name: qbittorrent-nox
     state: present
@@ -43,13 +43,14 @@
     system: true
     password_lock: true
 
-- name: Create folders
+- name: Create app folders
   ansible.builtin.file:
     path: '{{ item }}'
     state: directory
     mode: '755'
     owner: '{{ torrent_user }}'
     group: '{{ torrent_user }}'
+    recurse: true
   loop:
     - '{{ torrent_folder }}'
     - '{{ torrent_config_file_folder }}'

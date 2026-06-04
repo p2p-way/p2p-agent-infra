@@ -202,7 +202,7 @@
  5. **Torrent**
     ```shell
     # Service status
-    systemctl status qbittorrent
+    systemctl status torrent
 
     # List torrents
     curl -s http://localhost:8081/api/v2/torrents/info | jq -r '.[] | .state + " - " + .magnet_uri'

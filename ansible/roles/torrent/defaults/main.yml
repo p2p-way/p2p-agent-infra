@@ -1,7 +1,7 @@
 # Torrent - Variables
 ---
-torrent_name:               qbittorrent
-torrent_package:            '{{ torrent_name }}-nox'
+torrent_name:               torrent
+torrent_package:            qbittorrent-nox
 torrent_folder:             '{{ base_folder }}/torrent'
 torrent_user:               '{{ torrent_name }}'
 torrent_install_folder:     /usr/bin
