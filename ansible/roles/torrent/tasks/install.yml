@@ -23,6 +23,9 @@
     suites: "{{ ansible_facts['distribution_release'] }}"
     components: main
     signed_by: |
+      {{ signing_key | regex_replace('\nComment[:\s\w]+\n', '\n') }}
+  vars:
+    signing_key: |
       {{ lookup('ansible.builtin.url',
       'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x' + torrent_repository_key_fingerprint.json.signing_key_fingerprint,
       split_lines=False) }}
