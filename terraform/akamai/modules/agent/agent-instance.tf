@@ -28,9 +28,6 @@ resource "linode_instance" "agent" {
   }
 
   # Security
-  root_pass = null
-
-  # SSH Keys
   authorized_keys = var.authorized_keys
 
   # Firewall
