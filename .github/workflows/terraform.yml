@@ -16,7 +16,7 @@ on:
 env:
   terraform-version: "~> 1"
   terraform-directory: terraform
-  cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "exoscale", "gcp", "hetzner", "upcloud", "vultr"]'
+  cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "exoscale", "gcp", "hetzner", "scaleway", "upcloud", "vultr"]'
 
 permissions:
   contents: read

@@ -1,0 +1,34 @@
+# Multiple regions
+module "multi-regions" {
+  source = "./modules/agent"
+
+  for_each = toset(["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "nl-ams-3", "pl-waw-1", "pl-waw-2", "pl-waw-3"])
+
+  region                   = each.key
+  project_id               = local.project_id
+  agent_create             = var.agent_create
+  agent_name               = var.agent_name
+  agent_open_ports         = var.agent_open_ports
+  default_tags             = var.default_tags
+  allow_ssh                = var.allow_ssh
+  type                     = var.instance_type
+  os_name                  = var.os_name
+  os_disk_size             = var.os_disk_size
+  os_disk_type             = var.os_disk_type
+  desired_capacity         = var.desired_capacity
+  enable_ipv6              = var.enable_ipv6
+  agent_cron_schedule      = var.agent_cron_schedule
+  agent_commands           = var.agent_commands
+  agent_commands_defaults  = var.agent_commands_defaults
+  agent_cc_hosts           = var.agent_cc_hosts
+  agent_cc_commands        = var.agent_cc_commands
+  agent_cc_commands_prefix = var.agent_cc_commands_prefix
+  agent_repository_ssh_key = local.agent_repository_ssh_key
+  radar_url                = var.radar_url
+  radar_url_file           = var.radar_url_file
+}
+
+# Agent instances
+output "agent_instances_all" {
+  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+}

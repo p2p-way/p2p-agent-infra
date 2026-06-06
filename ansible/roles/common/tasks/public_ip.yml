@@ -40,6 +40,8 @@
                    ;;
       hetzner)     curl -s http://169.254.169.254/hetzner/v1/metadata/public-ipv4
                    ;;
+      scaleway)    curl -s http://169.254.42.42/conf | awk -F '=' '/^PUBLIC_IPS_V4_0_ADDRESS/ {print $2}'
+                   ;;
       upcloud)     curl -s http://169.254.169.254/metadata/v1/network/interfaces/1/ip_addresses/1/address
                    ;;
       vultr)       curl -s http://169.254.169.254/metadata/meta-data/public-ipv4
