@@ -35,6 +35,7 @@
 | 9  | [Scaleway](scaleway/readme.md)         | [used services](scaleway/readme.md#description)     | [`3`](scaleway/readme.md#regions)      | `1,3`             | [`0.48`](scaleway/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
 | 10 | [UpCloud](upcloud/readme.md)           | [used services](upcloud/readme.md#description)      | [`15`](upcloud/readme.md#regions)      | `1`               | [`0.29`](upcloud/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
 | 11 | [Vultr](vultr/readme.md)               | [used services](vultr/readme.md#description)        | [`33`](vultr/readme.md#regions)        | `1`               | [`0.17`](vultr/readme.md#costs)        | &#10060;                              | &#10060;                                                    |
+| 12 | [Generic](generic/readme.md)           | -                                                   | `-`                                    | `-`               | `-`                                    | &#10060;                              | &#10060;                                                    |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)
