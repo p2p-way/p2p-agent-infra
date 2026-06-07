@@ -29,7 +29,7 @@
 
 ## [Limitations](#p2p-agent-on-hetzner)
 
- 1. Hetzner does not provide Autoscaling or other services to implement a [Watcher](../../architecture.md#watcher) or [Agent side watcher](../../architecture.md#agent-side-watcher) and instances will be started right during applying Terraform configuration.
+ 1. Hetzner does not provide Autoscaling by time and other services to implement a [Watcher](../../architecture.md#watcher) or [Agent side watcher](../../architecture.md#agent-side-watcher) and instances will be started right during applying Terraform configuration.
  2. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 

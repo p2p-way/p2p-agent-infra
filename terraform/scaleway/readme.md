@@ -14,7 +14,7 @@
 ## [Description](#p2p-agent-on-scaleway)
 
  This code provides [Terraform](../readme.md) configuration for [Scaleway](https://www.scaleway.com) stack deployment for P2P content distribution.
- 1. [Compute ](https://www.scaleway.com/) - VM provisioning.
+ 1. [Compute](https://www.scaleway.com) - VM provisioning.
 
  Generally, this configuration will do the following
 
@@ -31,7 +31,7 @@
 
 ## [Limitations](#p2p-agent-on-scaleway)
 
- 1. Scaleway does not provide Autoscaling by time or other services to implement a [Watcher](../../architecture.md#watcher) or [Agent side watcher](../../architecture.md#agent-side-watcher) and instances will be started right during applying Terraform configuration.
+ 1. Scaleway does not provide Autoscaling by time and other services to implement a [Watcher](../../architecture.md#watcher) or [Agent side watcher](../../architecture.md#agent-side-watcher) and instances will be started right during applying Terraform configuration.
  2. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
