@@ -7,6 +7,7 @@
       configdrive) curl -s http://169.254.169.254/metadata/v1/region                    ;;
       exoscale)    curl -s http://169.254.169.254/1.0/meta-data/availability-zone       ;;
       hetzner)     curl -s http://169.254.169.254/hetzner/v1/metadata/availability-zone ;;
+      oci)         cloud-init query ds.region                                           ;;
       scaleway)    curl -s http://169.254.42.42/conf | awk -F '=' '/^ZONE/ {print $2}'  ;;
       upcloud)     curl -s http://169.254.169.254/metadata/v1/region                    ;;
       *)           cloud-init query region                                              ;;

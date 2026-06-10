@@ -9,6 +9,8 @@
     common_cloud: >-
       {% if common_cloud.stdout == 'gce' -%}
         gcp
+      {%- elif common_cloud.stdout == 'oracle' -%}
+        oci
       {%- elif common_cloud.stdout != '' -%}
         {{ common_cloud.stdout }}
       {%- else -%}
@@ -30,6 +32,8 @@
                    ;;
       gcp)         curl -s -H "Metadata-Flavor: Google" \
                      http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
+                   ;;
+      oci)         echo "null"
                    ;;
       akamai)      token=$(curl -X PUT -s http://169.254.169.254/v1/token -H "Metadata-Token-Expiry-Seconds: 180")
                    curl -s -H "Metadata-Token: ${token}" http://169.254.169.254/v1/network | awk '/ipv4.public/ {sub(/\/.*/,""); print $2}'

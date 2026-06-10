@@ -22,20 +22,21 @@
 
  **Criterias:** `Services availability --> Area/`[`Connections`](https://en.wikipedia.org/wiki/Submarine_communications_cable)` --> Costs`
 
-| #  | Cloud                                  | Services                                            | Regions                                | AZ                | Costs, $/d/i                           | [Watcher](../architecture.md#watcher) | [Agent side watcher](../architecture.md#agent-side-watcher) |
-| -- | :------------------------------------- | :-------------------------------------------------: | :------------------------------------: | :---------------: | :------------------------------------: | :-----------------------------------: | :---------------------------------------------------------: |
-| 1  | [Alibaba Cloud](alibaba/readme.md)     | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1,2,3,6,8,11,12` | [`1.08`](alibaba/readme.md#costs)      | &#9989;                               | &#9989;                                                     |
-| 2  | [Amazon Web Services](aws/readme.md)   | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2,3,4,6`         | [`0.97`](aws/readme.md#costs)          | &#9989;                               | &#9989;                                                     |
-| 3  | [Microsoft Azure](azure/readme.md)     | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1,3`             | [`1.11`](azure/readme.md#costs)        | &#10060;                              | &#9989;                                                     |
-| 4  | [Google Cloud Platform](gcp/readme.md) | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3,4`             | [`0.85`](gcp/readme.md#costs)          | &#9989;                               | &#9989;                                                     |
-| 5  | [Akamai Cloud](akamai/readme.md)       | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`               | [`0.25`](akamai/readme.md#costs)       | &#10060;                              | &#10060;                                                    |
-| 6  | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`14`](digitalocean/readme.md#regions) | `1`               | [`0.21`](digitalocean/readme.md#costs) | &#10060;                              | &#10060;                                                    |
-| 7  | [Exoscale](exoscale/readme.md)         | [used services](exoscale/readme.md#description)     | [`8`](exoscale/readme.md#regions)      | `1`               | [`0.41`](exoscale/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
-| 8  | [Hetzner Cloud](hetzner/readme.md)     | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`               | [`0.36`](hetzner/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
-| 9  | [Scaleway](scaleway/readme.md)         | [used services](scaleway/readme.md#description)     | [`3`](scaleway/readme.md#regions)      | `1,3`             | [`0.48`](scaleway/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
-| 10 | [UpCloud](upcloud/readme.md)           | [used services](upcloud/readme.md#description)      | [`15`](upcloud/readme.md#regions)      | `1`               | [`0.29`](upcloud/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
-| 11 | [Vultr](vultr/readme.md)               | [used services](vultr/readme.md#description)        | [`33`](vultr/readme.md#regions)        | `1`               | [`0.17`](vultr/readme.md#costs)        | &#10060;                              | &#10060;                                                    |
-| 12 | [Generic](generic/readme.md)           | -                                                   | `-`                                    | `-`               | `-`                                    | &#10060;                              | &#10060;                                                    |
+| #  | Cloud                                        | Services                                            | Regions                                | AZ                | Costs, $/d/i                           | [Watcher](../architecture.md#watcher) | [Agent side watcher](../architecture.md#agent-side-watcher) |
+| -- | :------------------------------------------- | :-------------------------------------------------: | :------------------------------------: | :---------------: | :------------------------------------: | :-----------------------------------: | :---------------------------------------------------------: |
+| 1  | [Alibaba Cloud](alibaba/readme.md)           | [used services](alibaba/readme.md#description)      | [`28`](alibaba/readme.md#regions)      | `1,2,3,6,8,11,12` | [`1.08`](alibaba/readme.md#costs)      | &#9989;                               | &#9989;                                                     |
+| 2  | [Amazon Web Services](aws/readme.md)         | [used services](aws/readme.md#description)          | [`33`](aws/readme.md#regions)          | `2,3,4,6`         | [`0.97`](aws/readme.md#costs)          | &#9989;                               | &#9989;                                                     |
+| 3  | [Microsoft Azure](azure/readme.md)           | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1,3`             | [`1.11`](azure/readme.md#costs)        | &#10060;                              | &#9989;                                                     |
+| 4  | [Google Cloud Platform](gcp/readme.md)       | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3,4`             | [`0.85`](gcp/readme.md#costs)          | &#9989;                               | &#9989;                                                     |
+| 5  | [Oracle Cloud Infrastructure](oci/readme.md) | [used services](oci/readme.md#description)          | [`44`](oci/readme.md#regions)          | `1,3`             | [`0.50`](oci/readme.md#costs)          | &#10060;                              | &#10060;                                                    |
+| 6  | [Akamai Cloud](akamai/readme.md)             | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`               | [`0.25`](akamai/readme.md#costs)       | &#10060;                              | &#10060;                                                    |
+| 7  | [DigitalOcean](digitalocean/readme.md)       | [used services](digitalocean/readme.md#description) | [`14`](digitalocean/readme.md#regions) | `1`               | [`0.21`](digitalocean/readme.md#costs) | &#10060;                              | &#10060;                                                    |
+| 8  | [Exoscale](exoscale/readme.md)               | [used services](exoscale/readme.md#description)     | [`8`](exoscale/readme.md#regions)      | `1`               | [`0.41`](exoscale/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
+| 9  | [Hetzner Cloud](hetzner/readme.md)           | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`               | [`0.36`](hetzner/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
+| 10 | [Scaleway](scaleway/readme.md)               | [used services](scaleway/readme.md#description)     | [`3`](scaleway/readme.md#regions)      | `1,3`             | [`0.48`](scaleway/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
+| 11 | [UpCloud](upcloud/readme.md)                 | [used services](upcloud/readme.md#description)      | [`15`](upcloud/readme.md#regions)      | `1`               | [`0.29`](upcloud/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
+| 12 | [Vultr](vultr/readme.md)                     | [used services](vultr/readme.md#description)        | [`33`](vultr/readme.md#regions)        | `1`               | [`0.17`](vultr/readme.md#costs)        | &#10060;                              | &#10060;                                                    |
+| 13 | [Generic](generic/readme.md)                 | -                                                   | `-`                                    | `-`               | `-`                                    | `-`                                   | `-`                                                         |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)
@@ -60,19 +61,20 @@
 
     <details><summary><b>Ansible roles execution duration</b></summary>
 
-    | Cloud        | First run, `m` | Second run, `m`   | Instance           | Resources       | Watcher | Logs/Metrics |
-    | ------------ | :------------: | :---------------: | :----------------: | :-------------: | :-----: | :----------: |
-    | Alibaba      | `01:31.106`    | `00:24.716`       | `ecs.e-c1m1.large` | `2 vCPU / 2 GB` | `true`  | `false`      |
-    | AWS          | `02:23.360`    | `00:35.495`       | `t3.micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | Azure        | `03:22.027`    | `00:53.851`       | `Standard_B1s`     | `1 vCPU / 1 GB` | `true`  | `false`      |
-    | GCP          | `19:01.057`    | `06:46.945`       | `e2-micro`         | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | Akamai       | `03:55.760`    | `00:32.801`       | `g6-nanode-1`      | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Hetzner      | `02:24.137`    | `00:50.155`       | `cx23`             | `2 vCPU / 4 GB` | `-`     | `-`          |
-    | DigitalOcean | `05:28.838`    | `01:11.635`       | `s-1vcpu-1gb`      | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Exoscale     | `01:19.856`    | `00:23.110`       | `standard.tiny`    | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Scaleway     | `01:33.902`    | `00:23.648`       | `PLAY2-PICO`       | `1 vCPU / 2 GB` | `-`     | `-`          |
-    | UpCloud      | `02:01.326`    | `00:20.199`       | `1xCPU-1GB`        | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Vultr        | `02:55.041`    | `00:58.432`       | `vc2-1c-1gb`       | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Cloud        | First run, `m` | Second run, `m`   | Instance              | Resources       | Watcher | Logs/Metrics |
+    | ------------ | :------------: | :---------------: | :-------------------: | :-------------: | :-----: | :----------: |
+    | Alibaba      | `01:31.106`    | `00:24.716`       | `ecs.e-c1m1.large`    | `2 vCPU / 2 GB` | `true`  | `false`      |
+    | AWS          | `02:23.360`    | `00:35.495`       | `t3.micro`            | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Azure        | `03:22.027`    | `00:53.851`       | `Standard_B1s`        | `1 vCPU / 1 GB` | `true`  | `false`      |
+    | GCP          | `19:01.057`    | `06:46.945`       | `e2-micro`            | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | OCI          | `02:33.374`    | `00:39.407`       | `VM.Standard.A2.Flex` | `2 vCPU / 1 GB` | `-`     | `false`      |
+    | Akamai       | `03:55.760`    | `00:32.801`       | `g6-nanode-1`         | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Hetzner      | `02:24.137`    | `00:50.155`       | `cx23`                | `2 vCPU / 4 GB` | `-`     | `-`          |
+    | DigitalOcean | `05:28.838`    | `01:11.635`       | `s-1vcpu-1gb`         | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Exoscale     | `01:19.856`    | `00:23.110`       | `standard.tiny`       | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Scaleway     | `01:33.902`    | `00:23.648`       | `PLAY2-PICO`          | `1 vCPU / 2 GB` | `-`     | `-`          |
+    | UpCloud      | `02:01.326`    | `00:20.199`       | `1xCPU-1GB`           | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Vultr        | `02:55.041`    | `00:58.432`       | `vc2-1c-1gb`          | `1 vCPU / 1 GB` | `-`     | `-`          |
 
     > Provided timing is approximate and might be influenced by the time when crontab is executed after instance bootstrap.
 
@@ -100,6 +102,7 @@
     | AWS          | `20.235`    | `03:24.92`   | `03:30.48`     | `34`    | `true`  | `false`      |         |
     | Azure        | `15.444`    | `07:08.80`   | `55:52.37`     | `42`    | `true`  | `false`      |         |
     | GCP          | `10.063`    | `11:31.22`   | `14:05.22`     | `41`    | `true`  | `false`      |         |
+    | OCI          | `22.868`    | `00:16.861`  | `01:07.73`     | `3`     | `-`     | `-`          |         |
     | Akamai       | `06.694`    | `04:20.57`   | `02:39.64`     | `27`    | `-`     | `-`          |         |
     | DigitalOcean | `06.196`    | `01:00.09`   | `01:30.80`     | `13`    | `-`     | `-`          | wait    |
     | Exoscale     | `07.757`    | `01:01.35`   | `00:38.953`    | `8`     | `-`     | `-`          |         |
@@ -363,11 +366,12 @@
  2. [P2P agent on AWS](aws/readme.md)
  3. [P2P agent on Azure](azure/readme.md)
  4. [P2P agent on GCP](gcp/readme.md)
- 5. [P2P agent on Akamai](akamai/readme.md)
- 6. [P2P agent on DigitalOcean](digitalocean/readme.md)
- 7. [P2P agent on Exoscale](exoscale/readme.md)
- 8. [P2P agent on Hetzner](hetzner/readme.md)
- 9. [P2P agent on Scaleway](scaleway/readme.md)
- 10. [P2P agent on UpCloud](upcloud/readme.md)
- 11. [P2P agent on Vultr](vultr/readme.md)
- 12. [P2P agent on generic installation](generic/readme.md)
+ 5. [P2P agent on OCI](oci/readme.md)
+ 6. [P2P agent on Akamai](akamai/readme.md)
+ 7. [P2P agent on DigitalOcean](digitalocean/readme.md)
+ 8. [P2P agent on Exoscale](exoscale/readme.md)
+ 9. [P2P agent on Hetzner](hetzner/readme.md)
+ 10. [P2P agent on Scaleway](scaleway/readme.md)
+ 11. [P2P agent on UpCloud](upcloud/readme.md)
+ 12. [P2P agent on Vultr](vultr/readme.md)
+ 13. [P2P agent on generic installation](generic/readme.md)

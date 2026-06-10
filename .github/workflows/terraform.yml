@@ -16,7 +16,7 @@ on:
 env:
   terraform-version: "~> 1"
   terraform-directory: terraform
-  cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "exoscale", "gcp", "hetzner", "scaleway", "upcloud", "vultr"]'
+  cloud: '["akamai", "alibaba", "aws", "azure", "cloudflare", "digitalocean", "exoscale", "gcp", "hetzner", "oci", "scaleway", "upcloud", "vultr"]'
 
 permissions:
   contents: read
@@ -97,6 +97,9 @@ jobs:
         run: |
           if [[ ${{ matrix.cloud }} == "cloudflare" ]]; then
             terraform plan -var="cc_create=false" -var="radar_create=false"
+          elif [[ ${{ matrix.cloud }} == "oci" ]]; then
+            rm -f compartment.tf
+            terraform plan -var="agent_create=false"
           else
             terraform plan -var="agent_create=false"
           fi
