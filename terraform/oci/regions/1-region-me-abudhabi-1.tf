@@ -1,13 +1,13 @@
-# Germany Central, Frankfurt
-module "eu-frankfurt-1" {
+# UAE Central, Abu Dhabi
+module "me-abudhabi-1" {
   source = "./modules/agent"
 
   providers = {
-    oci = oci.eu-frankfurt-1
+    oci = oci.me-abudhabi-1
   }
 
   compartment_id           = local.compartment_id
-  region                   = "eu-frankfurt-1"
+  region                   = "me-abudhabi-1"
   agent_create             = var.agent_create
   agent_name               = var.agent_name
   agent_logs               = var.agent_logs

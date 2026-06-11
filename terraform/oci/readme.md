@@ -243,7 +243,8 @@
 
  3. We should be aware about [Subscribed Region Limits](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#limits) and that "**You can't unsubscribe from a region.**".
 
- 4. Only several regions were tested due to the subscriptions number limit.
+ 4. In most of the regions instances were not tested due to a number of subscriptions limit
+    - `1-region-*.tf`
 
  5. When we deploy agent in multiple regions and use `create_compartment = true` we could get an error and it will be required to re-run Terraform apply again. We could consider the following workarounds
     - Set `create_compartment = false` and resources will be created in a root compartment
