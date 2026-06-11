@@ -6,8 +6,8 @@ module "it-mil-1" {
   project_id               = local.project_id
   agent_create             = var.agent_create
   agent_name               = var.agent_name
-  agent_open_ports         = var.agent_open_ports
   default_tags             = var.default_tags
+  open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   type                     = "BASIC3-X2C-4G" # var.instance_type
   os_name                  = var.os_name

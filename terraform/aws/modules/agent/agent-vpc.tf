@@ -126,39 +126,39 @@ resource "aws_vpc_security_group_ingress_rule" "security_group" {
   region = local.region
 }
 
-# Ingress - Open TCP
-resource "aws_vpc_security_group_ingress_rule" "agent_tcp" {
-  count = local.create && local.agent_open_tcp_ports != null ? 1 : 0
+# Ingress - TCP
+resource "aws_vpc_security_group_ingress_rule" "tcp" {
+  count = local.create && local.open_tcp_ports != null ? 1 : 0
 
-  description = "Open TCP - Any"
-  from_port   = element(split("-", local.agent_open_tcp_ports), 0)
-  to_port     = element(split("-", local.agent_open_tcp_ports), 1)
+  description = "TCP - Any"
+  from_port   = element(split("-", local.open_tcp_ports), 0)
+  to_port     = element(split("-", local.open_tcp_ports), 1)
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
   security_group_id = aws_security_group.agent[count.index].id
 
   tags = {
-    Name = "Open TCP - Any"
+    Name = "TCP - Any"
   }
 
   region = local.region
 }
 
-# Ingress - Open UDP
-resource "aws_vpc_security_group_ingress_rule" "agent_udp" {
-  count = local.create && local.agent_open_udp_ports != null ? 1 : 0
+# Ingress - UDP
+resource "aws_vpc_security_group_ingress_rule" "udp" {
+  count = local.create && local.open_udp_ports != null ? 1 : 0
 
-  description = "Open UDP - Any"
-  from_port   = element(split("-", local.agent_open_udp_ports), 0)
-  to_port     = element(split("-", local.agent_open_udp_ports), 1)
+  description = "UDP - Any"
+  from_port   = element(split("-", local.open_udp_ports), 0)
+  to_port     = element(split("-", local.open_udp_ports), 1)
   ip_protocol = "udp"
   cidr_ipv4   = "0.0.0.0/0"
 
   security_group_id = aws_security_group.agent[count.index].id
 
   tags = {
-    Name = "Open UDP - Any"
+    Name = "UDP - Any"
   }
 
   region = local.region

@@ -6,24 +6,24 @@ resource "digitalocean_firewall" "agent" {
   tags        = [resource.digitalocean_tag.agent[count.index].id]
   droplet_ids = digitalocean_droplet.agent[*].id
 
-  # Open TCP
+  # TCP
   dynamic "inbound_rule" {
-    for_each = local.agent_open_tcp_ports != null ? [1] : []
+    for_each = local.open_tcp_ports != null ? [1] : []
 
     content {
       protocol         = "tcp"
-      port_range       = local.agent_open_tcp_ports
+      port_range       = local.open_tcp_ports
       source_addresses = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
     }
   }
 
-  # Open UDP
+  # UDP
   dynamic "inbound_rule" {
-    for_each = local.agent_open_udp_ports != null ? [1] : []
+    for_each = local.open_udp_ports != null ? [1] : []
 
     content {
       protocol         = "udp"
-      port_range       = local.agent_open_udp_ports
+      port_range       = local.open_udp_ports
       source_addresses = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
     }
   }

@@ -19,24 +19,24 @@ resource "scaleway_instance_security_group_rules" "agent" {
 
   security_group_id = scaleway_instance_security_group.agent[count.index].id
 
-  # Open TCP
+  # TCP
   dynamic "inbound_rule" {
-    for_each = local.agent_open_tcp_ports != null ? toset(local.security_group_protocols) : []
+    for_each = local.open_tcp_ports != null ? toset(local.security_group_protocols) : []
 
     content {
       action     = "accept"
-      port_range = local.agent_open_tcp_ports
+      port_range = local.open_tcp_ports
       ip_range   = inbound_rule.value == "v4" ? "0.0.0.0/0" : "::/0"
     }
   }
 
-  # Open UDP
+  # UDP
   dynamic "inbound_rule" {
-    for_each = local.agent_open_udp_ports != null ? toset(local.security_group_protocols) : []
+    for_each = local.open_udp_ports != null ? toset(local.security_group_protocols) : []
 
     content {
       action     = "accept"
-      port_range = local.agent_open_udp_ports
+      port_range = local.open_udp_ports
       ip_range   = inbound_rule.value == "v4" ? "0.0.0.0/0" : "::/0"
     }
   }

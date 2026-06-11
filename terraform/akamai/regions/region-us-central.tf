@@ -5,7 +5,7 @@ module "us-central" {
   region                   = "us-central"
   agent_create             = var.agent_create
   agent_name               = var.agent_name
-  agent_open_ports         = var.agent_open_ports
+  open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   authorized_keys          = local.ssh_keys
   type                     = var.type

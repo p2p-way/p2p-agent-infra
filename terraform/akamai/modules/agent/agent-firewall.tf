@@ -6,29 +6,29 @@ resource "linode_firewall" "agent" {
   inbound_policy  = "DROP"
   outbound_policy = "ACCEPT"
 
-  # Open TCP
+  # TCP
   dynamic "inbound" {
-    for_each = local.agent_open_tcp_ports != null ? [1] : []
+    for_each = local.open_tcp_ports != null ? [1] : []
 
     content {
-      label    = "Open-TCP-Any"
+      label    = "TCP-Any"
       action   = "ACCEPT"
       protocol = "TCP"
-      ports    = local.agent_open_tcp_ports
+      ports    = local.open_tcp_ports
       ipv4     = ["0.0.0.0/0"]
       ipv6     = ["::/0"]
     }
   }
 
-  # Open UDP
+  # UDP
   dynamic "inbound" {
-    for_each = local.agent_open_udp_ports != null ? [1] : []
+    for_each = local.open_udp_ports != null ? [1] : []
 
     content {
-      label    = "Open-UDP-Any"
+      label    = "UDP-Any"
       action   = "ACCEPT"
       protocol = "UDP"
-      ports    = local.agent_open_udp_ports
+      ports    = local.open_udp_ports
       ipv4     = ["0.0.0.0/0"]
       ipv6     = ["::/0"]
     }

@@ -35,29 +35,29 @@ resource "google_compute_firewall" "ssh_health_check" {
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
 }
 
-# Firewall - Open TCP/UDP
+# Firewall - TCP/UDP
 resource "google_compute_firewall" "agent" {
-  count = local.regional_network_create && (local.agent_open_tcp_ports != null || local.agent_open_udp_ports != null) ? 1 : 0
+  count = local.regional_network_create && (local.open_tcp_ports != null || local.open_udp_ports != null) ? 1 : 0
 
   name        = "${local.resource_name}-allow-open-ports"
-  description = "Open TCP/UDP - Any"
+  description = "TCP/UDP - Any"
   network     = google_compute_network.agent[count.index].name
 
   dynamic "allow" {
-    for_each = local.agent_open_tcp_ports != null ? [1] : []
+    for_each = local.open_tcp_ports != null ? [1] : []
 
     content {
       protocol = "tcp"
-      ports    = [for ports in split(",", local.agent_open_tcp_ports) : trimspace(ports)]
+      ports    = [for ports in split(",", local.open_tcp_ports) : trimspace(ports)]
     }
   }
 
   dynamic "allow" {
-    for_each = local.agent_open_udp_ports != null ? [1] : []
+    for_each = local.open_udp_ports != null ? [1] : []
 
     content {
       protocol = "udp"
-      ports    = [for ports in split(",", local.agent_open_udp_ports) : trimspace(ports)]
+      ports    = [for ports in split(",", local.open_udp_ports) : trimspace(ports)]
     }
   }
 

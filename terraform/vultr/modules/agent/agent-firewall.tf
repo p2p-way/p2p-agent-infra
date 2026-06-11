@@ -5,16 +5,16 @@ resource "vultr_firewall_group" "agent" {
   description = local.resource_name
 }
 
-# Firewall Rule - Open TCP
-resource "vultr_firewall_rule" "agent_tcp" {
-  for_each = local.agent_open_tcp_ports != null ? toset(local.firewall_protocols) : []
+# Firewall Rule - TCP
+resource "vultr_firewall_rule" "tcp" {
+  for_each = local.open_tcp_ports != null ? toset(local.firewall_protocols) : []
 
   ip_type     = each.key
   protocol    = "tcp"
-  port        = local.agent_open_tcp_ports
+  port        = local.open_tcp_ports
   subnet      = each.key == "v4" ? "0.0.0.0" : "::"
   subnet_size = 0
-  notes       = "Open TCP - Any"
+  notes       = "TCP - Any"
 
   firewall_group_id = vultr_firewall_group.agent[0].id
 
@@ -23,16 +23,16 @@ resource "vultr_firewall_rule" "agent_tcp" {
   }
 }
 
-# Firewall Rule - Open UDP
-resource "vultr_firewall_rule" "agent_udp" {
-  for_each = local.agent_open_udp_ports != null ? toset(local.firewall_protocols) : []
+# Firewall Rule - UDP
+resource "vultr_firewall_rule" "udp" {
+  for_each = local.open_udp_ports != null ? toset(local.firewall_protocols) : []
 
   ip_type     = each.key
   protocol    = "udp"
-  port        = local.agent_open_udp_ports
+  port        = local.open_udp_ports
   subnet      = each.key == "v4" ? "0.0.0.0" : "::"
   subnet_size = 0
-  notes       = "Open UDP - Any"
+  notes       = "UDP - Any"
 
   firewall_group_id = vultr_firewall_group.agent[0].id
 

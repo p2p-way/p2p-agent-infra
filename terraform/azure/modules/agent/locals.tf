@@ -6,8 +6,8 @@ locals {
   agent_logs           = local.create && var.agent_logs
   agent_metrics        = local.create && var.agent_metrics
   agent_iam_create     = local.agent_watcher || local.agent_logs || local.agent_metrics
-  agent_open_tcp_ports = try(element(var.agent_open_ports, 0), null)
-  agent_open_udp_ports = try(element(var.agent_open_ports, 1), null)
+  open_tcp_ports       = try(element(var.open_ports, 0), null)
+  open_udp_ports       = try(element(var.open_ports, 1), null)
   autoscaler_name      = "initial_start_stop"
   region               = var.region
   rg_region            = var.rg_region == null ? local.region : var.rg_region

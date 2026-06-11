@@ -11,10 +11,10 @@ module "us-west-1" {
   agent_watcher                 = var.agent_watcher
   agent_logs                    = var.agent_logs
   agent_metrics                 = var.agent_metrics
-  agent_open_ports              = var.agent_open_ports
   default_tags                  = var.default_tags
   cidr_block                    = var.cidr_block
   az_number                     = var.az_number
+  open_ports                    = var.open_ports
   allow_ssh                     = var.allow_ssh
   public_keys                   = local.public_keys
   os_name                       = var.os_name

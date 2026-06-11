@@ -5,7 +5,7 @@ module "fra1" {
   region                   = "fra1"
   agent_create             = var.agent_create
   agent_name               = var.agent_name
-  agent_open_ports         = var.agent_open_ports
+  open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   ssh_keys                 = local.ssh_keys
   droplet_size             = var.droplet_size

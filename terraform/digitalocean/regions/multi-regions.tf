@@ -8,7 +8,7 @@ module "multi-regions" {
   region                   = each.key
   agent_create             = var.agent_create
   agent_name               = var.agent_name
-  agent_open_ports         = var.agent_open_ports
+  open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   ssh_keys                 = local.ssh_keys
   droplet_size             = each.key == "atl1" ? "s-1vcpu-1gb-amd" : each.key == "ric1" ? "s-1vcpu-1gb-intel" : var.droplet_size

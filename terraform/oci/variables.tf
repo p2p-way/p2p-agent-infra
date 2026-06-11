@@ -71,7 +71,7 @@ variable "agent_log_file" {
   default     = "p2p-agent.log"
 }
 
-# VPC
+# Network
 variable "cidr_blocks" {
   description = "The list of one or more IPv4 CIDR blocks for the VCN."
   type        = list(string)
@@ -145,7 +145,7 @@ variable "max_size" {
   default     = 30
 }
 
-# Auto Scaling group
+# Autoscaling
 variable "initial_deploy" {
   description = "Is this an initial deploy or update."
   type        = bool

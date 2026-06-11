@@ -58,13 +58,7 @@ variable "agent_logs_retention" {
   default     = 30
 }
 
-variable "agent_open_ports" {
-  description = "P2P agent open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = ["1024-65535", "1024-65535"]
-}
-
-# VN
+# Network
 variable "address_space" {
   description = "The address space that is used the virtual network."
   type        = list(string)
@@ -77,13 +71,20 @@ variable "address_prefixes" {
   default     = ["10.20.30.0/24"]
 }
 
+# Firewall
+variable "open_ports" {
+  description = "Open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
+  type        = list(any)
+  default     = ["1024-65535", "1024-65535"]
+}
+
 variable "allow_ssh" {
   description = "List of IPv4 addresses allowed SSH access to the instance."
   type        = list(string)
   default     = []
 }
 
-# VM
+# Instance
 variable "public_keys" {
   description = "SSH public keys to be added to the instance."
   type        = list(string)
@@ -138,7 +139,7 @@ variable "initial_deploy" {
   default     = true
 }
 
-# Monitor Autoscale setting
+# Autoscaling
 variable "desired_capacity" {
   description = "The number of instances that are available for scaling."
   type        = number

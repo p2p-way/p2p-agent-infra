@@ -6,13 +6,13 @@ default_labels = {
 }
 
 # Agent
-location         = "fsn1"
-agent_create     = true
-agent_name       = "P2P agent"
-agent_open_ports = ["1024-65535", "1024-65535"]
-allow_ssh        = []
-public_keys      = []
-os_name          = "ubuntu"
+location     = "fsn1"
+agent_create = true
+agent_name   = "P2P agent"
+open_ports   = ["1024-65535", "1024-65535"]
+allow_ssh    = []
+public_keys  = []
+os_name      = "ubuntu"
 server_type = {
   ash     = "cpx11"
   fsn1    = "cx23"

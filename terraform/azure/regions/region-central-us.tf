@@ -9,10 +9,10 @@ module "central-us" {
   agent_logs               = var.agent_logs
   agent_metrics            = var.agent_metrics
   agent_logs_retention     = var.agent_logs_retention
-  agent_open_ports         = var.agent_open_ports
   default_tags             = var.default_tags
   address_space            = var.address_space
   address_prefixes         = var.address_prefixes
+  open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   public_keys              = local.public_keys
   admin_username           = var.admin_username

@@ -35,20 +35,20 @@ variable "agent_log_file" {
   default     = "p2p-agent.log"
 }
 
-variable "agent_open_ports" {
-  description = "P2P agent open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
+# Firewall
+variable "open_ports" {
+  description = "Open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
   type        = list(any)
   default     = ["1024-65535", "1024-65535"]
 }
 
-# Firewall
 variable "allow_ssh" {
   description = "List of IPv4 addresses allowed SSH access to the instance."
   type        = list(string)
   default     = []
 }
 
-# Servers
+# Instance
 variable "authorized_keys" {
   description = "A list of SSH public keys to deploy for the root user on the newly created Linode."
   type        = list(string)

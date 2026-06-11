@@ -70,7 +70,7 @@ resource "oci_core_network_security_group" "agent" {
 resource "oci_core_network_security_group_security_rule" "nsg" {
   count = local.create ? 1 : 0
 
-  description = "All - Security Group"
+  description = "Security Group"
   direction   = "INGRESS"
   protocol    = "all"
   source      = oci_core_network_security_group.agent[0].id

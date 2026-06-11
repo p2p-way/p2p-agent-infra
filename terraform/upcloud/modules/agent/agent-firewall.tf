@@ -4,15 +4,15 @@ resource "upcloud_firewall_rules" "agent" {
 
   server_id = upcloud_server.agent[count.index].id
 
-  # Open TCP
+  # TCP
   dynamic "firewall_rule" {
-    for_each = local.agent_open_tcp_ports != null ? [1] : []
+    for_each = local.open_tcp_ports != null ? [1] : []
 
     content {
       action                 = "accept"
-      comment                = "Open TCP - Any"
-      destination_port_start = element(split("-", local.agent_open_tcp_ports), 0)
-      destination_port_end   = element(split("-", local.agent_open_tcp_ports), 1)
+      comment                = "TCP - Any"
+      destination_port_start = element(split("-", local.open_tcp_ports), 0)
+      destination_port_end   = element(split("-", local.open_tcp_ports), 1)
       direction              = "in"
       family                 = "IPv4"
       protocol               = "tcp"
@@ -21,15 +21,15 @@ resource "upcloud_firewall_rules" "agent" {
     }
   }
 
-  # Open UDP
+  # UDP
   dynamic "firewall_rule" {
-    for_each = local.agent_open_udp_ports != null ? [1] : []
+    for_each = local.open_udp_ports != null ? [1] : []
 
     content {
       action                 = "accept"
-      comment                = "Open UDP - Any"
-      destination_port_start = element(split("-", local.agent_open_udp_ports), 0)
-      destination_port_end   = element(split("-", local.agent_open_udp_ports), 1)
+      comment                = "UDP - Any"
+      destination_port_start = element(split("-", local.open_udp_ports), 0)
+      destination_port_end   = element(split("-", local.open_udp_ports), 1)
       direction              = "in"
       family                 = "IPv4"
       protocol               = "udp"

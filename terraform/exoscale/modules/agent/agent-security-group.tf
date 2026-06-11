@@ -14,34 +14,34 @@ resource "exoscale_security_group_rule" "security_group" {
   type                   = "INGRESS"
   protocol               = each.key
   user_security_group_id = exoscale_security_group.agent[0].id
-  start_port             = element(split("-", local.agent_open_tcp_ports), 0)
-  end_port               = element(split("-", local.agent_open_tcp_ports), 1)
+  start_port             = element(split("-", local.open_tcp_ports), 0)
+  end_port               = element(split("-", local.open_tcp_ports), 1)
   security_group_id      = exoscale_security_group.agent[0].id
 }
 
-# Ingress - Open TCP
-resource "exoscale_security_group_rule" "agent_tcp" {
-  for_each = local.agent_open_tcp_ports != null ? toset(local.firewall_protocols) : []
+# Ingress - TCP
+resource "exoscale_security_group_rule" "tcp" {
+  for_each = local.open_tcp_ports != null ? toset(local.firewall_protocols) : []
 
-  description       = "Open TCP - Any"
+  description       = "TCP - Any"
   type              = "INGRESS"
   protocol          = "TCP"
   cidr              = each.key == "v4" ? "0.0.0.0/0" : "::/0"
-  start_port        = element(split("-", local.agent_open_tcp_ports), 0)
-  end_port          = element(split("-", local.agent_open_tcp_ports), 1)
+  start_port        = element(split("-", local.open_tcp_ports), 0)
+  end_port          = element(split("-", local.open_tcp_ports), 1)
   security_group_id = exoscale_security_group.agent[0].id
 }
 
-# Ingress - Open UDP
-resource "exoscale_security_group_rule" "agent_udp" {
-  for_each = local.agent_open_udp_ports != null ? toset(local.firewall_protocols) : []
+# Ingress - UDP
+resource "exoscale_security_group_rule" "udp" {
+  for_each = local.open_udp_ports != null ? toset(local.firewall_protocols) : []
 
-  description       = "Open UDP - Any"
+  description       = "UDP - Any"
   type              = "INGRESS"
   protocol          = "UDP"
   cidr              = each.key == "v4" ? "0.0.0.0/0" : "::/0"
-  start_port        = element(split("-", local.agent_open_tcp_ports), 0)
-  end_port          = element(split("-", local.agent_open_tcp_ports), 1)
+  start_port        = element(split("-", local.open_tcp_ports), 0)
+  end_port          = element(split("-", local.open_tcp_ports), 1)
   security_group_id = exoscale_security_group.agent[0].id
 }
 

@@ -64,12 +64,6 @@ variable "agent_metrics" {
   default     = false
 }
 
-variable "agent_open_ports" {
-  description = "P2P agent open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = ["1024-65535", "1024-65535"]
-}
-
 # Global resources
 variable "global_network" {
   description = "Whether to create global health check resources."
@@ -96,13 +90,20 @@ variable "ip_cidr_range" {
   default     = "10.20.30.0/24"
 }
 
+# Firewall
+variable "open_ports" {
+  description = "Open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
+  type        = list(any)
+  default     = ["1024-65535", "1024-65535"]
+}
+
 variable "allow_ssh" {
   description = "List of IPv4 addresses allowed SSH access to the instance."
   type        = list(string)
   default     = []
 }
 
-# Compute
+# Instance
 variable "public_keys" {
   description = "SSH public keys to be added to the instance."
   type        = list(string)

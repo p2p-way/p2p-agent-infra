@@ -8,8 +8,8 @@ module "multi-regions" {
   region                   = each.key
   agent_create             = var.agent_create
   agent_name               = var.agent_name
-  agent_open_ports         = var.agent_open_ports
   default_labels           = var.default_labels
+  open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   keys                     = local.keys
   plan                     = var.plan

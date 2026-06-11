@@ -12,8 +12,8 @@ locals {
   agent_role_suffix            = var.unique_iam_roles ? title(try(random_string.common[0].result, "")) : ""
   regional_network_create      = local.create && !lookup(var.global_network, "create")
   regional_health_check_create = local.create && !lookup(var.global_health_check, "create")
-  agent_open_tcp_ports         = try(element(var.agent_open_ports, 0), null)
-  agent_open_udp_ports         = try(element(var.agent_open_ports, 1), null)
+  open_tcp_ports               = try(element(var.open_ports, 0), null)
+  open_udp_ports               = try(element(var.open_ports, 1), null)
   create_health_check          = local.create
   create_network               = local.create
   allow_ssh                    = local.regional_network_create ? var.allow_ssh : []

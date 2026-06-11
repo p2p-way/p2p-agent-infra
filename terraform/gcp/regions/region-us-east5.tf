@@ -8,11 +8,11 @@ module "us-east5" {
   agent_watcher               = var.agent_watcher
   agent_logs                  = var.agent_logs
   agent_metrics               = var.agent_metrics
-  agent_open_ports            = var.agent_open_ports
   default_labels              = var.default_labels
   global_network              = local.global_network
   global_health_check         = local.global_health_check
   ip_cidr_range               = var.ip_cidr_range
+  open_ports                  = var.open_ports
   allow_ssh                   = var.allow_ssh
   public_keys                 = local.public_keys
   os_name                     = var.os_name

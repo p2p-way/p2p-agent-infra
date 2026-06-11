@@ -131,13 +131,7 @@ variable "agent_logs_retention" {
   default     = 7
 }
 
-variable "agent_open_ports" {
-  description = "P2P agent open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
-  type        = list(any)
-  default     = ["1024-65535", "1024-65535"]
-}
-
-# VPC
+# Network
 variable "cidr_block" {
   description = "The IPv4 CIDR block for the VPC."
   type        = string
@@ -150,13 +144,20 @@ variable "az_number" {
   default     = 3
 }
 
+# Firewall
+variable "open_ports" {
+  description = "Open [TCP-TCP, UDP-UDP] ports. Set null to skip specific protocol or [] to disable rules creation."
+  type        = list(any)
+  default     = ["1024-65535", "1024-65535"]
+}
+
 variable "allow_ssh" {
   description = "List of IPv4 addresses allowed SSH access to the instance."
   type        = list(string)
   default     = []
 }
 
-# Launch template
+# Instance
 variable "public_keys" {
   description = "SSH public keys to be added to the instance."
   type        = list(string)
@@ -199,7 +200,7 @@ variable "volume_throughput" {
   default     = null
 }
 
-# Auto Scaling group
+# Autoscaling
 variable "initial_deploy" {
   description = "Is this an initial deploy or update."
   type        = bool

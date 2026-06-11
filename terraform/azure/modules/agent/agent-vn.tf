@@ -23,37 +23,37 @@ resource "azurerm_network_security_group" "agent" {
   location            = local.region
   resource_group_name = azurerm_resource_group.agent[count.index].name
 
-  # Open TCP
+  # TCP
   dynamic "security_rule" {
-    for_each = local.agent_open_tcp_ports != null ? [1] : []
+    for_each = local.open_tcp_ports != null ? [1] : []
 
     content {
-      name                       = "Open-TCP-Any"
-      description                = "Open TCP - Any"
+      name                       = "TCP-Any"
+      description                = "TCP - Any"
       priority                   = 100
       direction                  = "Inbound"
       access                     = "Allow"
       protocol                   = "Tcp"
       source_port_range          = "*"
-      destination_port_ranges    = [for ports in split(",", local.agent_open_tcp_ports) : trimspace(ports)]
+      destination_port_ranges    = [for ports in split(",", local.open_tcp_ports) : trimspace(ports)]
       source_address_prefix      = "*"
       destination_address_prefix = "*"
     }
   }
 
-  # Open UDP
+  # UDP
   dynamic "security_rule" {
-    for_each = local.agent_open_udp_ports != null ? [1] : []
+    for_each = local.open_udp_ports != null ? [1] : []
 
     content {
-      name                       = "Open-UDP-Any"
-      description                = "Open UDP - Any"
+      name                       = "UDP-Any"
+      description                = "UDP - Any"
       priority                   = 110
       direction                  = "Inbound"
       access                     = "Allow"
       protocol                   = "Udp"
       source_port_range          = "*"
-      destination_port_ranges    = [for ports in split(",", local.agent_open_udp_ports) : trimspace(ports)]
+      destination_port_ranges    = [for ports in split(",", local.open_udp_ports) : trimspace(ports)]
       source_address_prefix      = "*"
       destination_address_prefix = "*"
     }

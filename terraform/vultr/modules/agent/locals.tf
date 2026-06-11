@@ -4,8 +4,8 @@ locals {
   agent_name           = lower(replace(var.agent_name, " ", "-"))
   region               = var.region
   location_description = try(data.vultr_region.current[0].city, "")
-  agent_open_tcp_ports = try(replace(element(var.agent_open_ports, 0), "-", ":"), null)
-  agent_open_udp_ports = try(replace(element(var.agent_open_ports, 1), "-", ":"), null)
+  open_tcp_ports       = try(replace(element(var.open_ports, 0), "-", ":"), null)
+  open_udp_ports       = try(replace(element(var.open_ports, 1), "-", ":"), null)
   firewall_protocols   = var.enable_ipv6 ? ["v4", "v6"] : ["v4"]
   allow_ssh            = local.create ? var.allow_ssh : []
   resource_name        = "${local.agent_name}-${local.region}"

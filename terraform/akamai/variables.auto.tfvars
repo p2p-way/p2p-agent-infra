@@ -2,7 +2,7 @@
 region              = "eu-central"
 agent_create        = true
 agent_name          = "P2P agent"
-agent_open_ports    = ["1024-65535", "1024-65535"]
+open_ports          = ["1024-65535", "1024-65535"]
 allow_ssh           = []
 public_keys         = []
 os_name             = "ubuntu"

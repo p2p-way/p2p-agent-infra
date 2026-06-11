@@ -4,29 +4,29 @@ resource "hcloud_firewall" "agent" {
 
   name = local.resource_name
 
-  # Open TCP
+  # TCP
   dynamic "rule" {
-    for_each = local.agent_open_tcp_ports != null ? [1] : []
+    for_each = local.open_tcp_ports != null ? [1] : []
 
     content {
       direction   = "in"
       protocol    = "tcp"
-      port        = local.agent_open_tcp_ports
+      port        = local.open_tcp_ports
       source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Open TCP - Any"
+      description = "TCP - Any"
     }
   }
 
-  # Open UDP
+  # UDP
   dynamic "rule" {
-    for_each = local.agent_open_udp_ports != null ? [1] : []
+    for_each = local.open_udp_ports != null ? [1] : []
 
     content {
       direction   = "in"
       protocol    = "udp"
-      port        = local.agent_open_udp_ports
+      port        = local.open_udp_ports
       source_ips  = var.enable_ipv6 ? ["0.0.0.0/0", "::/0"] : ["0.0.0.0/0"]
-      description = "Open UDP - Any"
+      description = "UDP - Any"
     }
   }
 

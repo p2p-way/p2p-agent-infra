@@ -5,8 +5,8 @@ module "fi-hel1" {
   region                   = "fi-hel1"
   agent_create             = var.agent_create
   agent_name               = var.agent_name
-  agent_open_ports         = var.agent_open_ports
   default_labels           = var.default_labels
+  open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   keys                     = local.keys
   plan                     = var.plan
