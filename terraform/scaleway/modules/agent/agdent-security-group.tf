@@ -25,6 +25,7 @@ resource "scaleway_instance_security_group_rules" "agent" {
 
     content {
       action     = "accept"
+      protocol   = "TCP"
       port_range = local.open_tcp_ports
       ip_range   = inbound_rule.value == "v4" ? "0.0.0.0/0" : "::/0"
     }
@@ -35,6 +36,7 @@ resource "scaleway_instance_security_group_rules" "agent" {
     for_each = local.open_udp_ports != null ? toset(local.security_group_protocols) : []
 
     content {
+      protocol   = "UDP"
       action     = "accept"
       port_range = local.open_udp_ports
       ip_range   = inbound_rule.value == "v4" ? "0.0.0.0/0" : "::/0"
