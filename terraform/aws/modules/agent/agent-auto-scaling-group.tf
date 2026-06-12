@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "agent" {
   name             = local.resource_name
   min_size         = var.min_size
   max_size         = var.max_size
-  desired_capacity = var.start_time == "watcher" ? null : var.initial_deploy ? 0 : var.desired_capacity
+  desired_capacity = var.initial_deploy ? 0 : var.desired_capacity
 
   vpc_zone_identifier = [for subnet in aws_subnet.agent : subnet.id]
 
