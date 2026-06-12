@@ -114,10 +114,10 @@
 
 ```
 33.34 $/m/i / 31 d =  1.08 $/d/i    # 1 day / 1 instance / 1 region
- 1.08 $/d/i x 28 r =  30.24 $/d/i/r # 1 day / 1 instance / all regions
+ 1.08 $/d/i x 29 r =  31.32 $/d/i/r # 1 day / 1 instance / all regions
 ```
 
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **30.24 $**
+ Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **31.32 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free quota may not cover multiple instances running for a long period of time.
@@ -312,6 +312,7 @@
 
     **Scaling Group is created but instances failed to start**
     > `Fail to scale instances for scaling group(code:"InvalidInstanceType.NotAuthorized", msg:"Instance types are not authorized.").`
+    - `1-region-ap-southeast-8.tf`
     - `1-region-cn-wuhan-lr.tf`
 
     > `Fail to scale instances for scaling group(code:"RecommendEmpty.DiskTypeNoStock", msg:"The diskTypes are out of usage.").`

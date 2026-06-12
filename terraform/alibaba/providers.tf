@@ -56,6 +56,13 @@ provider "alicloud" {
   region = "ap-southeast-7"
 }
 
+# Malaysia (Johor)
+provider "alicloud" {
+  alias                  = "ap-southeast-8"
+  region                 = "ap-southeast-8"
+  skip_region_validation = true
+}
+
 # Agent - China (Beijing)
 provider "alicloud" {
   alias  = "cn-beijing"
