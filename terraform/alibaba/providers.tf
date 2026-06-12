@@ -193,8 +193,9 @@ provider "alicloud" {
 
 # Agent - Mexico
 provider "alicloud" {
-  alias  = "na-south-1"
-  region = "na-south-1"
+  alias                  = "na-south-1"
+  region                 = "na-south-1"
+  skip_region_validation = true
 }
 
 # Agent - US (Virginia)
