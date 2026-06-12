@@ -200,6 +200,8 @@
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions. And next steps mainly depends on the start time we set.
 
+ We also should keep in mind that, when we use autoscaling with a control center which is managed outside of this code, we might get a configuration drift which can be solved by sync variables with the values from a control center.
+
  **Nodes not started yet**
 
  Update is very transparent and we need just to set `desired_capacity` with the required number and run Terraform.
@@ -210,10 +212,10 @@
  **Nodes already started**
 
  When nodes already started, following things are happened
- - Desired capacity of the Virtual Machine Scale Sets was changed by the start Scaling, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new Scaling start and it will lead to the down-time.
+ - Desired capacity of the Virtual Machine Scale Sets was changed by the start Scaling, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new Scaling start and it will lead to a down-time.
 
  To overcome this, we should set `initial_deploy = false` and Terraform will change it's behavior in the following way
- - Capacity for Scaling, which is initially set to 0, will use value from `desired_capacity`.
+ - Capacity for autoscaler, which is initially set to 0, will use value from `desired_capacity`.
 
  Update variable in the *variables.auto.tfvars* file
  ```shell
@@ -236,13 +238,9 @@
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Add a configuration file for the new region.
- 3. Set `initial_deploy = true` in the module configuration, for this new region only.
- 4. Run `terraform init`.
- 5. Run `terraform plan`.
- 6. Run `terraform apply`.
- 7. Set back `initial_deploy = var.initial_deploy` in the module configuration, for this new region, and it will imply usage of the globaly defined value in the *variables.auto.tfvars*.
- 8. Run `terraform plan`.
- 9. Run `terraform apply`.
+ 3. Run `terraform init`.
+ 4. Run `terraform plan`.
+ 5. Run `terraform apply`.
 
 
 ## [Cleanup](#p2p-agent-on-azure)

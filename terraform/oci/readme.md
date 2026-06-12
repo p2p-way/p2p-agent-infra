@@ -193,7 +193,7 @@
  **Nodes already started**
 
  When nodes already started, following things are happened
- - Target instance count of the instance pool was changed by a start scheduler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new scheduler start and it will lead to the down-time.
+ - Target instance count of the instance pool was changed by a start scheduler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new scheduler start and it will lead to a down-time.
 
  To overcome this, we should set `initial_deploy = false` and Terraform will change it's behavior in the following way
  - Capacity for instance pool, which is initially set to 0, will use value from `desired_capacity`.
@@ -222,8 +222,6 @@
  3. Run `terraform init`.
  4. Run `terraform plan`.
  5. Run `terraform apply`.
- 6. Run `terraform plan`.
- 7. Run `terraform apply`.
 
 
 ## [Cleanup](#p2p-agents-on-oci)

@@ -144,10 +144,8 @@
 
  4. Authenticate on GCP
     ```shell
-    # Authenticate
     gcloud auth application-default login
 
-    # Set project id
     export GCLOUD_PROJECT="<poject id>"
     ```
 
@@ -199,10 +197,10 @@
 
  **Nodes already started**
 
- When nodes already started when `start_time=watcher`, following things are happened
- - Capacity of the Instance group was changed by the autoscaler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new autoscaler start and it will lead to the down-time.
+ When nodes already started with `start_time=watcher`, following things are happened
+ - Capacity of the Instance group was changed by the autoscaler, from 0 to the value we set at the apply, and Terraform will try to set it back to 0 and it will lead to the termination of the running instances and new instances will be run by the new autoscaler start and it will lead to a down-time.
 
- To overcome these cases, we should set `initial_deploy = false` and Terraform will change it's behavior in the following way
+ To overcome this, we should set `initial_deploy = false` and Terraform will change it's behavior in the following way
  - Capacity for autoscaler, which is initially set to 0, will use value from `desired_capacity`.
 
  Update variable in the *variables.auto.tfvars* file
