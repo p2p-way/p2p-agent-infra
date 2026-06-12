@@ -2,7 +2,7 @@
 resource "alicloud_log_store" "agent" {
   count = local.agent_logs ? 1 : 0
 
-  project_name     = alicloud_log_project.common[count.index].name
+  project_name     = alicloud_log_project.common[count.index].project_name
   logstore_name    = "agent"
   retention_period = var.agent_logs_retention
   append_meta      = true

@@ -2,7 +2,7 @@
 resource "alicloud_log_store" "watcher" {
   count = local.watcher_create ? 1 : 0
 
-  project_name     = alicloud_log_project.common[count.index].name
+  project_name     = alicloud_log_project.common[count.index].project_name
   logstore_name    = "watcher"
   retention_period = 7
   append_meta      = true
