@@ -80,6 +80,7 @@
     aliyun ess ModifyScalingGroup \
       --RegionId "${region}" \
       --ScalingGroupId "${sg_id}" \
+      --MinSize "${desired_capacity_cc}" \
       --DesiredCapacity "${desired_capacity_cc}"
 
     # Check scaling status

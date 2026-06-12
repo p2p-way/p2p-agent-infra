@@ -259,6 +259,7 @@ def main_handler(event, context):
         # Request
         modify_scaling_group_request = ess_20220222_models.ModifyScalingGroupRequest(
             scaling_group_id=config["body"]["ScalingGroups"][0]["ScalingGroupId"],
+            min_size=desired_capacity,
             desired_capacity=desired_capacity
         )
 

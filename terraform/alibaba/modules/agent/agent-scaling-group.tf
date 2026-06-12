@@ -9,9 +9,9 @@ resource "alicloud_ess_scaling_group" "agent" {
   launch_template_id      = alicloud_ecs_launch_template.agent[count.index].id
   launch_template_version = "Default"
 
-  min_size         = var.min_size
+  min_size         = var.initial_deploy ? var.min_size : var.desired_capacity
   max_size         = var.max_size
-  desired_capacity = var.start_time == "watcher" ? null : var.initial_deploy ? 0 : var.desired_capacity
+  desired_capacity = var.initial_deploy ? 0 : var.desired_capacity
   default_cooldown = 60
 
   vswitch_ids = [for vswitch in alicloud_vswitch.agent : vswitch.id]
@@ -34,14 +34,17 @@ resource "alicloud_ess_scaling_group" "agent" {
 }
 
 # Scheduled task - Start
+# we can't use desired_capacity
+# because it needs to be set at a alicloud_ess_scaling_group first and > 0
+# which is not suitable for our case
 resource "alicloud_ess_scheduled_task" "agent_start" {
   count = var.start_time == "watcher" || !local.create ? 0 : 1
 
   scheduled_task_name    = "${local.resource_name}-initial-start"
   min_value              = var.desired_capacity
-  max_value              = var.desired_capacity
+  max_value              = var.max_size
   launch_time            = formatdate("YYYY-MM-DD'T'hh:mmZ", local.start_time)
-  launch_expiration_time = 180
+  launch_expiration_time = 1800
   scaling_group_id       = try(alicloud_ess_scaling_group.agent[count.index].id, "")
 }
 
