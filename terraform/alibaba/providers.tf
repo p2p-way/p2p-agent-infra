@@ -154,6 +154,12 @@ provider "alicloud" {
   region = "cn-zhangjiakou"
 }
 
+# China (Zhongwei)
+provider "alicloud" {
+  alias  = "cn-zhongwei"
+  region = "cn-zhongwei"
+}
+
 # Agent - Germany (Frankfurt)
 provider "alicloud" {
   alias  = "eu-central-1"
