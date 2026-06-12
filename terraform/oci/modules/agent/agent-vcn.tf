@@ -36,6 +36,17 @@ resource "oci_core_route_table" "agent" {
   }
 }
 
+# Route Table - Default
+resource "oci_core_default_route_table" "agent" {
+  count = local.create ? 1 : 0
+
+  compartment_id = var.compartment_id
+  display_name   = "${local.resource_name} - default"
+  freeform_tags  = local.freeform_tags
+
+  manage_default_resource_id = oci_core_vcn.agent[count.index].default_route_table_id
+}
+
 # Subnet
 resource "oci_core_subnet" "agent" {
   count = local.create ? 1 : 0
@@ -151,4 +162,15 @@ resource "oci_core_network_security_group_security_rule" "egress" {
   stateless   = false
 
   network_security_group_id = oci_core_network_security_group.agent[0].id
+}
+
+# Security list - Default
+resource "oci_core_default_security_list" "agent" {
+  count = local.create ? 1 : 0
+
+  compartment_id = local.compartment_id
+  display_name   = "${local.resource_name} - default"
+  freeform_tags  = local.freeform_tags
+
+  manage_default_resource_id = oci_core_vcn.agent[count.index].default_security_list_id
 }
