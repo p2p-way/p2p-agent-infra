@@ -166,6 +166,13 @@ provider "alicloud" {
   region = "eu-west-1"
 }
 
+# France‌ (Paris)
+provider "alicloud" {
+  alias                  = "eu-west-2"
+  region                 = "eu-west-2"
+  skip_region_validation = true
+}
+
 # Agent - SAU (Riyadh - Partner Region)
 provider "alicloud" {
   alias  = "me-central-1"
