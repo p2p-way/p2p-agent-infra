@@ -31,6 +31,12 @@ resource "alicloud_ess_scaling_group" "agent" {
   capacity_options_on_demand_percentage_above_base_capacity = 100
 
   resource_group_id = alicloud_resource_manager_resource_group.common[count.index].id
+
+  lifecycle {
+    ignore_changes = [
+      min_size
+    ]
+  }
 }
 
 # Scheduled task - Start
@@ -46,6 +52,12 @@ resource "alicloud_ess_scheduled_task" "agent_start" {
   launch_time            = formatdate("YYYY-MM-DD'T'hh:mmZ", local.start_time)
   launch_expiration_time = 1800
   scaling_group_id       = try(alicloud_ess_scaling_group.agent[count.index].id, "")
+
+  lifecycle {
+    ignore_changes = [
+      min_size
+    ]
+  }
 }
 
 # Scheduled task - Stop
