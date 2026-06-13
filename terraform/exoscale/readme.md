@@ -57,12 +57,9 @@
  | [Storage - Local Storage](https://www.exoscale.com/pricing/#local-storage)           | `0.00016300 $/h` | `0.12 $/m`  |                |
  | TOTAL                                                                                |                  | `12.75 $/m` |                |
 
+```shell
+12.75 $/m/i / 31 d = 0.41 $/d/i # 1 day / 1 instance / 1 region
 ```
-12.75 $/m/i / 31 d = 0.41 $/d/i   # 1 day / 1 instance / 1 region
- 0.48 $/d/i x  8 r = 3.28 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **3.28 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.

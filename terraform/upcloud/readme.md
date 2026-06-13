@@ -55,12 +55,9 @@
  | [Cloud Servers](https://upcloud.com/pricing/#cloud-servers) | `0.0134 $/h` | `9.00 $/m` | 1xCPU-1GB / Helsinki |
  | TOTAL                                                       |              | `9.00 $/m` |                      |
 
+```shell
+9.00 $/m/i / 31 d = 0.29 $/d/i # 1 day / 1 instance / 1 region
 ```
-9.00 $/m/i / 31 d = 0.29 $/d/i   # 1 day / 1 instance / 1 region
-0.29 $/d/i x 15 r = 4.35 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **4.35 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.

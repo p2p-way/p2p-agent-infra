@@ -59,12 +59,9 @@
  | [Cloud Compute - Regular Performance](https://www.vultr.com/pricing/#cloud-compute) | `0.007 $/hr` | `5.21 $/m` | 1 vCPU, 1 GB  |
  | TOTAL                                                                               |              | `5.21 $/m` |               |
 
+```shell
+5.21 $/m/i / 31 d = 0.17 $/d/i # 1 day / 1 instance / 1 region
 ```
-5.21 $/m/i / 31 d   =  0.17 $/d/i # 1 day / 1 instance / 1 region
-0.17 $/d/i x 33 i/r =  5.61 $/d/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **5.61 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.

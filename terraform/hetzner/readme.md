@@ -63,12 +63,9 @@
  | [Primary IPv4](https://www.hetzner.com/cloud#pricing)                              | `0.001 $/h`  | `0.60 $/m`  |                   |
  | TOTAL                                                                              |              | `9.09 $/m`  |                   |
 
+```shell
+11.31 $/m/i / 31 d = 0.36 $/d/i # 1 day / 1 instance / 1 region
 ```
-11.31 $/m/i / 31 d = 0.36 $/d/i   # 1 day / 1 instance / 1 region
- 0.36 $/d/i x  6 r = 2.16 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **2.16 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.

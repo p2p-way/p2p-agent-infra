@@ -96,12 +96,9 @@
  | [Logs](https://cloud.google.com/logging/#pricing)                     | `-`            | `-`            | Free allotment                                      |
  | TOTAL                                                                 |                | `26.39 $/m`    |                                                     |
 
+```shell
+26.39 $/m/i / 31 d = 0.85 $/d/i # 1 day / 1 instance / 1 region
 ```
-26.39 $/m/i / 31 d =  0.85 $/d/i   # 1 day / 1 instance / 1 region
- 0.85 $/d/i x 43 r = 36.55 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **36.55 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free allotment may not cover multiple instances running for a long period of time.

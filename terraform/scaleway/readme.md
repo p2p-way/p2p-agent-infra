@@ -60,12 +60,9 @@ scw instance server-type get zone=nl-ams-1
  | [Development Instances](https://www.scaleway.com/en/pricing/virtual-instances) | `0.02 $/h` | `14.88 $/m` | PLAY2-PICO        |
  | TOTAL                                                                          |            | `14.88 $/m` |                   |
 
+```shell
+14.88 $/m/i / 31 d = 0.48 $/d/i # 1 day / 1 instance / 1 region
 ```
-14.88 $/m/i / 31 d = 0.48 $/d/i   # 1 day / 1 instance / 1 region
- 0.48 $/d/i x  8 r = 3.84 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **3.84 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.

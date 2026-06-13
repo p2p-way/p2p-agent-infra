@@ -133,12 +133,9 @@
  | [CloudFront Functions](https://aws.amazon.com/cloudfront/pricing/)      | `-`            | `-`            | Free Tier                            |
  | TOTAL                                                                   |                | `30.22 $/m`    |                                      |
 
+```shell
+30.22 $/m/i / 31 d = 0.97 $/d/i # 1 day / 1 instance / 1 region
 ```
-30.22 $/m/i / 31 d =  0.97 $/d/i   # 1 day / 1 instance / 1 region
- 0.97 $/d/i x 34 r = 32.98 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **32.98 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free tier may not cover multiple instances running for a long period of time.

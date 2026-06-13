@@ -88,12 +88,9 @@
  | [Networking](https://www.oracle.com/cloud/price-list/#pricing-networking)                         | `-`             | `-`              | First 10 TB / Month |
  | TOTAL                                                                                             |                 | `15.56 $/m`      |                     |
 
+```shell
+15.56 $/m/i / 31 d = 0.50 $/d/i # 1 day / 1 instance / 1 region
 ```
-15.56 $/m/i / 31 d =  0.50 $/d/i   # 1 day / 1 instance / 1 region
- 0.50 $/d/i x 44 r = 22.00 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **22.00 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions. Also, free tier may not cover multiple instances running for a long period of time.

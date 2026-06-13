@@ -117,12 +117,9 @@
  | [Bandwidth](https://azure.microsoft.com/en-us/pricing/details/bandwidth/#pricing)                    | `0.12 $/GB`      | `12 $/100GB`    |                                               |
  | TOTAL                                                                                                |                  | `34.54 $/m`     |                                               |
 
+```shell
+34.54 $/m/i / 31 d = 1.11 $/d/i # 1 day / 1 instance / 1 region
 ```
-34.54 $/m/i / 31 d =  1.11 $/d/i   # 1 day / 1 instance / 1 region
- 1.11 $/d/i x 49 r = 54.39 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **54.39 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free grants may not cover multiple instances running for a long period of time.

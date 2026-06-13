@@ -112,12 +112,9 @@
  | [Simple Log Service](https://www.alibabacloud.com/en/product/log-service/pricing)         | `-`                | `-`              | Free quota                                 |
  | TOTAL                                                                                     |                    | `33.34 $/m`      |                                            |
 
+```shell
+33.34 $/m/i / 31 d = 1.08 $/d/i # 1 day / 1 instance / 1 region
 ```
-33.34 $/m/i / 31 d =   1.08 $/d/i   # 1 day / 1 instance / 1 region
- 1.08 $/d/i x 31 r =  33.48 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **33.48 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price and traffic across all the regions. Also, free quota may not cover multiple instances running for a long period of time.

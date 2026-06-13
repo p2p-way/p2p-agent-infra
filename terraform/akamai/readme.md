@@ -64,12 +64,9 @@
  | [Compute - Shared CPU Plans](https://www.linode.com/pricing/#compute-shared) | `0.0105 $/h` | `7.81 $/m` | Nanode 1 GB / BR, Sao Paulo (br-gru) |
  | TOTAL                                                                        |              | `7.81 $/m` |                                      |
 
+```shell
+7.81 $/m/i / 31 d = 0.25 $/d/i # 1 day / 1 instance / 1 region
 ```
-7.81 $/m/i / 31 d =  0.25 $/d/i   # 1 day / 1 instance / 1 region
-0.25 $/d/i x 31 r =  7.75 $/d/i/r # 1 day / 1 instance / all regions
-```
-
- Run **1 instance** in **all public regions**, during **1 day**, may cost ~ **7.75 $**
 
  > [!NOTE]
  > Provided costs are very approximate because we use a highest instance price across all the regions.
