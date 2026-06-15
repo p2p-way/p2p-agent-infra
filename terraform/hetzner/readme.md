@@ -59,12 +59,12 @@
 
  | Resource                                                                           | Price        | Costs       | Comment           |
  | ---------------------------------------------------------------------------------- | ------------ | ----------- | ----------------- |
- | [VPS with AMD EPYC™ 7002 series processors](https://www.hetzner.com/cloud#pricing) | `0.0152 $/h` | `11.31 $/m` | CPX12 / Singapore |
+ | [VPS with AMD EPYC™ 7002 series processors](https://www.hetzner.com/cloud#pricing) | `0.0288 $/h` | `21.31 $/m` | CPX12 / Singapore |
  | [Primary IPv4](https://www.hetzner.com/cloud#pricing)                              | `0.001 $/h`  | `0.60 $/m`  |                   |
- | TOTAL                                                                              |              | `9.09 $/m`  |                   |
+ | TOTAL                                                                              |              | `21.91 $/m` |                   |
 
 ```shell
-11.31 $/m/i / 31 d = 0.36 $/d/i # 1 day / 1 instance / 1 region
+21.91 $/m/i / 31 d = 0.71 $/d/i # 1 day / 1 instance / 1 region
 ```
 
  > [!NOTE]
