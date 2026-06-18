@@ -2,7 +2,7 @@
 module "hil" {
   source = "./modules/agent"
 
-  location                 = "hil"
+  region                   = "hil"
   agent_create             = var.agent_create
   agent_name               = var.agent_name
   default_labels           = var.default_labels

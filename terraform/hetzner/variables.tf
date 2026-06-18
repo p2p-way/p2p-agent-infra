@@ -10,8 +10,8 @@ variable "default_labels" {
 }
 
 # Agent
-variable "location" {
-  description = "Name of the Location."
+variable "region" {
+  description = "A region where to run instances."
   type        = string
   default     = "fsn1"
 }

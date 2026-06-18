@@ -10,7 +10,7 @@ variable "default_labels" {
 }
 
 # Agent
-variable "location" {
+variable "region" {
   description = "Name of the Location."
   type        = string
   default     = "fsn1"

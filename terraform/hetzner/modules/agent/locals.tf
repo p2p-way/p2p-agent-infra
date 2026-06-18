@@ -2,7 +2,7 @@
 locals {
   create               = var.agent_create
   agent_name           = lower(replace(var.agent_name, " ", "-"))
-  location             = var.location
+  location             = var.region
   location_description = try(data.hcloud_location.current[0].description, "")
   open_tcp_ports       = try(element(var.open_ports, 0), null)
   open_udp_ports       = try(element(var.open_ports, 1), null)
@@ -15,5 +15,5 @@ locals {
 data "hcloud_location" "current" {
   count = local.create ? 1 : 0
 
-  name = var.location
+  name = var.region
 }

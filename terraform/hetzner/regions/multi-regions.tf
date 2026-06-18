@@ -5,7 +5,7 @@ module "multi-regions" {
   for_each = toset(sort(data.hcloud_locations.all-locations[0].locations[*].name))
   # for_each = toset(["fsn1"])
 
-  location                 = each.key
+  region                   = each.key
   agent_create             = var.agent_create
   agent_name               = var.agent_name
   default_labels           = var.default_labels

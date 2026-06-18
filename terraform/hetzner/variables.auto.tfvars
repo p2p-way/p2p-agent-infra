@@ -6,7 +6,7 @@ default_labels = {
 }
 
 # Agent
-location     = "fsn1"
+region       = "fsn1"
 agent_create = true
 agent_name   = "P2P agent"
 open_ports   = ["1024-65535", "1024-65535"]

@@ -2,7 +2,7 @@
 module "ash" {
   source = "./modules/agent"
 
-  location                 = "ash"
+  region                   = "ash"
   agent_create             = var.agent_create
   agent_name               = var.agent_name
   default_labels           = var.default_labels

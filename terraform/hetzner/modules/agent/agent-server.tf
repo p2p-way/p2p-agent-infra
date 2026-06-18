@@ -11,7 +11,7 @@ resource "hcloud_server" "agent" {
   count = local.create ? var.desired_capacity : 0
 
   # Location
-  location = var.location
+  location = local.location
 
   # Image
   image = data.hcloud_image.agent[0].id

@@ -2,7 +2,7 @@
 module "nbg1" {
   source = "./modules/agent"
 
-  location                 = "nbg1"
+  region                   = "nbg1"
   agent_create             = var.agent_create
   agent_name               = var.agent_name
   default_labels           = var.default_labels
