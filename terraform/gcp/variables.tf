@@ -11,7 +11,7 @@ variable "default_labels" {
 
 # Agent
 variable "region" {
-  description = "The default region to manage resources in."
+  description = "A region where to run instances."
   type        = string
   default     = "europe-west3"
 }

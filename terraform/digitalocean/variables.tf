@@ -1,6 +1,6 @@
 # Agent
 variable "region" {
-  description = "The region where the Droplet will be created."
+  description = "A region where to run instances."
   type        = string
   default     = "fra1"
 }

@@ -1,6 +1,6 @@
 # Agent
 variable "region" {
-  description = "This is the location where the Linode is deployed."
+  description = "A region where to run instances."
   type        = string
   default     = "eu-central"
 }

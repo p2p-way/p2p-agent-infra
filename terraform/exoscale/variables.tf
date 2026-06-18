@@ -11,7 +11,7 @@ variable "default_labels" {
 
 # Agent
 variable "region" {
-  description = "The Exoscale Zone name."
+  description = "A region where to run instances."
   type        = string
   default     = "de-fra-1"
 }

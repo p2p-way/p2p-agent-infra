@@ -11,7 +11,7 @@ variable "default_tags" {
 
 # Agent
 variable "region" {
-  description = "The zone in which the server should be created."
+  description = "A region where to run instances."
   type        = string
   default     = "nl-ams-1"
 }

@@ -1,6 +1,6 @@
 # Agent
 variable "region" {
-  description = "The ID of the region that the instance is to be created in."
+  description = "A region where to run instances."
   type        = string
   default     = "fra"
 }

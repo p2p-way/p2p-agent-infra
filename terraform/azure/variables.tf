@@ -11,7 +11,7 @@ variable "default_tags" {
 
 # Agent
 variable "region" {
-  description = "The Azure Region where the Resource Group should exist."
+  description = "A region where to run instances."
   type        = string
   default     = "Germany West Central"
 }

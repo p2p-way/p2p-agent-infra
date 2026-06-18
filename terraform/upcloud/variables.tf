@@ -11,7 +11,7 @@ variable "default_labels" {
 
 # Agent
 variable "region" {
-  description = "The zone in which the server will be hosted, e.g. de-fra1."
+  description = "A region where to run instances."
   type        = string
   default     = "de-fra1"
 }

@@ -90,7 +90,7 @@ variable "waf_logs_enable" {
 
 # Agent
 variable "region" {
-  description = "Region where this resource will be managed."
+  description = "A region where to run instances."
   type        = string
   default     = "eu-central-1"
 }
