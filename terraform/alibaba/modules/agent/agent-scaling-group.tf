@@ -55,7 +55,7 @@ resource "alicloud_ess_scheduled_task" "agent_start" {
 
   lifecycle {
     ignore_changes = [
-      min_size
+      min_value
     ]
   }
 }
