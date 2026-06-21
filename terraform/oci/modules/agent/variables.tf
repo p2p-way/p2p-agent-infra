@@ -127,17 +127,6 @@ variable "enable_ipv6" {
   type        = bool
   default     = false
 }
-variable "min_size" {
-  description = "Min number of Amazon EC2 instances that should be running in the group."
-  type        = number
-  default     = 0
-}
-
-variable "max_size" {
-  description = "Max number of Amazon EC2 instances that should be running in the group."
-  type        = number
-  default     = 30
-}
 
 # Autoscaling
 variable "initial_deploy" {
