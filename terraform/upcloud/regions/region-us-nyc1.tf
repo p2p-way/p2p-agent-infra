@@ -9,7 +9,7 @@ module "us-nyc1" {
   open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   keys                     = local.keys
-  plan                     = var.plan
+  instance_type            = var.instance_type
   os_name                  = var.os_name
   storage_size             = var.storage_size
   desired_capacity         = var.desired_capacity

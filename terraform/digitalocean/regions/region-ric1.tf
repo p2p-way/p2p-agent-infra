@@ -8,7 +8,7 @@ module "ric1" {
   open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   ssh_keys                 = local.ssh_keys
-  droplet_size             = "s-1vcpu-1gb-intel" # var.droplet_size
+  instance_type            = "s-1vcpu-1gb-intel" # var.instance_type
   os_name                  = var.os_name
   desired_capacity         = var.desired_capacity
   enable_ipv6              = var.enable_ipv6

@@ -12,7 +12,7 @@ resource "digitalocean_droplet" "agent" {
   image = data.digitalocean_image.agent[0].slug
 
   # Size
-  size = var.droplet_size
+  size = var.instance_type
 
   # Authentication
   ssh_keys = var.ssh_keys

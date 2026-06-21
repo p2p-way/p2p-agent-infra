@@ -73,7 +73,7 @@ variable "public_keys" {
 }
 
 variable "instance_type" {
-  description = "The commercial type of the server."
+  description = "The type of the instance to run."
   type        = string
   default     = "STARDUST1-S"
 }

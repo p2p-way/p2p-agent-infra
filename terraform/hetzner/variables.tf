@@ -72,8 +72,8 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "server_type" {
-  description = "Name of the server type this server should be created with."
+variable "instance_type" {
+  description = "The type of the instance to run."
   type        = map(string)
   default = {
     ash     = "cpx11"

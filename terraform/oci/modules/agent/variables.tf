@@ -105,7 +105,7 @@ variable "os_name" {
 }
 
 variable "instance_type" {
-  description = "The type of the instance."
+  description = "The shape of an instance. The shape determines the number of CPUs, amount of memory, and other resources allocated to the instance."
   type        = string
   default     = "VM.Standard.A4.Flex"
 }

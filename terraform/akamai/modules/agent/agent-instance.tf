@@ -18,7 +18,7 @@ resource "linode_instance" "agent" {
   image = local.os_name
 
   # Linode Plan
-  type = var.type
+  type = var.instance_type
 
   # Details
   label = "${local.resource_name}-${count.index + 1}"

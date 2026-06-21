@@ -61,8 +61,8 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "droplet_size" {
-  description = "The instance size."
+variable "instance_type" {
+  description = "The type of the instance to run."
   type        = string
   default     = "s-1vcpu-1gb"
 }

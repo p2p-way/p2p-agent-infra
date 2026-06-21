@@ -86,7 +86,7 @@ variable "os_name" {
 }
 
 variable "instance_type" {
-  description = "Instance type."
+  description = "The type of the instance to run."
   type        = string
   default     = "ecs.e-c2m1.large"
 }

@@ -111,7 +111,7 @@ variable "os_name" {
 }
 
 variable "instance_type" {
-  description = "The type of the instance."
+  description = "The type of the instance to run."
   type        = string
   default     = "VM.Standard.A4.Flex"
 }

@@ -61,8 +61,8 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "type" {
-  description = "The Linode type defines the pricing, CPU, disk, and RAM specs of the instance."
+variable "instance_type" {
+  description = "The type of the instance to run."
   type        = string
   default     = "g6-nanode-1"
 }

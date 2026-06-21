@@ -72,7 +72,7 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "type" {
+variable "instance_type" {
   description = "The instance type (<family>.<size>, e.g. standard.medium)."
   type        = string
   default     = "standard.tiny"

@@ -6,7 +6,7 @@ resource "vultr_instance" "agent" {
   region = var.region
 
   # Choose Type
-  plan = var.plan
+  plan = var.instance_type
 
   # Operating System
   os_id = data.vultr_os.agent.id

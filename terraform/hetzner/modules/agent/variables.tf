@@ -72,7 +72,7 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "server_type" {
+variable "instance_type" {
   description = "Name of the server type this server should be created with."
   type        = string
   default     = "cpx11"

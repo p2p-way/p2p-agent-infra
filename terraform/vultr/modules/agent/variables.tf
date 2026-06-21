@@ -61,7 +61,7 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "plan" {
+variable "instance_type" {
   description = "The ID of the plan that you want the instance to subscribe to."
   type        = string
   default     = "vc2-1c-1gb"

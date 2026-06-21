@@ -66,7 +66,7 @@ variable "allow_ssh" {
 }
 
 # Instance
-variable "type" {
+variable "instance_type" {
   description = "The commercial type of the server."
   type        = string
   default     = "STARDUST1-S"

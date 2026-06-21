@@ -22,7 +22,7 @@ locals {
     ubuntu = "ubuntu-os-cloud"
   }
 
-  architecture = contains(local.arm_series, element(split("-", var.machine_type), 0)) ? "arm64" : "amd64"
+  architecture = contains(local.arm_series, element(split("-", var.instance_type), 0)) ? "arm64" : "amd64"
   os_family    = lookup(local.os_family_map, replace(var.os_name, ".", "-"))
   os_project   = lookup(local.os_project_map, element(split("-", var.os_name), 0))
 }

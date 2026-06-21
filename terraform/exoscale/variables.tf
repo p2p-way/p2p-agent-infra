@@ -72,8 +72,8 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "type" {
-  description = "The instance type (<family>.<size>, e.g. standard.medium)."
+variable "instance_type" {
+  description = "The type of the instance to run."
   type        = string
   default     = "standard.tiny"
 }

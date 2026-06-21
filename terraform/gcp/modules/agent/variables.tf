@@ -116,7 +116,7 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "machine_type" {
+variable "instance_type" {
   description = "The machine type to create."
   type        = string
   default     = "e2-micro"

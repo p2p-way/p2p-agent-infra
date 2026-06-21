@@ -19,4 +19,3 @@
 ## To do
 
  1. Consider to add IPv6 support.
- 2. Consider to unify common variables names, like *region* and *instance type*.

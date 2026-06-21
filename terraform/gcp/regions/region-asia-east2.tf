@@ -16,7 +16,7 @@ module "asia-east2" {
   allow_ssh                   = var.allow_ssh
   public_keys                 = local.public_keys
   os_name                     = var.os_name
-  machine_type                = var.machine_type
+  instance_type               = var.instance_type
   disk_type                   = var.disk_type
   disk_size_gb                = var.disk_size_gb
   unique_iam_roles            = var.unique_iam_roles

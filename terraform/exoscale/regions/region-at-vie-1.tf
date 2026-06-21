@@ -10,7 +10,7 @@ module "at-vie-1" {
   allow_ssh                = var.allow_ssh
   ssh_keys                 = local.ssh_keys
   os_name                  = var.os_name
-  type                     = var.type
+  instance_type            = var.instance_type
   disk_size                = var.disk_size
   desired_capacity         = var.desired_capacity
   ipv6                     = var.ipv6

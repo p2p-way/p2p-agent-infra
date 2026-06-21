@@ -17,7 +17,7 @@ resource "hcloud_server" "agent" {
   image = data.hcloud_image.agent[0].id
 
   # Type
-  server_type = var.server_type
+  server_type = var.instance_type
 
   # Networking
   public_net {

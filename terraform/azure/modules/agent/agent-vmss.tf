@@ -12,7 +12,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "agent" {
   zones                = var.zone
 
   # Instance details
-  sku = var.sku
+  sku = var.instance_type
 
   source_image_reference {
     publisher = local.os_publisher

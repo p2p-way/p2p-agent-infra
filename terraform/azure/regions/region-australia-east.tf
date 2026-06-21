@@ -17,7 +17,7 @@ module "australia-east" {
   public_keys              = local.public_keys
   admin_username           = var.admin_username
   zone                     = var.zone
-  sku                      = var.sku
+  instance_type            = var.instance_type
   os_name                  = var.os_name
   os_disk_size_gb          = var.os_disk_size_gb
   os_storage_account_type  = var.os_storage_account_type

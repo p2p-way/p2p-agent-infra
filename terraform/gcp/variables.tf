@@ -98,8 +98,8 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "machine_type" {
-  description = "The machine type to create."
+variable "instance_type" {
+  description = "The type of the instance to run."
   type        = string
   default     = "e2-micro"
 }

@@ -103,8 +103,8 @@ variable "zone" {
   default     = [1, 2, 3]
 }
 
-variable "sku" {
-  description = "The Virtual Machine SKU for the Scale Set."
+variable "instance_type" {
+  description = "The type of the instance to run."
   type        = string
   default     = "Standard_B1s"
 }

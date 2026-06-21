@@ -7,7 +7,7 @@ resource "google_compute_instance_template" "agent" {
   # Labels
 
   #  Machine configuration
-  machine_type = var.machine_type
+  machine_type = var.instance_type
 
   #  Boot disk
   disk {

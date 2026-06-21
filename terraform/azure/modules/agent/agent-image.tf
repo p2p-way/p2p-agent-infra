@@ -35,7 +35,7 @@ locals {
   # Dpldsv5-series, Dpldsv6-series
   # Epsv5-series, Epdsv5-series
 
-  os_arch_suffix = contains(local.arm_series, try(replace(var.sku, "/[[:alnum:]]+_([A-Za-z]+)[0-9]+([A-Za-z]+)_v([0-9]+)$/", "$1$2"), "")) ? "arm64_suffix" : "amd64_suffix"
+  os_arch_suffix = contains(local.arm_series, try(replace(var.instance_type, "/[[:alnum:]]+_([A-Za-z]+)[0-9]+([A-Za-z]+)_v([0-9]+)$/", "$1$2"), "")) ? "arm64_suffix" : "amd64_suffix"
   os_publisher   = lookup(local.os_publisher_map, element(split("-", var.os_name), 0))
   os_offer       = lookup(local.os_name_map, var.os_name)["offer"]
   os_sku         = "${lookup(local.os_name_map, var.os_name)["sku_prefix"]}${lookup(local.os_name_map, var.os_name)[local.os_arch_suffix]}"

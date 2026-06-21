@@ -13,7 +13,7 @@ locals {
 data "hcloud_server_type" "agent" {
   count = local.create ? 1 : 0
 
-  name = var.server_type
+  name = var.instance_type
 }
 
 # Image

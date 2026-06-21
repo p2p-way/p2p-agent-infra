@@ -9,7 +9,7 @@ module "fr-par-1" {
   default_tags             = var.default_tags
   open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
-  type                     = var.instance_type
+  instance_type            = var.instance_type
   os_name                  = var.os_name
   os_disk_size             = var.os_disk_size
   os_disk_type             = var.os_disk_type

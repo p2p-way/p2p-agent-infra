@@ -28,7 +28,7 @@ resource "exoscale_compute_instance" "agent" {
   zone = var.region
 
   # Instance type
-  type = var.type
+  type = var.instance_type
 
   # Disk size
   disk_size = var.disk_size

@@ -11,7 +11,7 @@ module "multi-regions" {
   open_ports               = var.open_ports
   allow_ssh                = var.allow_ssh
   ssh_key_ids              = local.ssh_keys
-  plan                     = each.key == "hnl" ? "vhp-1c-1gb" : each.key == "mxp" ? "voc-g-1c-4gb-30s" : var.plan
+  instance_type            = each.key == "hnl" ? "vhp-1c-1gb" : each.key == "mxp" ? "voc-g-1c-4gb-30s" : var.instance_type
   os_name                  = var.os_name
   desired_capacity         = var.desired_capacity
   enable_ipv6              = var.enable_ipv6

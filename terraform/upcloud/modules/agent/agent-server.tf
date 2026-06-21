@@ -16,7 +16,7 @@ resource "upcloud_server" "agent" {
   zone = local.region
 
   # Plan
-  plan = var.plan
+  plan = var.instance_type
 
   # Storage / Operating system
   template {

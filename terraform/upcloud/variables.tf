@@ -72,8 +72,8 @@ variable "os_name" {
   default     = "ubuntu"
 }
 
-variable "plan" {
-  description = "The pricing plan used for the server."
+variable "instance_type" {
+  description = "The type of the instance to run."
   type        = string
   default     = "1xCPU-1GB"
 }

@@ -22,7 +22,7 @@ resource "scaleway_instance_server" "agent" {
   # Instance name
   name = "${local.resource_name}-${count.index + 1}"
   tags = local.default_tags
-  type = var.type
+  type = var.instance_type
 
   # Choose an image
   image = local.os_name
