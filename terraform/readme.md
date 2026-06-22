@@ -57,7 +57,7 @@
 ## [Configuration](#peer-to-peer-agent-terraform)
 
  We can [Run agents](#run-agents) on [Cloud Providers](#cloud-providers) using Terraform and common settings are following
-  - We should **pay attention to the instance type**. While defaults for AWS and Azure works well, GCP is ~ 6 times slower and Alibaba cheapest instances are unusable.
+  - We should pay attention to the `instance_type`. While defaults for AWS and Azure works well, GCP is ~ 6 times slower and Alibaba cheapest instances are unusable.
 
     <details><summary><b>Ansible roles execution duration</b></summary>
 
@@ -86,7 +86,7 @@
   - Variable `agent_logs` enable logs in the cloud (Alibaba/AWS/GCP only).
   - Variable `agent_metrics` enable metrics in the cloud (Alibaba/AWS/GCP only).
   - Variable `open_ports` should be used to open a wide range of TCP/UDP ports, for P2P applications, like following - `["1024-65535", "1024-65535"]` and then [Ansible](../ansible) will take care about opening just ports required by the applications, using OS level firewall.
-  - Variable `allow_ssh` specify hosts/subnets for SSH access to the instances.
+  - Variable `allow_ssh` specify hosts/subnets in a CIDR notation for SSH access to the instances.
   - When `public_keys = []`, we generate the keys for instances SSH access, we also can pass own list of keys or skip it (excluding Azure), by set value to `[""]`.
   - Variable `os_name` should be set to `ubuntu`, which defaults to ubuntu 24.04.
   - Set `desired_capacity` with the desired number of the nodes per region. We also can set value per specific region by passing value directly to the specific region module configuration.
