@@ -88,13 +88,13 @@
    # List Availability Zones for enabled regions
    echo -e "\nRegion\t\t\tCount\tAZ"
    for region in $(aws ec2 describe-regions --output text --query 'sort_by(Regions[], &RegionName)[].RegionName'); do
-     zones=$(aws ec2 describe-availability-zones --region "${region}" --output json --query 'sort_by(AvailabilityZones[], &ZoneName)[].ZoneName')
+     zones=$(aws ec2 describe-availability-zones --region "${region}" --cli-connect-timeout 5 --output json --query 'sort_by(AvailabilityZones[], &ZoneName)[].ZoneName')
      zones_count=$(jq -r 'length' <<< "${zones}")
      zones_list=$(jq -r 'join("\n\t\t\t\t")' <<< "${zones}")
      echo -e "${region}\t\t${zones_count}\t${zones_list}\n"
    done
 
-   # List available instances in the region
+   # List available instances types in the region
    aws ec2 describe-instance-types \
      --region eu-central-1 \
      --query 'sort_by(InstanceTypes[], &InstanceType)[].{"  Instance": InstanceType, " vCPU": VCpuInfo.DefaultVCpus, Memory: MemoryInfo.SizeInMiB}' \
@@ -109,7 +109,7 @@
    # Lists the applied quota values for the EC2 service
    echo -e "\nRegion\t\t\tValue\tAdjustable"
    for region in $(aws ec2 describe-regions --output text --query 'sort_by(Regions[], &RegionName)[].RegionName'); do
-     quotas=$(aws service-quotas list-service-quotas --region "${region}" --service-code ec2 --query 'Quotas[?QuotaName==`Running On-Demand Standard (A, C, D, H, I, M, R, T, Z) instances`].{Value: Value, Adjustable: Adjustable}')
+     quotas=$(aws service-quotas list-service-quotas --region "${region}" --cli-connect-timeout 5 --service-code ec2 --query 'Quotas[?QuotaName==`Running On-Demand Standard (A, C, D, H, I, M, R, T, Z) instances`].{Value: Value, Adjustable: Adjustable}')
      value=$(jq -r '.[].Value' <<< "${quotas}")
      adjustable=$(jq -r '.[].Adjustable' <<< "${quotas}")
      echo -e "${region}\t\t${value}\t${adjustable}"
