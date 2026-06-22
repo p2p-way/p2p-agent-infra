@@ -85,7 +85,7 @@ variable "storage_size" {
 }
 
 variable "desired_capacity" {
-  description = "Number of servers to create."
+  description = "The number of instances to run."
   type        = number
   default     = 1
 }

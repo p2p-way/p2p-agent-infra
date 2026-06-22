@@ -130,7 +130,7 @@ variable "initial_deploy" {
 
 # Autoscaler
 variable "desired_capacity" {
-  description = "The number of instances that are available for scaling."
+  description = "The number of instances to run."
   type        = number
   default     = 1
 }

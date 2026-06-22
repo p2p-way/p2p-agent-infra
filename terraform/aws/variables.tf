@@ -208,7 +208,7 @@ variable "initial_deploy" {
 }
 
 variable "desired_capacity" {
-  description = "Number of Amazon EC2 instances that should be running in the group."
+  description = "The number of instances to run."
   type        = number
   default     = 1
 }

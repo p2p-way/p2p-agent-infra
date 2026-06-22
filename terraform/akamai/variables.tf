@@ -68,7 +68,7 @@ variable "instance_type" {
 }
 
 variable "desired_capacity" {
-  description = "Number of instances to create."
+  description = "The number of instances to run."
   type        = number
   default     = 1
 }

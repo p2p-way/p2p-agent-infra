@@ -142,7 +142,7 @@ variable "initial_deploy" {
 }
 
 variable "desired_capacity" {
-  description = "Number of instances to run."
+  description = "The number of instances to run."
   type        = number
   default     = 1
 }

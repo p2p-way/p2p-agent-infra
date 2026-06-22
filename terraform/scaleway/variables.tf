@@ -97,7 +97,7 @@ variable "os_disk_type" {
 }
 
 variable "desired_capacity" {
-  description = "Number of the instances to run."
+  description = "The number of instances to run."
   type        = number
   default     = 1
 }
