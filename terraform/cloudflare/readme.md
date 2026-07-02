@@ -164,9 +164,8 @@
 
 ## [Known issues](#control-center-on-cloudflare)
 
- 1. We can't deploy more than one control center per zone using current approach
-    - [cloudflare_ruleset not working #5247](https://github.com/cloudflare/terraform-provider-cloudflare/issues/5247)
-    - ['zone' is not a valid value for kind because exceeded maximum number of │ zone rulesets for phase http_ratelimit (20217) #3444](https://github.com/cloudflare/terraform-provider-cloudflare/issues/3444)
+ 1. We can't deploy more than one control center per zone using current approach - [Feature Request: Ruleset composition via a construction data source (cloudflare_ruleset_rules)
+ #7171](https://github.com/cloudflare/terraform-provider-cloudflare/issues/7171).
 
  2. It was observed, that sometimes DNS name assignment take some time and control center and radar migth not be ready immediately after Terraform run.
 
