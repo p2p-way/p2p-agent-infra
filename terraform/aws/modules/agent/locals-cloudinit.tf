@@ -29,26 +29,27 @@ locals {
     permissions = "0600"
   }] : []
 
+  # CloudWatch agent configs
+  cloudwatch_logs    = "cloudwatch-logs.json"
+  cloudwatch_metrics = "cloudwatch-metrics.json"
+
   # Agent logs
   agent_logs_cloudinit = local.agent_logs ? [{
     encoding = "b64"
-    content = base64encode(templatefile("${path.module}/files/cloudwatch-logs.json", {
+    content = base64encode(templatefile("${path.module}/files/${local.cloudwatch_logs}", {
       log_files = local.agent_log_files,
       log_group = try(aws_cloudwatch_log_group.agent[0].name, "")
     }))
-    path        = "${dirname(var.agent_base_folder)}/cloudwatch-logs.json"
+    path        = "${dirname(var.agent_base_folder)}/${local.cloudwatch_logs}"
     owner       = "root:root"
     permissions = "0644"
   }] : []
 
   # Agent metrics
   agent_metrics_cloudinit = local.agent_metrics ? [{
-    encoding = "b64"
-    content = base64encode(templatefile("${path.module}/files/cloudwatch-metrics.json", {
-      base_folder = var.agent_base_folder,
-      log_file    = var.agent_log_file
-    }))
-    path        = "${dirname(var.agent_base_folder)}/cloudwatch-metrics.json"
+    encoding    = "b64"
+    content     = filebase64("${path.module}/files/${local.cloudwatch_metrics}")
+    path        = "${dirname(var.agent_base_folder)}/${local.cloudwatch_metrics}"
     owner       = "root:root"
     permissions = "0644"
   }] : []
