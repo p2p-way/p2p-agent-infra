@@ -1,6 +1,6 @@
 # Peer-to-peer agent
 
- To spread information in the World, it might be required to use or prepare a basic [IT infrastructure](https://en.wikipedia.org/wiki/IT_infrastructure).
+ To spread information in the world, it might be required to use or prepare a basic [IT infrastructure](https://en.wikipedia.org/wiki/IT_infrastructure).
 
  In case of the [Classical web platforms](https://en.wikipedia.org/wiki/Client%E2%80%93server_model) it can be a [web server](https://en.wikipedia.org/wiki/Web_server), specialised [web hosting service](https://en.wikipedia.org/wiki/Web_hosting_service) or a [storage](https://en.wikipedia.org/wiki/Cloud_storage) with [CDN](https://en.wikipedia.org/wiki/Content_delivery_network).
 
