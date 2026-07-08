@@ -20,7 +20,7 @@
       {{ app_roles | sort | unique | join(' ') | urlencode }}
     data: >-
       ?cloud={{ common_cloud -}}
-      &region={{ watcher_region -}}
+      &region={{ common_region -}}
       &autoscaler={{ watcher_enabled | lower -}}
       &capacity={{ watcher_desired_capacity -}}
       &services={{ services -}}

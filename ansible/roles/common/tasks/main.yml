@@ -38,9 +38,17 @@
   failed_when: false
   when: common_apt_status.stderr is search('dpkg --configure')
 
-- name: Get Public IP
+- name: Get cloud
   ansible.builtin.include_tasks:
-    file: public_ip.yml
+    file: get_cloud.yml
+
+- name: Get region
+  ansible.builtin.include_tasks:
+    file: get_region.yml
+
+- name: Get public IP
+  ansible.builtin.include_tasks:
+    file: get_public_ip.yml
 
 - name: Setup firewall
   ansible.builtin.include_tasks:
