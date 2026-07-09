@@ -1,4 +1,4 @@
-# P2P agents on OCI
+# P2P agent on OCI
 
  1. [Description](#description)
  2. [Considerations](#considerations)
@@ -11,7 +11,7 @@
  9. [Known issues](#known-issues)
 
 
-## [Description](#p2p-agents-on-oci)
+## [Description](#p2p-agent-on-oci)
 
  This code provides [Terraform](https://www.terraform.io) configuration for [Oracle Cloud Infrastructure](https://cloud.oracle.com) stack deployment for P2P content distribution.
  1. [OCI Functions](https://www.oracle.com/cloud/cloud-native/functions/) - Run a function which will act as watcher and orchestrate VM provisioning via instance pool.
@@ -37,20 +37,20 @@
  5. Create a log group.
 
 
-## [Considerations](#p2p-agents-on-oci)
+## [Considerations](#p2p-agent-on-oci)
 
 **Agent**
  1. Check [Agent consideration](../readme.md#agent-considerations).
 
 
-## [Limitations](#p2p-agents-on-oci)
+## [Limitations](#p2p-agent-on-oci)
 
  1. Almost all of the OCI Regions have 1 Availability Domain and just some of supports thee AD's.
  2. Watcher is not implemented yet and we should set variable [`start_time`](../readme.md#agent) only as `now` or specify a custom time.
- 3. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented and state will be stored locally.
+ 3. [Remote backend](https://developer.hashicorp.com/terraform/language/settings/backends/remote) for Terraform is not implemented yet and state will be stored locally.
 
 
-## [Regions](#p2p-agents-on-oci)
+## [Regions](#p2p-agent-on-oci)
 
  - [Public Cloud Regions](https://www.oracle.com/cloud/public-cloud-regions/)
  - [Regions and Availability Domains](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm)
@@ -76,7 +76,7 @@
    ```
 
 
-## [Costs](#p2p-agents-on-oci)
+## [Costs](#p2p-agent-on-oci)
 
  [Estimate Cloud Costs Easily | Oracle](https://www.oracle.com/cloud/costestimator.html)
 
@@ -96,7 +96,7 @@
  > Provided costs are very approximate because we use a highest instance price across all the regions. Also, free tier may not cover multiple instances running for a long period of time.
 
 
-## [Requirements](#p2p-agents-on-oci)
+## [Requirements](#p2p-agent-on-oci)
 
  In order to proceed with this deployment, we need
  1. Linux host with [Terraform](https://developer.hashicorp.com/terraform/install) and [OCI CLI](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm) installed.
@@ -106,13 +106,13 @@
     ```
 
 
-## [Deployment](#p2p-agents-on-oci)
+## [Deployment](#p2p-agent-on-oci)
 
  1. Get Terraform code from GitHub repository
     ```shell
-    git clone https://github.com/slavasveta/p2p-agent-infra
+    git clone https://github.com/p2p-way/p2p-agent-infra
 
-    cd p2p-agent-infra/oci
+    cd p2p-agent-infra/terraform/oci
     ```
 
  2. Select regions where to run agents
@@ -176,7 +176,7 @@
  After some period of time all resources will be created and nodes will start. After the start, they will connect to the control center and will setup all configuration required to support P2P content distribution.
 
 
-### [Update configuration](#p2p-agents-on-oci)
+### [Update configuration](#p2p-agent-on-oci)
 
  After we deployed initial configuration, it may be required to update nodes capacity or add more regions or even update control center configuration. And next steps mainly depends on the start time we set.
 
@@ -204,7 +204,7 @@
  ```
 
 
-#### [Update capacity](#p2p-agents-on-oci)
+#### [Update capacity](#p2p-agent-on-oci)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Set `desired_capacity` in the *variables.auto.tfvars* globaly, or set it per region in the module configuration.
@@ -212,7 +212,7 @@
  4. Run `terraform apply`.
 
 
-#### [Add new region](#p2p-agents-on-oci)
+#### [Add new region](#p2p-agent-on-oci)
 
  1. Set `initial_deploy = false` in the *variables.auto.tfvars*.
  2. Add a configuration file for the new region.
@@ -221,7 +221,7 @@
  5. Run `terraform apply`.
 
 
-## [Cleanup](#p2p-agents-on-oci)
+## [Cleanup](#p2p-agent-on-oci)
 
  In order to cleanup all created resources we should use the following steps
  1. Cleanup resources created by Terraform
@@ -230,7 +230,7 @@
     ```
 
 
-## [Known issues](#p2p-agents-on-oci)
+## [Known issues](#p2p-agent-on-oci)
 
  1. [OCI Limits by Service](https://docs.oracle.com/en-us/iaas/Content/General/service-limits/default.htm) and [Compute Limits](https://docs.oracle.com/en-us/iaas/Content/General/service-limits/default.htm#computelimits) might not permit to run required number or type of instances and we have to follow [Creating a Limit Increase Request](https://docs.oracle.com/en-us/iaas/Content/General/service-limits/create-request.htm).
 
