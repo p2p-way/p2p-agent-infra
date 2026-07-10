@@ -4,7 +4,7 @@ resource "google_cloud_scheduler_job" "scheduler" {
 
   name             = local.scheduler_name
   description      = local.scheduler_description
-  schedule         = "*/5 * * * *"
+  schedule         = local.scheduler_expression
   time_zone        = "Etc/UTC"
   attempt_deadline = "15s"
 

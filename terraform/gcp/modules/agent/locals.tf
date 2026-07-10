@@ -38,6 +38,15 @@ locals {
   start_offset                 = split(" ", var.start_offset)
   run_duration                 = split(" ", var.run_duration)
   sa_scope                     = matchkeys(["compute-rw", "logging-write", "monitoring-write"], [local.agent_watcher, local.agent_logs, local.agent_metrics], ["true"])
+
+  scheduler_expression_map = {
+    minutes = "*/${local.scheduler_expression_value} * * * *"
+    hours   = "0 */${local.scheduler_expression_value} * * *"
+    days    = "0 0 */${local.scheduler_expression_value} * *"
+  }
+  scheduler_expression_value = element(split(" ", var.scheduler_expression), 0)
+  scheduler_expression_units = element(split(" ", var.scheduler_expression), 1)
+  scheduler_expression       = lookup(local.scheduler_expression_map, local.scheduler_expression_units)
 }
 
 # Get project
