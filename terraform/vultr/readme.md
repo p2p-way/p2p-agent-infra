@@ -83,7 +83,7 @@
     cd p2p-agent-infra/terraform/vultr
     ```
 
- 2. Select the required regions where to run agents
+ 2. Select regions where to run agents
     ```shell
     mv regions/region-* .
     ```

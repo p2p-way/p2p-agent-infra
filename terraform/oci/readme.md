@@ -125,7 +125,7 @@
     ```shell
     vi variables.auto.tfvars
     ```
-    For more information, please see [Terraform configuration](../readme.md#terraform-configuration).
+    For more information, please see [Configuration](../readme.md#configuration).
 
  4. Authenticate on [OCI](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/configuring.htm#security-token-auth)
     ```shell
