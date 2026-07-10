@@ -147,7 +147,7 @@ variable "desired_capacity" {
 }
 
 variable "start_time" {
-  description = "Time for this action to start. Can be `watcher`, `now`or `custom` in `YYYY-MM-DDThh:mm:ssZ` format in UTC/GMT only (for example, 2014-06-01T00:00:00Z )."
+  description = "Time for this action to start. Can be `watcher`, `now` or `custom` in `YYYY-MM-DDThh:mm:ssZ` format in UTC/GMT only (for example, 2014-06-01T00:00:00Z )."
   type        = string
   default     = "now"
 }
