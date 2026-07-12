@@ -1,6 +1,14 @@
 # Common - Get cloud
 - name: Identify cloud
-  ansible.builtin.command: cloud-init query cloud-name
+  ansible.builtin.shell: |
+    cloud=$(curl -s -H "Metadata-Flavor: Google" http://169.254.169.254/computeMetadata/v1/instance/vendor/labels/cloud/)
+    if [[ "${cloud}" == "yandex" ]]; then
+      echo "${cloud}"
+    else
+      cloud-init query cloud-name
+    fi
+  args:
+    executable: bash
   register: common_cloud
   changed_when: false
 

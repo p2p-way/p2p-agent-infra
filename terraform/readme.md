@@ -29,14 +29,15 @@
 | 3  | [Azure](azure/readme.md)               | [used services](azure/readme.md#description)        | [`49`](azure/readme.md#regions)        | `1,3`              | [`1.11`](azure/readme.md#costs)        | &#10060;                              | &#9989;                                                     |
 | 4  | [GCP](gcp/readme.md)                   | [used services](gcp/readme.md#description)          | [`43`](gcp/readme.md#regions)          | `3,4`              | [`0.85`](gcp/readme.md#costs)          | &#9989;                               | &#9989;                                                     |
 | 5  | [OCI](oci/readme.md)                   | [used services](oci/readme.md#description)          | [`44`](oci/readme.md#regions)          | `1,3`              | [`0.50`](oci/readme.md#costs)          | &#10060;                              | &#10060;                                                    |
-| 6  | [Akamai](akamai/readme.md)             | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       | &#10060;                              | &#10060;                                                    |
-| 7  | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`14`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) | &#10060;                              | &#10060;                                                    |
-| 8  | [Exoscale](exoscale/readme.md)         | [used services](exoscale/readme.md#description)     | [`8`](exoscale/readme.md#regions)      | `1`                | [`0.41`](exoscale/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
-| 9  | [Hetzner](hetzner/readme.md)           | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.71`](hetzner/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
-| 10 | [Scaleway](scaleway/readme.md)         | [used services](scaleway/readme.md#description)     | [`3`](scaleway/readme.md#regions)      | `1,3`              | [`0.48`](scaleway/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
-| 11 | [UpCloud](upcloud/readme.md)           | [used services](upcloud/readme.md#description)      | [`15`](upcloud/readme.md#regions)      | `1`                | [`0.29`](upcloud/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
-| 12 | [Vultr](vultr/readme.md)               | [used services](vultr/readme.md#description)        | [`33`](vultr/readme.md#regions)        | `1`                | [`0.17`](vultr/readme.md#costs)        | &#10060;                              | &#10060;                                                    |
-| 13 | [Generic](generic/readme.md)           | -                                                   | `-`                                    | `-`                | `-`                                    | `-`                                   | `-`                                                         |
+| 6  | [Yandex](yandex/readme.md)             | [used services](yandex/readme.md#description)       | [`2`](yandex/readme.md#regions)        | `1,4`              | [`0.50`](yandex/readme.md#costs)       | &#9989;                               | &#9989;                                                     |
+| 7  | [Akamai](akamai/readme.md)             | [used services](akamai/readme.md#description)       | [`31`](akamai/readme.md#regions)       | `1`                | [`0.25`](akamai/readme.md#costs)       | &#10060;                              | &#10060;                                                    |
+| 8  | [DigitalOcean](digitalocean/readme.md) | [used services](digitalocean/readme.md#description) | [`14`](digitalocean/readme.md#regions) | `1`                | [`0.21`](digitalocean/readme.md#costs) | &#10060;                              | &#10060;                                                    |
+| 9  | [Exoscale](exoscale/readme.md)         | [used services](exoscale/readme.md#description)     | [`8`](exoscale/readme.md#regions)      | `1`                | [`0.41`](exoscale/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
+| 10 | [Hetzner](hetzner/readme.md)           | [used services](hetzner/readme.md#description)      | [`6`](hetzner/readme.md#regions)       | `1`                | [`0.71`](hetzner/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
+| 11 | [Scaleway](scaleway/readme.md)         | [used services](scaleway/readme.md#description)     | [`3`](scaleway/readme.md#regions)      | `1,3`              | [`0.48`](scaleway/readme.md#costs)     | &#10060;                              | &#10060;                                                    |
+| 12 | [UpCloud](upcloud/readme.md)           | [used services](upcloud/readme.md#description)      | [`15`](upcloud/readme.md#regions)      | `1`                | [`0.29`](upcloud/readme.md#costs)      | &#10060;                              | &#10060;                                                    |
+| 13 | [Vultr](vultr/readme.md)               | [used services](vultr/readme.md#description)        | [`33`](vultr/readme.md#regions)        | `1`                | [`0.17`](vultr/readme.md#costs)        | &#10060;                              | &#10060;                                                    |
+| 14 | [Generic](generic/readme.md)           | -                                                   | `-`                                    | `-`                | `-`                                    | `-`                                   | `-`                                                         |
 
 
 ## [Considerations](#peer-to-peer-agent-terraform)
@@ -61,20 +62,21 @@
 
     <details><summary><b>Ansible roles execution duration</b></summary>
 
-    | Cloud        | First run, `m` | Second run, `m`   | Instance              | Resources       | Watcher | Logs/Metrics |
-    | ------------ | :------------: | :---------------: | :-------------------: | :-------------: | :-----: | :----------: |
-    | Alibaba      | `01:31.106`    | `00:24.716`       | `ecs.e-c1m1.large`    | `2 vCPU / 2 GB` | `true`  | `false`      |
-    | AWS          | `02:23.360`    | `00:35.495`       | `t3.micro`            | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | Azure        | `03:22.027`    | `00:53.851`       | `Standard_B1s`        | `1 vCPU / 1 GB` | `true`  | `false`      |
-    | GCP          | `19:01.057`    | `06:46.945`       | `e2-micro`            | `2 vCPU / 1 GB` | `true`  | `false`      |
-    | OCI          | `02:33.374`    | `00:39.407`       | `VM.Standard.A2.Flex` | `2 vCPU / 1 GB` | `-`     | `false`      |
-    | Akamai       | `03:55.760`    | `00:32.801`       | `g6-nanode-1`         | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Hetzner      | `02:24.137`    | `00:50.155`       | `cx23`                | `2 vCPU / 4 GB` | `-`     | `-`          |
-    | DigitalOcean | `05:28.838`    | `01:11.635`       | `s-1vcpu-1gb`         | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Exoscale     | `01:19.856`    | `00:23.110`       | `standard.tiny`       | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Scaleway     | `01:33.902`    | `00:23.648`       | `PLAY2-PICO`          | `1 vCPU / 2 GB` | `-`     | `-`          |
-    | UpCloud      | `02:01.326`    | `00:20.199`       | `1xCPU-1GB`           | `1 vCPU / 1 GB` | `-`     | `-`          |
-    | Vultr        | `02:55.041`    | `00:58.432`       | `vc2-1c-1gb`          | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Cloud        | First run, `m` | Second run, `m` | Instance              | Resources       | Watcher | Logs/Metrics |
+    | ------------ | :------------: | :-------------: | :-------------------: | :-------------: | :-----: | :----------: |
+    | Alibaba      | `01:31.106`    | `00:24.716`     | `ecs.e-c1m1.large`    | `2 vCPU / 2 GB` | `true`  | `false`      |
+    | AWS          | `02:23.360`    | `00:35.495`     | `t3.micro`            | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Azure        | `03:22.027`    | `00:53.851`     | `Standard_B1s`        | `1 vCPU / 1 GB` | `true`  | `false`      |
+    | GCP          | `19:01.057`    | `06:46.945`     | `e2-micro`            | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | OCI          | `02:33.374`    | `00:39.407`     | `VM.Standard.A2.Flex` | `2 vCPU / 1 GB` | `-`     | `false`      |
+    | Yandex       | `??:??.???`    | `??:??.???`     | `standard-v3:2:1:20`  | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Akamai       | `03:55.760`    | `00:32.801`     | `g6-nanode-1`         | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Hetzner      | `02:24.137`    | `00:50.155`     | `cx23`                | `2 vCPU / 4 GB` | `-`     | `-`          |
+    | DigitalOcean | `05:28.838`    | `01:11.635`     | `s-1vcpu-1gb`         | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Exoscale     | `01:19.856`    | `00:23.110`     | `standard.tiny`       | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Scaleway     | `01:33.902`    | `00:23.648`     | `PLAY2-PICO`          | `1 vCPU / 2 GB` | `-`     | `-`          |
+    | UpCloud      | `02:01.326`    | `00:20.199`     | `1xCPU-1GB`           | `1 vCPU / 1 GB` | `-`     | `-`          |
+    | Vultr        | `02:55.041`    | `00:58.432`     | `vc2-1c-1gb`          | `1 vCPU / 1 GB` | `-`     | `-`          |
 
     > Provided timing is approximate and might be influenced by the time when crontab is executed after instance bootstrap.
 
@@ -90,26 +92,27 @@
   - When `public_keys = []`, we generate the keys for instances SSH access, we also can pass own list of keys or skip it (excluding Azure), by set value to `[""]`.
   - Variable `os_name` should be set to `ubuntu`, which defaults to ubuntu 24.04.
   - Set `desired_capacity` with the desired number of the nodes per region. We also can set value per specific region by passing value directly to the specific region module configuration.
-  - By default, `start_time = "now"` and it means that nodes will start right after `start_offset = "15 minutes"`, after Terraform apply run. We also can set a custom time in [RFC3339 format](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset#optional) - `YYYY-MM-DDTHH:MM:SSZ`, for example `2022-11-28T13:00:00Z`, and in that case `start_offset` will be ignored. For [AWS](aws/readme.md), [Alibaba](alibaba/readme.md) and [GCP](gcp/readme.md), we can set `start_time = "watcher"` and in that case, instances count will be mananaged by [Watcher](../architecture.md#watcher) and we need to make sure that values on [Control center](../architecture.md#control-center) side set corespondigly. For Cloud Providers where autoscaler is not supported, that option is not available and instances will start immediately.
+  - By default, `start_time = "now"` and it means that nodes will start right after `start_offset = "15 minutes"`, after Terraform apply run. We also can set a custom time in [RFC3339 format](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset#optional) - `YYYY-MM-DDTHH:MM:SSZ`, for example `2022-11-28T13:00:00Z`, and in that case `start_offset` will be ignored. For [AWS](aws/readme.md), [Alibaba](alibaba/readme.md), [GCP](gcp/readme.md) and [Yandex](yandex/readme.md), we can set `start_time = "watcher"` and in that case, instances count will be mananaged by [Watcher](../architecture.md#watcher) and we need to make sure that values on [Control center](../architecture.md#control-center) side set corespondigly. For Cloud Providers where autoscaler is not supported, that option is not available and instances will start immediately.
 
     Cloud Providers resources creation in all the regions, using Terraform, vary and we should consider that when set a custom `start_offset`.
 
     <details><summary><b>Terraform execution duration</b></summary>
 
-    | Cloud        | `init`, `s` | `apply`, `m` | `destroy`, `m` | Regions | Watcher | Logs/Metrics | Comment |
-    | ------------ | :---------: | :----------: | :------------: | :-----: | :-----: | :----------: | ------- |
-    | Alibaba      | `13.975`    | `04:00.81`   | `03:44.88`     | `22`    | `true`  | `false`      |         |
-    | AWS          | `20.235`    | `03:24.92`   | `03:30.48`     | `34`    | `true`  | `false`      |         |
-    | Azure        | `15.444`    | `07:08.80`   | `55:52.37`     | `42`    | `true`  | `false`      |         |
-    | GCP          | `10.063`    | `11:31.22`   | `14:05.22`     | `41`    | `true`  | `false`      |         |
-    | OCI          | `22.868`    | `00:16.861`  | `01:07.73`     | `3`     | `-`     | `-`          |         |
-    | Akamai       | `06.694`    | `04:20.57`   | `02:39.64`     | `27`    | `-`     | `-`          |         |
-    | DigitalOcean | `06.196`    | `01:00.09`   | `01:30.80`     | `13`    | `-`     | `-`          | wait    |
-    | Exoscale     | `07.757`    | `01:01.35`   | `00:38.953`    | `8`     | `-`     | `-`          |         |
-    | Hetzner      | `04.552`    | `00:18.720`  | `00:35.692`    | `6`     | `-`     | `-`          |         |
-    | Scaleway     | `08.007`    | `00:13.117`  | `00:24.501`    | `8`     | `-`     | `-`          |         |
-    | UpCloud      | `08.011`    | `02:52.24`   | `03:24.17`     | `15`    | `-`     | `-`          |         |
-    | Vultr        | `08.754`    | `03:14.15`   | `00:41.898`    | `20`    | `-`     | `-`          |         |
+    | Cloud        | `init`, `s` | `apply`, `m` | `destroy`, `m` | Regions | Watcher | Logs/Metrics | Comment   |
+    | ------------ | :---------: | :----------: | :------------: | :-----: | :-----: | :----------: | --------- |
+    | Alibaba      | `13.975`    | `04:00.81`   | `03:44.88`     | `22`    | `true`  | `false`      |           |
+    | AWS          | `20.235`    | `03:24.92`   | `03:30.48`     | `34`    | `true`  | `false`      |           |
+    | Azure        | `15.444`    | `07:08.80`   | `55:52.37`     | `42`    | `true`  | `false`      |           |
+    | GCP          | `10.063`    | `11:31.22`   | `14:05.22`     | `41`    | `true`  | `false`      |           |
+    | OCI          | `22.868`    | `00:16.861`  | `01:07.73`     | `3`     | `-`     | `-`          |           |
+    | Yandex       | `12.110`    | `02:12.66`   | `01:47.63`     | `1`     | `true`  | `false`      | start now |
+    | Akamai       | `06.694`    | `04:20.57`   | `02:39.64`     | `27`    | `-`     | `-`          |           |
+    | DigitalOcean | `06.196`    | `01:00.09`   | `01:30.80`     | `13`    | `-`     | `-`          | wait      |
+    | Exoscale     | `07.757`    | `01:01.35`   | `00:38.953`    | `8`     | `-`     | `-`          |           |
+    | Hetzner      | `04.552`    | `00:18.720`  | `00:35.692`    | `6`     | `-`     | `-`          |           |
+    | Scaleway     | `08.007`    | `00:13.117`  | `00:24.501`    | `8`     | `-`     | `-`          |           |
+    | UpCloud      | `08.011`    | `02:52.24`   | `03:24.17`     | `15`    | `-`     | `-`          |           |
+    | Vultr        | `08.754`    | `03:14.15`   | `00:41.898`    | `20`    | `-`     | `-`          |           |
 
     > Thu Jul 24 08:00:00 UTC 2025
     </details>
@@ -367,11 +370,12 @@
  3. [P2P agent on Azure](azure/readme.md)
  4. [P2P agent on GCP](gcp/readme.md)
  5. [P2P agent on OCI](oci/readme.md)
- 6. [P2P agent on Akamai](akamai/readme.md)
- 7. [P2P agent on DigitalOcean](digitalocean/readme.md)
- 8. [P2P agent on Exoscale](exoscale/readme.md)
- 9. [P2P agent on Hetzner](hetzner/readme.md)
- 10. [P2P agent on Scaleway](scaleway/readme.md)
- 11. [P2P agent on UpCloud](upcloud/readme.md)
- 12. [P2P agent on Vultr](vultr/readme.md)
- 13. [P2P agent on generic installation](generic/readme.md)
+ 6. [P2P agent on Yandex](yandex/readme.md)
+ 7. [P2P agent on Akamai](akamai/readme.md)
+ 8. [P2P agent on DigitalOcean](digitalocean/readme.md)
+ 9. [P2P agent on Exoscale](exoscale/readme.md)
+ 10. [P2P agent on Hetzner](hetzner/readme.md)
+ 11. [P2P agent on Scaleway](scaleway/readme.md)
+ 12. [P2P agent on UpCloud](upcloud/readme.md)
+ 13. [P2P agent on Vultr](vultr/readme.md)
+ 14. [P2P agent on generic installation](generic/readme.md)
