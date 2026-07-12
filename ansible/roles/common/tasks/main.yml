@@ -16,6 +16,12 @@
     group: '{{ base_group }}'
   when: temp_folder is not exists
 
+- name: Disable and stop unattended-upgrades service
+  ansible.builtin.systemd_service:
+    enabled: false
+    state: stopped
+    name: unattended-upgrades
+
 - name: Update cache
   ansible.builtin.apt:
     update_cache: true
