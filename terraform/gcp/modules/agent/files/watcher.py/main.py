@@ -33,7 +33,6 @@ scheduler_name = os.environ["scheduler_name"]
 scheduler_prefix = os.environ["scheduler_prefix"]
 
 
-# def main_handler(request):
 def main_handler(request):
 
     # Timing
