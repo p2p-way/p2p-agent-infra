@@ -69,7 +69,7 @@
     | Azure        | `03:22.027`    | `00:53.851`     | `Standard_B1s`        | `1 vCPU / 1 GB` | `true`  | `false`      |
     | GCP          | `19:01.057`    | `06:46.945`     | `e2-micro`            | `2 vCPU / 1 GB` | `true`  | `false`      |
     | OCI          | `02:33.374`    | `00:39.407`     | `VM.Standard.A2.Flex` | `2 vCPU / 1 GB` | `-`     | `false`      |
-    | Yandex       | `??:??.???`    | `??:??.???`     | `standard-v3:2:1:20`  | `2 vCPU / 1 GB` | `true`  | `false`      |
+    | Yandex       | `02:57.543`    | `00:29.996`     | `standard-v3:2:1:20`  | `2 vCPU / 1 GB` | `true`  | `false`      |
     | Akamai       | `03:55.760`    | `00:32.801`     | `g6-nanode-1`         | `1 vCPU / 1 GB` | `-`     | `-`          |
     | Hetzner      | `02:24.137`    | `00:50.155`     | `cx23`                | `2 vCPU / 4 GB` | `-`     | `-`          |
     | DigitalOcean | `05:28.838`    | `01:11.635`     | `s-1vcpu-1gb`         | `1 vCPU / 1 GB` | `-`     | `-`          |
