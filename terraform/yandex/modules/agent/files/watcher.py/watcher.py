@@ -47,11 +47,11 @@ def main_handler(event, context):
     start_time = time.time()
 
     # Functions
-    def log_searator():
+    def log_separator():
         log.info("----------------")
 
     def show_variables():
-        log_searator()
+        log_separator()
         log.info("# event \n %s", event)
         log.info("# context \n %s", context)
         log.info("# variables")
@@ -59,7 +59,7 @@ def main_handler(event, context):
                     region folder_id cc_hosts agent_name agent_prefix scheduler_name scheduler_prefix
                 """.split():
             log.info("%s: %s", var, globals()[var])
-        log_searator()
+        log_separator()
 
     def contact_cc(hosts):
         # Contact control center
@@ -101,7 +101,7 @@ def main_handler(event, context):
             if len(agent_commands) > 0:
                 break
 
-        log_searator()
+        log_separator()
 
         return agent_commands, scheduler_commands
 
@@ -117,7 +117,7 @@ def main_handler(event, context):
             log.info("%s: %s", k, v)
 
         if commands != {}:
-            log_searator()
+            log_separator()
 
         return commands
 
@@ -296,7 +296,7 @@ def main_handler(event, context):
             log.info("Skip agent instances scaling: '%s'",
                      desired_capacity_cc)
 
-        log_searator()
+        log_separator()
 
     def update_scheduler(scheduler_commands):
         scheduler_expression_cc = scheduler_commands.get(
@@ -324,7 +324,7 @@ def main_handler(event, context):
             log.info(
                 "Skip scheduler expression update: '%s'", scheduler_expression_cc)
 
-        log_searator()
+        log_separator()
 
     # Run
     show_variables()
@@ -344,7 +344,7 @@ def main_handler(event, context):
     duration = f"{(time.time() - start_time) * 1000:.3f} msec"
     log.info("Run duration: %s", duration)
 
-    log_searator()
+    log_separator()
 
     return {
         "statusCode": 200,
