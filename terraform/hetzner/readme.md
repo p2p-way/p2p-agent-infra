@@ -42,11 +42,8 @@
    # List locations
    hcloud location list
 
-   # List Datacenters
-   hcloud datacenter list
-
-   # Describe a datacenter
-   hcloud datacenter describe nbg1-dc3
+   # Describe a Location
+   hcloud location describe nbg1
 
    # List Server Types
    hcloud server-type list
