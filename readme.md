@@ -14,8 +14,3 @@
  [Radicle](ansible/readme.md) could be used for repository content distribution.
 
  Please check [Architecture](architecture.md) for more details and follow the [guides to Run agents](terraform/readme.md).
-
-
-## To do
-
- 1. Consider to add IPv6 support.
