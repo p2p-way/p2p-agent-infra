@@ -27,5 +27,5 @@ module "se-sto1" {
 
 # Agent instances
 output "agent_instances_se-sto1" {
-  value = join("\n", flatten([for instance in module.se-sto1 : instance]))
+  value = length(module.se-sto1.agent_instances) > 0 ? join("\n", flatten([for instance in module.se-sto1 : instance])) : null
 }

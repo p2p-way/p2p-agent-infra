@@ -27,5 +27,5 @@ module "dk-cph1" {
 
 # Agent instances
 output "agent_instances_dk-cph1" {
-  value = join("\n", flatten([for instance in module.dk-cph1 : instance]))
+  value = length(module.dk-cph1.agent_instances) > 0 ? join("\n", flatten([for instance in module.dk-cph1 : instance])) : null
 }

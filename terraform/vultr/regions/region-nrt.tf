@@ -25,5 +25,5 @@ module "nrt" {
 
 # Agent instances
 output "agent_instances_nrt" {
-  value = join("\n", flatten([for instance in module.nrt : instance]))
+  value = length(module.nrt.agent_instances) > 0 ? join("\n", flatten([for instance in module.nrt : instance])) : null
 }

@@ -26,5 +26,5 @@ module "sin" {
 
 # Agent instances
 output "agent_instances_sin" {
-  value = join("\n", flatten([for instance in module.sin : instance]))
+  value = length(module.sin.agent_instances) > 0 ? join("\n", flatten([for instance in module.sin : instance])) : null
 }

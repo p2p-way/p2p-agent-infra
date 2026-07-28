@@ -25,5 +25,5 @@ module "atl" {
 
 # Agent instances
 output "agent_instances_atl" {
-  value = join("\n", flatten([for instance in module.atl : instance]))
+  value = length(module.atl.agent_instances) > 0 ? join("\n", flatten([for instance in module.atl : instance])) : null
 }

@@ -25,5 +25,5 @@ module "del" {
 
 # Agent instances
 output "agent_instances_del" {
-  value = join("\n", flatten([for instance in module.del : instance]))
+  value = length(module.del.agent_instances) > 0 ? join("\n", flatten([for instance in module.del : instance])) : null
 }

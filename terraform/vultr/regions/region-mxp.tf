@@ -25,5 +25,5 @@ module "mxp" {
 
 # Agent instances
 output "agent_instances_mxp" {
-  value = join("\n", flatten([for instance in module.mxp : instance]))
+  value = length(module.mxp.agent_instances) > 0 ? join("\n", flatten([for instance in module.mxp : instance])) : null
 }

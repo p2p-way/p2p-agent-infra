@@ -26,5 +26,5 @@ module "ash" {
 
 # Agent instances
 output "agent_instances_ash" {
-  value = join("\n", flatten([for instance in module.ash : instance]))
+  value = length(module.ash.agent_instances) > 0 ? join("\n", flatten([for instance in module.ash : instance])) : null
 }

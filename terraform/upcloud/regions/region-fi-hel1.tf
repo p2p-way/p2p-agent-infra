@@ -27,5 +27,5 @@ module "fi-hel1" {
 
 # Agent instances
 output "agent_instances_fi-hel1" {
-  value = join("\n", flatten([for instance in module.fi-hel1 : instance]))
+  value = length(module.fi-hel1.agent_instances) > 0 ? join("\n", flatten([for instance in module.fi-hel1 : instance])) : null
 }

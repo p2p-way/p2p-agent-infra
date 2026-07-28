@@ -27,5 +27,5 @@ module "de-muc-1" {
 
 # Agent instances
 output "agent_instances_de-muc-1" {
-  value = join("\n", flatten([for instance in module.de-muc-1 : instance]))
+  value = length(module.de-muc-1.agent_instances) > 0 ? join("\n", flatten([for instance in module.de-muc-1 : instance])) : null
 }

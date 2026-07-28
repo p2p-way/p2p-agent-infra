@@ -25,5 +25,5 @@ module "nyc3" {
 
 # Agent instances
 output "agent_instances_nyc3" {
-  value = join("\n", flatten([for instance in module.nyc3 : instance]))
+  value = length(module.nyc3.agent_instances) > 0 ? join("\n", flatten([for instance in module.nyc3 : instance])) : null
 }

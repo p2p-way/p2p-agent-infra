@@ -24,5 +24,5 @@ module "us-mia" {
 
 # Agent instances
 output "agent_instances_us-mia" {
-  value = join("\n", flatten([for instance in module.us-mia : instance]))
+  value = length(module.us-mia.agent_instances) > 0 ? join("\n", flatten([for instance in module.us-mia : instance])) : null
 }

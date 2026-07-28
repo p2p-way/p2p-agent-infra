@@ -27,5 +27,5 @@ module "hr-zag-1" {
 
 # Agent instances
 output "agent_instances_hr-zag-1" {
-  value = join("\n", flatten([for instance in module.hr-zag-1 : instance]))
+  value = length(module.hr-zag-1.agent_instances) > 0 ? join("\n", flatten([for instance in module.hr-zag-1 : instance])) : null
 }

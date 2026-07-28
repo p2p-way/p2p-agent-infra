@@ -24,5 +24,5 @@ module "br-gru" {
 
 # Agent instances
 output "agent_instances_br-gru" {
-  value = join("\n", flatten([for instance in module.br-gru : instance]))
+  value = length(module.br-gru.agent_instances) > 0 ? join("\n", flatten([for instance in module.br-gru : instance])) : null
 }

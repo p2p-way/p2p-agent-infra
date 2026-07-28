@@ -25,5 +25,5 @@ module "scl" {
 
 # Agent instances
 output "agent_instances_scl" {
-  value = join("\n", flatten([for instance in module.scl : instance]))
+  value = length(module.scl.agent_instances) > 0 ? join("\n", flatten([for instance in module.scl : instance])) : null
 }

@@ -24,5 +24,5 @@ module "id-cgk" {
 
 # Agent instances
 output "agent_instances_id-cgk" {
-  value = join("\n", flatten([for instance in module.id-cgk : instance]))
+  value = length(module.id-cgk.agent_instances) > 0 ? join("\n", flatten([for instance in module.id-cgk : instance])) : null
 }

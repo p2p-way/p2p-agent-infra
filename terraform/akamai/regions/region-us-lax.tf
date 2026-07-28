@@ -24,5 +24,5 @@ module "us-lax" {
 
 # Agent instances
 output "agent_instances_us-lax" {
-  value = join("\n", flatten([for instance in module.us-lax : instance]))
+  value = length(module.us-lax.agent_instances) > 0 ? join("\n", flatten([for instance in module.us-lax : instance])) : null
 }

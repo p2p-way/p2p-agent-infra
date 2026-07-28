@@ -27,5 +27,5 @@ module "us-nyc1" {
 
 # Agent instances
 output "agent_instances_us-nyc1" {
-  value = join("\n", flatten([for instance in module.us-nyc1 : instance]))
+  value = length(module.us-nyc1.agent_instances) > 0 ? join("\n", flatten([for instance in module.us-nyc1 : instance])) : null
 }

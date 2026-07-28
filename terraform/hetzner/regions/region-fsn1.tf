@@ -26,5 +26,5 @@ module "fsn1" {
 
 # Agent instances
 output "agent_instances_fsn1" {
-  value = join("\n", flatten([for instance in module.fsn1 : instance]))
+  value = length(module.fsn1.agent_instances) > 0 ? join("\n", flatten([for instance in module.fsn1 : instance])) : null
 }

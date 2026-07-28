@@ -25,5 +25,5 @@ module "cdg" {
 
 # Agent instances
 output "agent_instances_cdg" {
-  value = join("\n", flatten([for instance in module.cdg : instance]))
+  value = length(module.cdg.agent_instances) > 0 ? join("\n", flatten([for instance in module.cdg : instance])) : null
 }

@@ -27,5 +27,5 @@ module "us-chi1" {
 
 # Agent instances
 output "agent_instances_us-chi1" {
-  value = join("\n", flatten([for instance in module.us-chi1 : instance]))
+  value = length(module.us-chi1.agent_instances) > 0 ? join("\n", flatten([for instance in module.us-chi1 : instance])) : null
 }

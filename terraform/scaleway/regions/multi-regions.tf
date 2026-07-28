@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = toset(["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "nl-ams-3", "pl-waw-1", "pl-waw-2", "pl-waw-3"])
+  for_each = var.agent_create ? toset(["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "nl-ams-3", "pl-waw-1", "pl-waw-2", "pl-waw-3"]) : []
 
   region                   = each.key
   project_id               = local.project_id
@@ -30,5 +30,5 @@ module "multi-regions" {
 
 # Agent instances
 output "agent_instances_all" {
-  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+  value = length(module.multi-regions) > 0 ? join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances])) : null
 }

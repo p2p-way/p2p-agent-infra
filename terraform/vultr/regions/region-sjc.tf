@@ -25,5 +25,5 @@ module "sjc" {
 
 # Agent instances
 output "agent_instances_sjc" {
-  value = join("\n", flatten([for instance in module.sjc : instance]))
+  value = length(module.sjc.agent_instances) > 0 ? join("\n", flatten([for instance in module.sjc : instance])) : null
 }

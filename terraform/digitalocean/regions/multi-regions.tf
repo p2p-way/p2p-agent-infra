@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = toset(data.digitalocean_regions.all-regions[0].regions[*].slug)
+  for_each = toset(try(data.digitalocean_regions.multi_regions[0].regions[*].slug, []))
   # for_each = toset(["fra1"])
 
   region                   = each.key
@@ -27,7 +27,7 @@ module "multi-regions" {
 }
 
 # All regions
-data "digitalocean_regions" "all-regions" {
+data "digitalocean_regions" "multi_regions" {
   count = var.agent_create ? 1 : 0
 
   filter {
@@ -43,5 +43,5 @@ data "digitalocean_regions" "all-regions" {
 
 # Agent instances
 output "agent_instances_all" {
-  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+  value = length(module.multi-regions) > 0 ? join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances])) : null
 }

@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = toset(sort(data.exoscale_zones.all-regions[0].zones))
+  for_each = toset(try(sort(data.exoscale_zones.multi_zones[0].zones), []))
 
   region                   = each.key
   agent_create             = var.agent_create
@@ -28,11 +28,11 @@ module "multi-regions" {
 }
 
 # All regions
-data "exoscale_zones" "all-regions" {
+data "exoscale_zones" "multi_zones" {
   count = var.agent_create ? 1 : 0
 }
 
 # Agent instances
 output "agent_instances_all" {
-  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+  value = length(module.multi-regions) > 0 ? join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances])) : null
 }

@@ -28,5 +28,5 @@ module "pl-waw-1" {
 
 # Agent instances
 output "agent_instances_pl-waw-1" {
-  value = join("\n", flatten([for instance in module.pl-waw-1 : instance]))
+  value = length(module.pl-waw-1.agent_instances) > 0 ? join("\n", flatten([for instance in module.pl-waw-1 : instance])) : null
 }

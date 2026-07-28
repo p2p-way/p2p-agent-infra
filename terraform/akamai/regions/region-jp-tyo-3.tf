@@ -24,5 +24,5 @@ module "jp-tyo-3" {
 
 # Agent instances
 output "agent_instances_jp-tyo-3" {
-  value = join("\n", flatten([for instance in module.jp-tyo-3 : instance]))
+  value = length(module.jp-tyo-3.agent_instances) > 0 ? join("\n", flatten([for instance in module.jp-tyo-3 : instance])) : null
 }

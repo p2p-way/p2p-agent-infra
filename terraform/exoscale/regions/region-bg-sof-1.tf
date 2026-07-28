@@ -27,5 +27,5 @@ module "bg-sof-1" {
 
 # Agent instances
 output "agent_instances_bg-sof-1" {
-  value = join("\n", flatten([for instance in module.bg-sof-1 : instance]))
+  value = length(module.bg-sof-1.agent_instances) > 0 ? join("\n", flatten([for instance in module.bg-sof-1 : instance])) : null
 }

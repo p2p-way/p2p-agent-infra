@@ -25,5 +25,5 @@ module "tlv" {
 
 # Agent instances
 output "agent_instances_tlv" {
-  value = join("\n", flatten([for instance in module.tlv : instance]))
+  value = length(module.tlv.agent_instances) > 0 ? join("\n", flatten([for instance in module.tlv : instance])) : null
 }

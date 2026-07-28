@@ -24,5 +24,5 @@ module "jp-osa" {
 
 # Agent instances
 output "agent_instances_jp-osa" {
-  value = join("\n", flatten([for instance in module.jp-osa : instance]))
+  value = length(module.jp-osa.agent_instances) > 0 ? join("\n", flatten([for instance in module.jp-osa : instance])) : null
 }

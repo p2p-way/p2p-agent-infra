@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = toset(sort(data.hcloud_locations.all-locations[0].locations[*].name))
+  for_each = toset(try(sort(data.hcloud_locations.multi_locations[0].locations[*].name), []))
   # for_each = toset(["fsn1"])
 
   region                   = each.key
@@ -28,11 +28,11 @@ module "multi-regions" {
 }
 
 # All locations
-data "hcloud_locations" "all-locations" {
+data "hcloud_locations" "multi_locations" {
   count = var.agent_create ? 1 : 0
 }
 
 # Agent instances
 output "agent_instances_all" {
-  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+  value = length(module.multi-regions) > 0 ? join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances])) : null
 }

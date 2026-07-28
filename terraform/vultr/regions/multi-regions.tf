@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = toset(jsondecode(data.http.vultr-regions.response_body).regions[*].id)
+  for_each = toset(try(jsondecode(data.http.vultr_multi_regions[0].response_body).regions[*].id, []))
   # for_each = toset(["fra"])
 
   region                   = each.key
@@ -28,13 +28,14 @@ module "multi-regions" {
 
 # Agent instances
 output "agent_instances_all" {
-  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+  value = length(module.multi-regions) > 0 ? join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances])) : null
 }
 
 # All regions
-data "http" "vultr-regions" {
-  url = "https://api.vultr.com/v2/regions"
+data "http" "vultr_multi_regions" {
+  count = var.agent_create ? 1 : 0
 
+  url    = "https://api.vultr.com/v2/regions"
   method = "GET"
   request_headers = {
     Authorization = "Bearer ${var.VULTR_API_KEY}"

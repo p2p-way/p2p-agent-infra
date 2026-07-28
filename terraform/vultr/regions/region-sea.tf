@@ -25,5 +25,5 @@ module "sea" {
 
 # Agent instances
 output "agent_instances_sea" {
-  value = join("\n", flatten([for instance in module.sea : instance]))
+  value = length(module.sea.agent_instances) > 0 ? join("\n", flatten([for instance in module.sea : instance])) : null
 }

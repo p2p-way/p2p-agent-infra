@@ -25,5 +25,5 @@ module "blr1" {
 
 # Agent instances
 output "agent_instances_blr1" {
-  value = join("\n", flatten([for instance in module.blr1 : instance]))
+  value = length(module.blr1.agent_instances) > 0 ? join("\n", flatten([for instance in module.blr1 : instance])) : null
 }

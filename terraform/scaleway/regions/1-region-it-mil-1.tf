@@ -28,5 +28,5 @@ module "it-mil-1" {
 
 # Agent instances
 output "agent_instances_it-mil-1" {
-  value = join("\n", flatten([for instance in module.it-mil-1 : instance]))
+  value = length(module.it-mil-1.agent_instances) > 0 ? join("\n", flatten([for instance in module.it-mil-1 : instance])) : null
 }

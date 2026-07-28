@@ -25,5 +25,5 @@ module "sgp" {
 
 # Agent instances
 output "agent_instances_sgp" {
-  value = join("\n", flatten([for instance in module.sgp : instance]))
+  value = length(module.sgp.agent_instances) > 0 ? join("\n", flatten([for instance in module.sgp : instance])) : null
 }

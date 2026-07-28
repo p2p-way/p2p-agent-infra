@@ -24,5 +24,5 @@ module "in-bom-2" {
 
 # Agent instances
 output "agent_instances_in-bom-2" {
-  value = join("\n", flatten([for instance in module.in-bom-2 : instance]))
+  value = length(module.in-bom-2.agent_instances) > 0 ? join("\n", flatten([for instance in module.in-bom-2 : instance])) : null
 }

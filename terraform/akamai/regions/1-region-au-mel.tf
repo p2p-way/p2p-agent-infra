@@ -24,5 +24,5 @@ module "au-mel" {
 
 # Agent instances
 output "agent_instances_au-mel" {
-  value = join("\n", flatten([for instance in module.au-mel : instance]))
+  value = length(module.au-mel.agent_instances) > 0 ? join("\n", flatten([for instance in module.au-mel : instance])) : null
 }

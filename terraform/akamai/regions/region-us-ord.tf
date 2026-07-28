@@ -24,5 +24,5 @@ module "us-ord" {
 
 # Agent instances
 output "agent_instances_us-ord" {
-  value = join("\n", flatten([for instance in module.us-ord : instance]))
+  value = length(module.us-ord.agent_instances) > 0 ? join("\n", flatten([for instance in module.us-ord : instance])) : null
 }

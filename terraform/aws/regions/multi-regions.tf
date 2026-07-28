@@ -3,19 +3,19 @@ module "multi-regions" {
   source = "./modules/agent"
 
   # Exclude non operational regions
-  for_each = setsubtract(data.aws_regions.all_regions[0].names, ["me-central-1", "me-south-1"])
+  for_each = setsubtract(try(data.aws_regions.multi_regions[0].names, []), ["me-central-1", "me-south-1"])
 
   # All regions
-  # for_each = data.aws_regions.all_regions[0].names
+  # for_each = data.aws_regions.multi_regions[0].names
 
   # Specific regions
   # for_each = toset(["eu-central-1", "eu-south-1"])
 
   # EU regions
-  # for_each = toset(compact([ for region in data.aws_regions.all_regions[0].names: startswith(region, "eu") ? region: null ]))
+  # for_each = toset(compact([ for region in data.aws_regions.multi_regions[0].names: startswith(region, "eu") ? region: null ]))
 
   # First 5 regions
-  # for_each = toset(slice(sort(data.aws_regions.all_regions[0].names), 0, 5))
+  # for_each = toset(slice(sort(data.aws_regions.multi_regions[0].names), 0, 5))
 
   region                      = each.key
   agent_create                = var.agent_create
@@ -62,7 +62,7 @@ module "multi-regions" {
 }
 
 # All regions
-data "aws_regions" "all_regions" {
+data "aws_regions" "multi_regions" {
   count = var.agent_create ? 1 : 0
 
   # all_regions = true

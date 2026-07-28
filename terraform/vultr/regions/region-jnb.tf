@@ -25,5 +25,5 @@ module "jnb" {
 
 # Agent instances
 output "agent_instances_jnb" {
-  value = join("\n", flatten([for instance in module.jnb : instance]))
+  value = length(module.jnb.agent_instances) > 0 ? join("\n", flatten([for instance in module.jnb : instance])) : null
 }

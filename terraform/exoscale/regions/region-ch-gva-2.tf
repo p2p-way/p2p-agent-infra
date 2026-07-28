@@ -27,5 +27,5 @@ module "ch-gva-2" {
 
 # Agent instances
 output "agent_instances_ch-gva-2" {
-  value = join("\n", flatten([for instance in module.ch-gva-2 : instance]))
+  value = length(module.ch-gva-2.agent_instances) > 0 ? join("\n", flatten([for instance in module.ch-gva-2 : instance])) : null
 }

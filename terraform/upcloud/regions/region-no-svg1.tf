@@ -27,5 +27,5 @@ module "no-svg1" {
 
 # Agent instances
 output "agent_instances_no-svg1" {
-  value = join("\n", flatten([for instance in module.no-svg1 : instance]))
+  value = length(module.no-svg1.agent_instances) > 0 ? join("\n", flatten([for instance in module.no-svg1 : instance])) : null
 }

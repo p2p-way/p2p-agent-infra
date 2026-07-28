@@ -3,10 +3,10 @@ module "multi-regions" {
   source = "./modules/agent"
 
   # Exclude regions not-available for a new customers
-  for_each = setsubtract(sort(data.linode_regions.all-regions[0].regions[*].id), ["au-mel", "eu-west", "id-cgk", "us-iad"])
+  for_each = setsubtract(try(sort(data.linode_regions.multi_regions[0].regions[*].id), []), ["au-mel", "eu-west", "id-cgk", "us-iad"])
 
   # Just 5 first regions
-  # for_each = toset(slice(tolist(setsubtract(sort(data.linode_regions.all-regions[0].regions[*].id), ["au-mel", "eu-west", "id-cgk", "us-iad"])), 0, 5))
+  # for_each = toset(slice(tolist(setsubtract(sort(data.linode_regions.multi_regions[0].regions[*].id), ["au-mel", "eu-west", "id-cgk", "us-iad"])), 0, 5))
 
   # Specific regions
   # for_each = toset(["eu-central"])
@@ -32,7 +32,7 @@ module "multi-regions" {
 }
 
 # All regions
-data "linode_regions" "all-regions" {
+data "linode_regions" "multi_regions" {
   count = var.agent_create ? 1 : 0
 
   filter {
@@ -43,5 +43,5 @@ data "linode_regions" "all-regions" {
 
 # Agent instances
 output "agent_instances_all" {
-  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+  value = length(module.multi-regions) > 0 ? join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances])) : null
 }

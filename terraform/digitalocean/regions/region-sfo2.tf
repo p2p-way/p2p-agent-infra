@@ -25,5 +25,5 @@ module "sfo2" {
 
 # Agent instances
 output "agent_instances_sfo2" {
-  value = join("\n", flatten([for instance in module.sfo2 : instance]))
+  value = length(module.sfo2.agent_instances) > 0 ? join("\n", flatten([for instance in module.sfo2 : instance])) : null
 }

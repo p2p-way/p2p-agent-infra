@@ -24,5 +24,5 @@ module "fr-par" {
 
 # Agent instances
 output "agent_instances_fr-par" {
-  value = join("\n", flatten([for instance in module.fr-par : instance]))
+  value = length(module.fr-par.agent_instances) > 0 ? join("\n", flatten([for instance in module.fr-par : instance])) : null
 }

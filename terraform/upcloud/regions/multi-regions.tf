@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = toset(data.upcloud_zones.all-zones[0].zone_ids)
+  for_each = toset(try(data.upcloud_zones.multi_zones[0].zone_ids, []))
   # for_each = toset(["de-fra1"])
 
   region                   = each.key
@@ -30,11 +30,11 @@ module "multi-regions" {
 
 # Agent instances
 output "agent_instances_all" {
-  value = join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances]))
+  value = length(module.multi-regions) > 0 ? join("\n", flatten([for instance in values(module.multi-regions) : instance.agent_instances])) : null
 }
 
 # All zones
-data "upcloud_zones" "all-zones" {
+data "upcloud_zones" "multi_zones" {
   count = var.agent_create ? 1 : 0
 
   filter_type = "public"

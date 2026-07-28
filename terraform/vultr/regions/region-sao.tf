@@ -25,5 +25,5 @@ module "sao" {
 
 # Agent instances
 output "agent_instances_sao" {
-  value = join("\n", flatten([for instance in module.sao : instance]))
+  value = length(module.sao.agent_instances) > 0 ? join("\n", flatten([for instance in module.sao : instance])) : null
 }

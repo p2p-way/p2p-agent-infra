@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = setsubtract(sort(data.google_compute_regions.all-regions[0].names), ["me-central2"])
+  for_each = setsubtract(try(sort(data.google_compute_regions.multi_regions[0].names), []), ["me-central2"])
   # for_each = toset(["europe-west3"])
 
   region                      = each.key
@@ -48,6 +48,6 @@ module "multi-regions" {
 }
 
 # All regions
-data "google_compute_regions" "all-regions" {
+data "google_compute_regions" "multi_regions" {
   count = var.agent_create ? 1 : 0
 }

@@ -24,5 +24,5 @@ module "us-iad" {
 
 # Agent instances
 output "agent_instances_us-iad" {
-  value = join("\n", flatten([for instance in module.us-iad : instance]))
+  value = length(module.us-iad.agent_instances) > 0 ? join("\n", flatten([for instance in module.us-iad : instance])) : null
 }

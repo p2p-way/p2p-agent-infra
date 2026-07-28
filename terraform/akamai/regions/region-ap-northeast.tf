@@ -24,5 +24,5 @@ module "ap-northeast" {
 
 # Agent instances
 output "agent_instances_ap-northeast" {
-  value = join("\n", flatten([for instance in module.ap-northeast : instance]))
+  value = length(module.ap-northeast.agent_instances) > 0 ? join("\n", flatten([for instance in module.ap-northeast : instance])) : null
 }
