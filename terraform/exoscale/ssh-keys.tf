@@ -23,7 +23,7 @@ resource "tls_private_key" "repository" {
 
 # SSH key - User passed
 resource "exoscale_ssh_key" "agent_passed" {
-  for_each = toset(compact(var.public_keys))
+  for_each = var.agent_create ? toset(compact(var.public_keys)) : []
 
   name       = "${lower(replace(var.agent_name, " ", "-"))}-${substr(replace(element(split(" ", each.key), 1), "/\\W/", ""), -10, -1)}"
   public_key = each.key
