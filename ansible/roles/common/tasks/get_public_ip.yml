@@ -46,7 +46,7 @@
 
 - name: Get public IPv4 ipify
   community.general.ipify_facts:
-  when: common_cloud == 'unknown-cloud' or common_public_ipv4.stdout in ['', 'null']
+  when: common_cloud == 'unknown-cloud' or common_public_ipv4.stdout is not ansible.utils.ipv4
 
 - name: Get public IPv6
   ansible.builtin.command: echo '{{ ansible_facts['default_ipv6']['address'] | default() }}'
@@ -57,7 +57,7 @@
 - name: Compute variables
   ansible.builtin.set_fact:
     common_public_ipv4: >-
-      {% if common_cloud != 'unknown-cloud' and not common_public_ipv4.stdout in ['', 'null'] -%}
+      {% if common_cloud != 'unknown-cloud' and common_public_ipv4.stdout is ansible.utils.ipv4 -%}
         {{ common_public_ipv4.stdout }}
       {%- else -%}
         {{ ansible_facts['ipify_public_ip'] }}
