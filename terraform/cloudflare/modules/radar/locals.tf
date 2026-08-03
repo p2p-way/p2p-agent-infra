@@ -10,7 +10,7 @@ locals {
   radar_hostname           = try(format("%s.%s", local.radar_prefix, var.radar_domain_name), "")
   radar_base_url           = try(format("%s%s.%s.%s", "https://", cloudflare_worker.radar[0].name, local.account_name, "workers.dev"), "")
   radar_content_type       = lookup(local.content_type_map, element(split(".", var.radar_file), -1))
-  radar_compatibility_date = "2026-04-18"
+  radar_compatibility_date = "2026-08-03"
   radar_prefix_generate    = local.radar_create && var.radar_prefix == null
   radar_prefix             = local.radar_prefix_generate ? random_string.radar_prefix[0].result : var.radar_prefix
 
