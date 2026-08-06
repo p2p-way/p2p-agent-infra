@@ -31,7 +31,7 @@ Scheduler --- Watcher --- Control center     Agent     Setup ------- P2P - TON
 ```
 
  General workflow might be the following
- 1. [Scheduler](#scheduler) run a [Watcher](#watcher).
+ 1. [Scheduler](#scheduler) invoke a [Watcher](#watcher).
  2. Watcher contact [Control center](#control-center) and check the variables returned over HTTP with the following prefixes
     - `cc-w-a` - Agent settings
     - `cc-w-s` - Scheduler settings
