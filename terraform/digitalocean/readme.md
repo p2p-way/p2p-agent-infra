@@ -181,7 +181,7 @@
 
 ## [Known issues](#p2p-agent-on-digitalocean)
 
- 1. [DigitalOcean Droplet Availability](https://docs.digitalocean.com/products/droplets/details/availability/) might vary by regions and it might be required to adjust droplet size to every region.
+ 1. [DigitalOcean Droplet Availability](https://docs.digitalocean.com/products/droplets/details/availability/) might vary by regions and it might be required to adjust droplet size for some regions.
 
  2. Default droplet limit is low and it might be required to send a [Request Increase from Team Settings](https://cloud.digitalocean.com/account/team) to request a limit increase.
 
@@ -199,8 +199,3 @@
 
  4. Sometimes, we may get and intermitent error and re-run solve the issue
     > Error: Error creating VPC: POST https://api.digitalocean.com/v2/vpcs: 422 (request "e488edda-0bca-424c-9283-f1f543510e7d") This range/size overlaps with another VPC network in your account: p2p-agent-sfo3 10.124.16.0/20.
-
- 5. Resources destroy might fail with the following error
-    > Error: Error deleting VPC: DELETE https://api.digitalocean.com/v2/vpcs/59bc7f31-2952-450c-9348-5670ac327af9: 409 (request "ecb33ca2-7b0c-43a5-83f8-ecf2712fcc5b") Can not delete VPC with members
-
-    And we applying a workaround using [time_sleep](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) resource.
