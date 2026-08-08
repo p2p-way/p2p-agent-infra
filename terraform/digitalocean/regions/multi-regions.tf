@@ -2,7 +2,7 @@
 module "multi-regions" {
   source = "./modules/agent"
 
-  for_each = toset(try(data.digitalocean_regions.multi_regions[0].regions[*].slug, []))
+  for_each = toset(setsubtract(try(data.digitalocean_regions.multi_regions[0].regions[*].slug, []), ["mkc1"]))
   # for_each = toset(["fra1"])
 
   region                   = each.key
@@ -34,6 +34,12 @@ data "digitalocean_regions" "multi_regions" {
     key    = "available"
     values = ["true"]
   }
+
+  # filter {
+  #   key      = "sizes"
+  #   match_by = "re"
+  #   values   = ["s-[1-2]vcpu-[1-2]gb.*"]
+  # }
 
   sort {
     key       = "slug"
