@@ -1,4 +1,4 @@
-# Common - Public IP
+# Common - Public IPv4
 - name: Get public IPv4
   ansible.builtin.shell: |
     set -o pipefail
@@ -48,12 +48,6 @@
   community.general.ipify_facts:
   when: common_cloud == 'unknown-cloud' or common_public_ipv4.stdout is not ansible.utils.ipv4
 
-- name: Get public IPv6
-  ansible.builtin.command: echo '{{ ansible_facts['default_ipv6']['address'] | default() }}'
-  register: common_public_ipv6
-  changed_when: false
-  when: common_cloud != 'unknown-cloud'
-
 - name: Compute variables
   ansible.builtin.set_fact:
     common_public_ipv4: >-
@@ -62,13 +56,3 @@
       {%- else -%}
         {{ ansible_facts['ipify_public_ip'] }}
       {%- endif %}
-    common_public_ipv6: >-
-      {% if common_cloud != 'unknown-cloud' %}{{ common_public_ipv6.stdout }}{% endif %}
-
-- name: Show cloud, region and public IP
-  ansible.builtin.debug:
-    msg: |
-      Cloud:       {{ common_cloud }}
-      Region:      {{ common_region }}
-      Public IPv4: {{ common_public_ipv4 }}
-      Public IPv6: {{ common_public_ipv6 }}

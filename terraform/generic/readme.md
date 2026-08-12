@@ -13,7 +13,7 @@
 
  1. Run a node with Ubuntu.
 
- 2. Open the following ports
+ 2. Open the following ports for the public IPv4 address
     | App       | Ports           |
     | --------- | --------------- |
     | IPFS      | `TCP/UDP: 4001` |
@@ -58,7 +58,18 @@
     bash p2p-agent-infra/ansible/roles/agent/files/init.sh
     ```
 
- 7. If you plan to use a radar, add a file with URLs
+ 7. We could optionally add a meta file and define just required variables to be used as an instance metadata by Ansible
+    ```shell
+    vi /opt/p2p-agent.meta
+    ```
+    ```yaml
+    cloud:       cloud
+    region:      region
+    public_ipv4: public ipv4
+    public_ipv6: public ipv6
+    ```
+
+ 8. If you plan to use a radar, add a file with URLs
     ```shell
     echo "<URL> [AUTH]" > /opt/p2p-radar.url
     ```

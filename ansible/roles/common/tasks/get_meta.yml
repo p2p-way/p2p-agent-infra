@@ -1,0 +1,17 @@
+# Common - Get metadata from a file
+- name: Check meta file
+  ansible.builtin.stat:
+    path: '{{ base_folder | dirname }}/{{ common_meta_file }}'
+  register: common_meta_file_stat
+
+- name: Compute variables from meta file
+  ansible.builtin.set_fact:
+    '{{ ansible_role_name }}_{{ var_name }}': '{{ var_value }}'
+  loop: "{{ lookup('ansible.builtin.file', common_meta_file_stat.stat.path).split('\n') | select() }}"
+  vars:
+    var_name: "{{ item.split(':')[0] | default('') }}"
+    var_value: "{{ item.split(': ')[1] | trim | default('') }}"
+  when:
+    - common_meta_file_stat.stat.exists
+    - common_meta_file_stat.stat.isreg
+    - common_meta_file_stat.stat.size > 0

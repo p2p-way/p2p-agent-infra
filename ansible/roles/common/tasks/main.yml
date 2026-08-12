@@ -34,18 +34,38 @@
     name: acl
     state: present
 
+- name: Setup firewall
+  ansible.builtin.include_tasks:
+    file: firewall.yml
+
+- name: Get meta
+  ansible.builtin.include_tasks:
+    file: get_meta.yml
+
 - name: Get cloud
   ansible.builtin.include_tasks:
     file: get_cloud.yml
+  when: common_cloud is undefined
 
 - name: Get region
   ansible.builtin.include_tasks:
     file: get_region.yml
+  when: common_region is undefined
 
-- name: Get public IP
+- name: Get public IPv4
   ansible.builtin.include_tasks:
-    file: get_public_ip.yml
+    file: get_public_ipv4.yml
+  when: common_public_ipv4 is undefined
 
-- name: Setup firewall
+- name: Get public IPv6
   ansible.builtin.include_tasks:
-    file: firewall.yml
+    file: get_public_ipv6.yml
+  when: common_public_ipv6 is undefined
+
+- name: Show cloud, region and public IP
+  ansible.builtin.debug:
+    msg: |
+      Cloud:       {{ common_cloud }}
+      Region:      {{ common_region }}
+      Public IPv4: {{ common_public_ipv4 }}
+      Public IPv6: {{ common_public_ipv6 }}

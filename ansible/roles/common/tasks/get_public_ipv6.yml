@@ -1,0 +1,11 @@
+# Common - Public IPv6
+- name: Get public IPv6
+  ansible.builtin.command: echo '{{ ansible_facts['default_ipv6']['address'] | default() }}'
+  register: common_public_ipv6
+  changed_when: false
+  when: common_cloud != 'unknown-cloud'
+
+- name: Compute variables
+  ansible.builtin.set_fact:
+    common_public_ipv6: >-
+      {% if common_cloud != 'unknown-cloud' %}{{ common_public_ipv6.stdout }}{% endif %}
