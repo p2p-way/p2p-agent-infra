@@ -17,6 +17,19 @@ locals {
     permissions = "0755"
   }]
 
+  # P2P agent meta
+  agent_meta_file_cloudinit = [{
+    encoding = "b64"
+    content = base64encode(templatefile("${path.root}/../common/files/${var.agent_meta_file}", {
+      meta = {
+        cloud : basename(path.cwd)
+      }
+    }))
+    path        = "${dirname(var.agent_base_folder)}/${var.agent_meta_file}"
+    owner       = "root:root"
+    permissions = "0600"
+  }]
+
   # P2P radar
   radar_url_file_cloudinit = length(var.radar_url) > 0 ? [{
     encoding = "b64"

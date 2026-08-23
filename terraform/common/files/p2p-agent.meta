@@ -1,0 +1,3 @@
+%{ for k, v in meta ~}
+${k}: ${v}
+%{ endfor }

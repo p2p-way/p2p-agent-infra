@@ -3,40 +3,40 @@
   ansible.builtin.shell: |
     set -o pipefail
     case {{ common_cloud }} in
-      aliyun)      token=$(curl -X PUT -s http://100.100.100.200/latest/api/token -H "X-aliyun-ecs-metadata-token-ttl-seconds: 180")
-                   curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/eipv4
-                   ;;
-      aws)         token=$(curl -X PUT -s http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 180")
-                   curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/public-ipv4
-                   ;;
-      azure)       curl -s -H "Metadata: true" --noproxy "*" "http://169.254.169.254/metadata/loadbalancer?api-version=2025-04-07" \
-                     | jq -r '.loadbalancer.publicIpAddresses[0].frontendIpAddress'
-                   ;;
-      gcp)         curl -s -H "Metadata-Flavor: Google" \
-                     http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
-                   ;;
-      oci)         echo "null"
-                   ;;
-      yandex)      curl -s -H "Metadata-Flavor: Google" \
-                     http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
-                   ;;
-      akamai)      token=$(curl -X PUT -s http://169.254.169.254/v1/token -H "Metadata-Token-Expiry-Seconds: 180")
-                   curl -s -H "Metadata-Token: ${token}" http://169.254.169.254/v1/network | awk '/ipv4.public/ {sub(/\/.*/,""); print $2}'
-                   ;;
-      configdrive) curl -s http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address
-                   ;;
-      exoscale)    curl -s http://169.254.169.254/1.0/meta-data/public-ipv4
-                   ;;
-      hetzner)     curl -s http://169.254.169.254/hetzner/v1/metadata/public-ipv4
-                   ;;
-      scaleway)    curl -s http://169.254.42.42/conf | awk -F '=' '/^PUBLIC_IPS_V4_0_ADDRESS/ {print $2}'
-                   ;;
-      upcloud)     curl -s http://169.254.169.254/metadata/v1/network/interfaces/1/ip_addresses/1/address
-                   ;;
-      vultr)       curl -s http://169.254.169.254/metadata/meta-data/public-ipv4
-                   ;;
-      *)           echo {{ ansible_facts['default_ipv4']['address'] | default() }}
-                   ;;
+      aliyun)       token=$(curl -X PUT -s http://100.100.100.200/latest/api/token -H "X-aliyun-ecs-metadata-token-ttl-seconds: 180")
+                    curl -s -H "X-aliyun-ecs-metadata-token: ${token}" http://100.100.100.200/latest/meta-data/eipv4
+                    ;;
+      aws)          token=$(curl -X PUT -s http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds: 180")
+                    curl -s -H "X-aws-ec2-metadata-token: ${token}" http://169.254.169.254/latest/meta-data/public-ipv4
+                    ;;
+      azure)        curl -s -H "Metadata: true" --noproxy "*" "http://169.254.169.254/metadata/loadbalancer?api-version=2025-04-07" \
+                      | jq -r '.loadbalancer.publicIpAddresses[0].frontendIpAddress'
+                    ;;
+      gcp)          curl -s -H "Metadata-Flavor: Google" \
+                      http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
+                    ;;
+      oci)          echo "null"
+                    ;;
+      yandex)       curl -s -H "Metadata-Flavor: Google" \
+                      http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip
+                    ;;
+      akamai)       token=$(curl -X PUT -s http://169.254.169.254/v1/token -H "Metadata-Token-Expiry-Seconds: 180")
+                    curl -s -H "Metadata-Token: ${token}" http://169.254.169.254/v1/network | awk '/ipv4.public/ {sub(/\/.*/,""); print $2}'
+                    ;;
+      digitalocean) curl -s http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address
+                    ;;
+      exoscale)     curl -s http://169.254.169.254/1.0/meta-data/public-ipv4
+                    ;;
+      hetzner)      curl -s http://169.254.169.254/hetzner/v1/metadata/public-ipv4
+                    ;;
+      scaleway)     curl -s http://169.254.42.42/conf | awk -F '=' '/^PUBLIC_IPS_V4_0_ADDRESS/ {print $2}'
+                    ;;
+      upcloud)      curl -s http://169.254.169.254/metadata/v1/network/interfaces/1/ip_addresses/1/address
+                    ;;
+      vultr)        curl -s http://169.254.169.254/metadata/meta-data/public-ipv4
+                    ;;
+      *)            echo {{ ansible_facts['default_ipv4']['address'] | default() }}
+                    ;;
     esac
   args:
     executable: bash
