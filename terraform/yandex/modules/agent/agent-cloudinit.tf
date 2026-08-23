@@ -52,6 +52,7 @@ data "cloudinit_config" "agent" {
     content = yamlencode({
       write_files = concat(
         local.agent_file_cloudinit,
+        local.agent_meta_file_cloudinit,
         local.radar_url_file_cloudinit,
         local.agent_logs_cloudinit,
         local.agent_metrics_cloudinit

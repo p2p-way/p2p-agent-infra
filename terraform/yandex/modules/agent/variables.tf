@@ -65,6 +65,12 @@ variable "agent_file" {
   default     = "p2p-agent.sh"
 }
 
+variable "agent_meta_file" {
+  description = "Agent metadata file."
+  type        = string
+  default     = "p2p-agent.meta"
+}
+
 variable "agent_base_folder" {
   description = "Agent base folder."
   type        = string
