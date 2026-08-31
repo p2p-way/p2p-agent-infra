@@ -58,9 +58,8 @@ provider "alicloud" {
 
 # Malaysia (Johor)
 provider "alicloud" {
-  alias                  = "ap-southeast-8"
-  region                 = "ap-southeast-8"
-  skip_region_validation = true
+  alias  = "ap-southeast-8"
+  region = "ap-southeast-8"
 }
 
 # China (Beijing)
@@ -193,9 +192,8 @@ provider "alicloud" {
 
 # Mexico
 provider "alicloud" {
-  alias                  = "na-south-1"
-  region                 = "na-south-1"
-  skip_region_validation = true
+  alias  = "na-south-1"
+  region = "na-south-1"
 }
 
 # US (Virginia)
