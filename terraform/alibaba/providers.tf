@@ -196,6 +196,13 @@ provider "alicloud" {
   region = "na-south-1"
 }
 
+# Brazil (Sau Paulo)
+provider "alicloud" {
+  alias                  = "sa-east-1"
+  region                 = "sa-east-1"
+  skip_region_validation = true
+}
+
 # US (Virginia)
 provider "alicloud" {
   alias  = "us-east-1"

@@ -299,7 +299,7 @@
     - `region-cn-guangzhou.tf`
     - `region-cn-heyuan.tf`
 
- 5. In some regions instances were not tested due to the errors or limits.
+ 5. In some regions instances were not tested due to the errors, limits or instance type unavailability.
     <details>
     <summary>More details</summary>
 
@@ -309,6 +309,7 @@
     - `1-region-cn-wuhan-lr.tf`
     - `1-region-cn-zhongwei.tf`
     - `1-region-eu-west-2.tf`
+    - `1-region-sa-east-1.tf`
 
     > `Fail to scale instances for scaling group(code:"RecommendEmpty.DiskTypeNoStock", msg:"The diskTypes are out of usage.").`
     - `2-region-cn-beijing.tf`
@@ -349,13 +350,14 @@
 
  8. [Alibaba  Function Compute](https://www.alibabacloud.com/en/product/function-compute) does not work properly in some regions and we can't use `start_time = "watcher"` for them
 
-    **Functions Compute service is not available in all re regions** - check [Endpoints of Function Compute](https://www.alibabacloud.com/help/en/functioncompute/fc/developer-reference/fc-endpoints) as a reference
+    **Functions Compute service is not available in all the regions** - check [Endpoints of Function Compute](https://www.alibabacloud.com/help/en/functioncompute/fc/developer-reference/fc-endpoints) as a reference
     - `region-ap-southeast-6.tf`
     - `region-cn-guangzhou.tf`
     - `region-cn-fuzhou.tf`
     - `region-cn-nanjing.tf`
     - `region-cn-heyuan.tf`
     - `region-na-south-1.tf`
+    - `region-sa-east-1.tf`
 
     **Functions executes with an error**
     > Error: Function timed out after 5 seconds
