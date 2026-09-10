@@ -169,7 +169,7 @@
     layer_package="watcher-python-layer.zip"
     base_image="aliyunfc/runtime-custom.debian10"
 
-    docker run -it \
+    docker run --rm -it \
       --entrypoint=bash \
       --volume ./:/opt \
       ${base_image} \
