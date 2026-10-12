@@ -39,16 +39,16 @@
 
 - [Product availability by region](https://www.scaleway.com/en/product-availability-by-region/)
 
-```shell
-# Images labels
-scw marketplace image list
+  ```shell
+  # Images labels
+  scw marketplace image list
 
-# List Instance types
-scw instance server-type list
+  # List Instance types
+  scw instance server-type list
 
-# Get availability
-scw instance server-type get zone=nl-ams-1
-```
+  # Get availability
+  scw instance server-type get zone=nl-ams-1
+  ```
 
 
 ## [Costs](#p2p-agent-on-scaleway)
@@ -172,5 +172,7 @@ scw instance server-type get zone=nl-ams-1
  2. In some zone, small instances are not available and we do not count them
     - `1-region-fr-par-3.tf`
     - `1-region-it-mil-1.tf`
+    - `1-region-it-mil-2.tf`
+    - `1-region-it-mil-3.tf`
  3. [Scaleway account Organization quotas](https://www.scaleway.com/en/docs/organizations-and-projects/additional-content/organization-quotas/) for instance resources is low and it might be required to request limit increase.
  4. [Scaleway regions might contain multiple availability zones](https://www.scaleway.com/en/docs/account/reference-content/products-availability/), but we can't deploy instances in a region and only in a zone. So, we threat zones as regions.
