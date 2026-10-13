@@ -139,7 +139,7 @@ Scheduler --- Watcher --- Control center     Agent     Setup ------- P2P - TON
  - On GCP we use [Authenticate workloads using service accounts](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances) to provide access to the autoscaler configuration using Google Cloud CLI. We manage number of instances by updating Instance Group max instances count and scheduler minimum count.
 
 
-## Radar
+## [Radar](#architecture)
 
  Agents are running in an automatic way and they are spread across the globe. They could work in a fully distributed and independent way and we have no brief visibility about their count and locations.
 
