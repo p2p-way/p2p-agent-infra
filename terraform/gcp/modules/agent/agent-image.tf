@@ -12,10 +12,13 @@ locals {
   # gcloud compute machine-types list --filter="name=t2a-standard-1"
   # gcloud compute machine-types describe --zone=europe-west4-b t2a-standard-1
 
+  os_family_ubuntu_24_04 = "ubuntu-2404-lts-${local.architecture}"
+  os_family_ubuntu_26_04 = "ubuntu-2604-lts-${local.architecture}"
+
   os_family_map = {
-    ubuntu-24-04 = "ubuntu-2404-lts-${local.architecture}"
-    ubuntu-26-04 = "ubuntu-2604-lts-${local.architecture}"
-    ubuntu       = "ubuntu-2404-lts-${local.architecture}"
+    "ubuntu-24.04" = local.os_family_ubuntu_24_04
+    "ubuntu-26.04" = local.os_family_ubuntu_26_04
+    ubuntu         = local.os_family_ubuntu_24_04
   }
 
   os_project_map = {
@@ -23,7 +26,7 @@ locals {
   }
 
   architecture = contains(local.arm_series, element(split("-", var.instance_type), 0)) ? "arm64" : "amd64"
-  os_family    = lookup(local.os_family_map, replace(var.os_name, ".", "-"))
+  os_family    = lookup(local.os_family_map, var.os_name)
   os_project   = lookup(local.os_project_map, element(split("-", var.os_name), 0))
 }
 

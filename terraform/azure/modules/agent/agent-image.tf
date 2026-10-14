@@ -1,20 +1,23 @@
 # Locals
 locals {
+  os_name_map_ubuntu_24_04 = "ubuntu-24_04-lts"
+  os_name_map_ubuntu_26_04 = "ubuntu-26_04-lts"
+
   os_name_map = {
     "ubuntu-24.04" = {
-      offer        = "ubuntu-24_04-lts"
+      offer        = local.os_name_map_ubuntu_24_04
       sku_prefix   = "server"
       amd64_suffix = ""
       arm64_suffix = "-arm64"
     },
     "ubuntu-26.04" = {
-      offer        = "ubuntu-26_04-lts"
+      offer        = local.os_name_map_ubuntu_26_04
       sku_prefix   = "server"
       amd64_suffix = ""
       arm64_suffix = "-arm64"
     },
     ubuntu = {
-      offer        = "ubuntu-24_04-lts"
+      offer        = local.os_name_map_ubuntu_24_04
       sku_prefix   = "server"
       amd64_suffix = ""
       arm64_suffix = "-arm64"

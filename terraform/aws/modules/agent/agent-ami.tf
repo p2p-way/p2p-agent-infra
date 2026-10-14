@@ -5,10 +5,13 @@ locals {
     "arm64"  = "arm64"
   }
 
+  os_name_ubuntu_24_04 = "ubuntu/images/hvm-ssd*/ubuntu-*-24.04-${local.architecture}-server-*"
+  os_name_ubuntu_26_04 = "ubuntu/images/hvm-ssd*/ubuntu-*-26.04-${local.architecture}-server-*"
+
   os_name_map = {
-    "ubuntu-24.04" = "ubuntu/images/hvm-ssd*/ubuntu-*-24.04-${local.architecture}-server-*"
-    "ubuntu-26.04" = "ubuntu/images/hvm-ssd*/ubuntu-*-26.04-${local.architecture}-server-*"
-    ubuntu         = "ubuntu/images/hvm-ssd*/ubuntu-*-24.04-${local.architecture}-server-*"
+    "ubuntu-24.04" = local.os_name_ubuntu_24_04
+    "ubuntu-26.04" = local.os_name_ubuntu_26_04
+    ubuntu         = local.os_name_ubuntu_24_04
   }
 
   os_owner_map = {
