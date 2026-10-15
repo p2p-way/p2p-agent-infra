@@ -21,7 +21,7 @@ resource "digitalocean_droplet" "agent" {
   ipv6 = var.enable_ipv6
 
   # Initialization scripts
-  user_data = data.cloudinit_config.agent[0].rendered
+  user_data = module.cloudinit[0].cloudinit_config
 
   # Hostname
   name = "${local.resource_name}-${count.index + 1}"

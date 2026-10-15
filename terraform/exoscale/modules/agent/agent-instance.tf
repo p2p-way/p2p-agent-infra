@@ -52,7 +52,7 @@ resource "exoscale_compute_instance" "agent" {
   enable_secure_boot = false
 
   # User Data
-  user_data = data.cloudinit_config.agent[0].rendered
+  user_data = module.cloudinit[0].cloudinit_config
 
   # Other
   labels = var.default_labels

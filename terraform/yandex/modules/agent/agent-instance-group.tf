@@ -62,7 +62,7 @@ resource "yandex_compute_instance_group" "agent" {
 
     # Access
     metadata = {
-      user-data             = data.cloudinit_config.agent[count.index].rendered
+      user-data             = module.cloudinit[count.index].cloudinit_config
       gce_http_endpoint     = "enabled"
       gce_http_token        = "enabled"
       serial-port-enable    = 1

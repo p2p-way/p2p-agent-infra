@@ -46,7 +46,7 @@ resource "oci_core_instance_configuration" "agent" {
       }
 
       metadata = {
-        user_data = data.cloudinit_config.agent[count.index].rendered
+        user_data = module.cloudinit[count.index].cloudinit_config
       }
 
       # Tagging

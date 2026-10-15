@@ -76,7 +76,7 @@ resource "aws_launch_template" "agent" {
     instance_metadata_tags      = "enabled"
   }
 
-  user_data = data.cloudinit_config.agent[count.index].rendered
+  user_data = module.cloudinit[count.index].cloudinit_config
 
   # Other
   update_default_version = true

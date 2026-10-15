@@ -35,7 +35,7 @@ resource "hcloud_server" "agent" {
   labels = local.default_labels
 
   # Cloud config
-  user_data = data.cloudinit_config.agent[0].rendered
+  user_data = module.cloudinit[0].cloudinit_config
 
   # Name
   name = "${local.resource_name}-${count.index + 1}"

@@ -35,7 +35,7 @@ resource "linode_instance" "agent" {
 
   # Add User Data
   metadata {
-    user_data = data.cloudinit_config.agent[0].rendered
+    user_data = module.cloudinit[count.index].cloudinit_config
   }
 
   # swap_size  = 0

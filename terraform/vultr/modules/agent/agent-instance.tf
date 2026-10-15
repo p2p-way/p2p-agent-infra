@@ -22,5 +22,5 @@ resource "vultr_instance" "agent" {
   # Additional Features
   enable_ipv6 = var.enable_ipv6
   backups     = "disabled"
-  user_data   = data.cloudinit_config.agent[0].rendered
+  user_data   = module.cloudinit[0].cloudinit_config
 }

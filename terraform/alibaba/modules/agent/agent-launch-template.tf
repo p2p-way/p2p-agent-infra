@@ -46,7 +46,7 @@ resource "alicloud_ecs_launch_template" "agent" {
   http_tokens                 = "required"
   http_put_response_hop_limit = 1
 
-  user_data = data.cloudinit_config.agent[count.index].rendered
+  user_data = module.cloudinit[count.index].cloudinit_config
 
   # Tag
   tags          = merge(var.default_tags, { agent-watcher = "${local.agent_watcher}" })

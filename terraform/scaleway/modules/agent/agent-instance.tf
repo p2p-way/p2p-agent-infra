@@ -41,7 +41,7 @@ resource "scaleway_instance_server" "agent" {
 
   # Cloud-init (optional)
   user_data = {
-    cloud-init = data.cloudinit_config.agent[0].rendered
+    cloud-init = module.cloudinit[0].cloudinit_config
   }
 
   # Other

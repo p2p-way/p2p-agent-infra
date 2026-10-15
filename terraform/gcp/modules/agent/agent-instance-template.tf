@@ -56,7 +56,7 @@ resource "google_compute_instance_template" "agent" {
     var.default_labels,
     {
       enable-oslogin = "TRUE"
-      user-data      = data.cloudinit_config.agent[count.index].rendered
+      user-data      = module.cloudinit[count.index].cloudinit_config
       agent-watcher  = "${local.agent_watcher}"
     }
   )

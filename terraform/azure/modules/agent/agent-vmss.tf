@@ -100,7 +100,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "agent" {
   zone_balance = length(var.zone) > 1 ? true : false
 
   # User data
-  user_data = data.cloudinit_config.agent[count.index].rendered
+  user_data = module.cloudinit[count.index].cloudinit_config
 
   # Tags
   tags = merge(
