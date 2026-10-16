@@ -1,4 +1,4 @@
-# Terraform settings
+# Versions
 terraform {
   required_providers {
     alicloud = {
